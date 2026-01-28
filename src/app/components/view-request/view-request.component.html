@@ -1,0 +1,193 @@
+<div class="dashboard-wrapper">
+  <app-sidebar></app-sidebar>
+
+  <main class="main-content">
+    <!-- Top Navigation -->
+    <header class="top-nav">
+      <div class="breadcrumb">
+        <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+          </svg></i>
+        <span>/ VIEW REQUEST</span>
+      </div>
+
+      <button class="menu-toggle">
+        <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg></i>
+      </button>
+
+      <div class="top-nav-right">
+        <button class="year-selector">
+          <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
+            </svg></i>
+          All Years
+          <i class="arrow">▼</i>
+        </button>
+
+        <div class="user-menu">
+          <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+            </svg></i>
+          <span>Amjed Amin Ali (Demo)</span>
+          <i class="arrow">▶</i>
+        </div>
+
+        <button class="icon-btn" (click)="logout()">
+          <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+            </svg></i>
+        </button>
+
+        <button class="icon-btn">
+          <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+            </svg></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Content Grid -->
+    <div class="content-grid">
+      <!-- Left Column -->
+      <div class="left-column">
+        <!-- Order Info Header -->
+        <div class="order-info-card">
+          <div class="order-details">
+            <div class="order-no">Order No <span>1003-17</span></div>
+            <div class="order-type">Order Type <span>Recommendation Letters</span></div>
+          </div>
+          <div class="order-date">
+            <i><svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
+              </svg></i>
+            20-04-25 14:18
+          </div>
+        </div>
+
+        <!-- Student Card with Grid Layout -->
+        <div class="student-card">
+          <div class="student-left">
+            <div class="student-avatar">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+              </svg>
+            </div>
+
+            <div class="student-info">
+              <h3>Amjed Amin</h3>
+              <p><span>University No :</span> 400001000</p>
+              <p>amjed.it</p>
+              <p>0550932548</p>
+            </div>
+          </div>
+
+          <div class="student-right">
+            <div class="info-item">
+              <span class="label">University</span>
+              <span class="value">Riyadh Elm University</span>
+            </div>
+            <div class="info-item">
+              <span class="label">College</span>
+              <span class="badge badge-green">COLLEGE OF TECHNOLOGY AND BUSINESS</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Program</span>
+              <span class="badge badge-blue">TEST PROGRAM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Print Button -->
+        <div class="print-section">
+          <button class="btn-print">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Faculty Member -->
+        <div class="faculty-card">
+          <h4>Faculty Member: System</h4>
+          <p>Test</p>
+        </div>
+
+        <!-- Tracking Sequence -->
+        <div class="tracking-card" *ngIf="statusData">
+          <h4>Tracking Sequence</h4>
+          <div class="tracking-item" *ngFor="let prev of statusData.previousStatuses">
+            <div class="tracking-avatar">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+              </svg>
+            </div>
+            <div class="tracking-details">
+              <div class="tracking-name">{{ currentUser?.name }} ({{ currentUser?.role }})</div>
+              <div class="tracking-comment">- {{ prev.status }} -</div>
+            </div>
+            <div class="tracking-status">
+              <span class="badge-status">{{ prev.status | titlecase }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Status Sidebar -->
+      <aside class="status-sidebar" *ngIf="statusData">
+        <h3>Request Status</h3>
+
+        <!-- Previous Statuses -->
+        <div class="status-item" *ngFor="let prev of statusData.previousStatuses">
+          <div class="status-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+            </svg>
+          </div>
+          <div class="status-text">
+            <div class="status-label">{{ prev.status | titlecase }}</div>
+            <div class="status-date">{{ prev.createdDate | date: 'dd-MM-yy HH:mm' }}</div>
+          </div>
+        </div>
+
+        <!-- Current Status -->
+        <div class="status-item current-status">
+          <div class="status-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+            </svg>
+          </div>
+          <div class="status-text">
+            <div class="status-label">{{ statusData.currentSection.status | titlecase }}</div>
+            <div class="status-date">{{ statusData.currentSection.updatedDate | date: 'dd-MM-yy HH:mm' }}</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h4>Next approval</h4>
+
+        <div class="approval-item" *ngFor="let next of statusData.nextStatuses">
+          <div class="approval-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+            </svg>
+          </div>
+          <span>{{ next | titlecase }}</span>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>

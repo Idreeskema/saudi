@@ -1,0 +1,215 @@
+.letter-container {
+  min-height: 100vh;
+  background: #e9ecef;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.letter-paper {
+  width: 100%;
+  max-width: 900px;
+  background: white;
+  padding: 80px 100px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  min-height: 1000px;
+}
+
+.download-section {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
+.btn-download {
+  padding: 12px 28px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+  
+  &:hover {
+    background: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  }
+}
+
+.letter-date {
+  text-align: left;
+  direction: ltr;
+  font-size: 17px;
+  color: #2c3e50;
+  margin-bottom: 60px;
+  font-weight: 500;
+}
+
+.letter-greeting {
+  text-align: center;
+  font-size: 19px;
+  color: #2c3e50;
+  margin-bottom: 60px;
+  font-weight: 600;
+  direction: rtl;
+}
+
+.letter-content {
+  margin-bottom: 100px;
+  direction: rtl;
+  text-align: right;
+  
+  .content-paragraph {
+    font-size: 18px;
+    color: #2c3e50;
+    line-height: 2.8;
+    margin-bottom: 35px;
+    text-align: right;
+    direction: rtl;
+    word-spacing: 2px;
+    letter-spacing: 0.3px;
+    
+    strong {
+      font-weight: 700;
+      color: #000;
+    }
+  }
+}
+
+.letter-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 80px;
+  direction: rtl;
+  gap: 60px;
+}
+
+.footer-left {
+  flex: 0 0 auto;
+}
+
+.verification-section {
+  text-align: center;
+  
+  .verify-text {
+    font-size: 15px;
+    color: #2c3e50;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  
+  .qr-code {
+    width: 160px;
+    height: 160px;
+    border: 3px solid #2c3e50;
+    border-radius: 10px;
+    padding: 12px;
+    background: white;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+}
+
+.footer-right {
+  flex: 1;
+  text-align: right;
+  direction: rtl;
+  
+  .dean-title {
+    font-size: 15px;
+    color: #67748e;
+    margin-bottom: 8px;
+  }
+  
+  .dean-name {
+    font-size: 18px;
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 25px;
+  }
+  
+  .signature {
+    width: 220px;
+    height: 90px;
+    margin-left: auto;
+    margin-right: 0;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+}
+
+// Print Styles
+@media print {
+  .letter-container {
+    background: white;
+    padding: 0;
+  }
+  
+  .letter-paper {
+    box-shadow: none;
+    padding: 60px;
+    max-width: 100%;
+    min-height: auto;
+  }
+  
+  .btn-download {
+    display: none;
+  }
+  
+  .download-section {
+    display: none;
+  }
+  
+  .letter-content .content-paragraph {
+    font-size: 16px;
+    line-height: 2.5;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .letter-paper {
+    padding: 40px 30px;
+    min-height: auto;
+  }
+  
+  .letter-content .content-paragraph {
+    font-size: 16px;
+    line-height: 2.4;
+  }
+  
+  .letter-footer {
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .footer-right {
+    order: -1;
+  }
+  
+  .download-section {
+    position: static;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .btn-download {
+    width: 100%;
+  }
+}

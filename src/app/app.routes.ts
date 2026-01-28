@@ -1,0 +1,52 @@
+import { Routes } from "@angular/router";
+import { LoginComponent } from "./components/login/login.component";
+import { DashboardComponent } from "./components/dashboard/dashboard.component";
+import { RequestListComponent } from "./components/request-list/request-list.component";
+import { RefundFormComponent } from "./components/forms/refund-form/refund-form.component";
+import { PrintFormComponent } from "./components/print-form/print-form.component";
+import { ListSequenceComponent } from "./components/sequence/list-sequence/list-sequence.component";
+import { ViewSequenceComponent } from "./components/sequence/view-sequence/view-sequence.component";
+import { SequenceFormComponent } from "./components/sequence/sequence-form/sequence-form.component";
+import { ListsequenceStatusComponent } from "./components/sequence/listsequence-status/listsequence-status.component";
+import { CreateSequenceComponent } from "./components/sequence/create-sequence/create-sequence.component";
+import { ViewRequestComponent } from "./components/view-request/view-request.component";
+import { LetterDocumentComponent } from "./components/letter-document/letter-document.component";
+import { MedicalExamFormComponent } from "./components/forms/medical-exam-form/medical-exam-form.component";
+import { CourseAddDropFormComponent } from "./components/forms/course-add-drop-form/course-add-drop-form.component";
+import { StudentAppealFormComponent } from "./components/forms/student-appeal-form/student-appeal-form.component";
+import { ReEntryFormComponent } from "./components/forms/re-entry-form/re-entry-form.component";
+import { WithdrawalFormComponent } from "./components/forms/withdrawal-form/withdrawal-form.component";
+import { SemesterPostponementFormComponent } from "./components/forms/semester-postponement-form/semester-postponement-form.component";
+import { MidtermReplacementFormComponent } from "./components/forms/midterm-replacement-form/midterm-replacement-form.component";
+import { SemesterWithdrawalFormComponent } from "./components/forms/semester-withdrawal-form/semester-withdrawal-form.component";
+import { FinalExamReplacementFormComponent } from "./components/forms/final-exam-replacement-form/final-exam-replacement-form.component";
+import { MajorTransferFormComponent } from "./components/forms/major-transfer-form/major-transfer-form.component";
+import { ReplacementExamDeclarationFormComponent } from "./components/forms/replacement-exam-declaration-form/replacement-exam-declaration-form.component";
+
+export const routes: Routes = [
+  { path: "", redirectTo: "/login", pathMatch: "full" },
+  { path: "login", component: LoginComponent },
+  { path: "dashboard", component: DashboardComponent },
+  { path: "request-list", component: RequestListComponent },
+  { path: "form/:id", component: RefundFormComponent },
+  { path: "print-form/:id", component: PrintFormComponent },
+  { path: "list-sequence", component: ListSequenceComponent },
+  { path: "view-sequence", component: ViewSequenceComponent },
+  { path: "sequence-form", component: SequenceFormComponent },
+  { path: "listsequence-status", component: ListsequenceStatusComponent },
+  { path: "create-sequence", component: CreateSequenceComponent },
+  { path: "view-request/:id", component: ViewRequestComponent },
+  { path: "letter/:id", component: LetterDocumentComponent },
+  { path: "medical-exam/:id", component: MedicalExamFormComponent },
+  // { path: '**', redirectTo: '/login' }  // Keep commented for debugging
+  { path: 'course-add-drop/:id', component: CourseAddDropFormComponent },
+  { path: 'student-appeal/:id', component: StudentAppealFormComponent },
+  { path: 're-entry/:id', component: ReEntryFormComponent },
+  { path: 'withdrawal/:id', component: WithdrawalFormComponent },
+  { path: 'semester-postponement/:id', component: SemesterPostponementFormComponent },
+  { path: 'midterm-replacement/:id', component: MidtermReplacementFormComponent },
+  { path: 'semester-withdrawal/:id', component: SemesterWithdrawalFormComponent },
+  { path: 'final-exam-replacement/:id', component: FinalExamReplacementFormComponent },
+  { path: 'major-transfer/:id', component: MajorTransferFormComponent },
+  { path: 'replacement-exam-declaration/:id', component: ReplacementExamDeclarationFormComponent },
+];

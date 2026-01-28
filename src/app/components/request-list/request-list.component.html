@@ -1,0 +1,130 @@
+<div class="dashboard-wrapper">
+  <!-- Sidebar (reuse from dashboard) -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Top Navigation -->
+    <header class="top-nav">
+      <div class="breadcrumb">
+        <i class="icon">🏠</i>
+        <span>/ LIST OF REQUEST</span>
+      </div>
+
+      <button class="menu-toggle">
+        <i class="icon">☰</i>
+      </button>
+
+      <div class="top-nav-right">
+        <button class="year-selector">
+          <i class="icon">📅</i>
+          All Years
+          <i class="arrow">▼</i>
+        </button>
+
+        <div class="user-menu">
+          <i class="icon">👤</i>
+          <span>{{ currentUser?.name }}</span>
+          <!-- <i class="arrow">▶</i> -->
+        </div>
+
+        <button class="icon-btn" (click)="logout()">
+          <i class="icon">🚪</i>
+        </button>
+
+        <button class="icon-btn">
+          <i class="icon">🌐</i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Request List Header -->
+    <div class="request-list-header">
+      <h2>Request List</h2>
+      <p>A list of all submitted requests by the student. You can click on the number to view the requests of the
+        similar type</p>
+    </div>
+
+    <!-- Request Summary Cards -->
+    <div class="request-summary-grid">
+      <div class="summary-card" *ngFor="let summary of requestSummary">
+        <h4>{{ summary.title }} ({{ summary.count }})</h4>
+      </div>
+    </div>
+
+    <!-- Request Table -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Request Table</h3>
+        <div class="filter-section">
+          <label>Filter By Status</label>
+          <select class="form-select">
+            <option>All Requests</option>
+            <option>New</option>
+            <option>In Progress</option>
+            <option>Completed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="request-table">
+          <thead>
+            <tr>
+              <th>ORDERID</th>
+              <th>STUDENT INFO</th>
+              <th>REQUEST TYPE</th>
+              <th>REQUEST DATE</th>
+              <th>STATUS</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let form of forms" (click)="viewForm(form.orderId)">
+              <td>
+                <strong>{{ form.orderId }}</strong>
+              </td>
+              <td>
+                <div class="student-info">
+                  <div class="student-avatar">👤</div>
+                  <div>
+                    <div class="student-name">{{ form.studentName }}</div>
+                    <div class="student-id">{{ form.studentId }}</div>
+                    <div class="student-email">{{ form.studentEmail }}</div>
+                  </div>
+                </div>
+              </td>
+              <td>{{ form.requestType }}</td>
+              <td>{{ form.requestDate | date: 'M/d/yy' }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(form)">
+                  {{ form.status }}
+                </span>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button class="action-btn" (click)="viewForm(form.orderId)" title="View">
+                    <i class="icon">👁️</i>
+                  </button>
+                  <button class="action-btn" (click)="printForm(form.orderId, $event)" title="Print"
+                    *ngIf="currentUser?.role === 'student'">
+                    <i class="icon">🖨️</i>
+                  </button>
+                  <!-- <button class="action-btn delete" (click)="deleteForm(form.orderId, $event)" title="Delete">
+                    <i class="icon">🗑️</i>
+                  </button> -->
+                </div>
+              </td>
+            </tr>
+
+            <tr *ngIf="forms.length === 0">
+              <td colspan="6" class="no-data">
+                No requests found. Create a new request to get started.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>

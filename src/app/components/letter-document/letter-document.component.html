@@ -1,0 +1,55 @@
+<div class="letter-container">
+  <div class="letter-paper">
+    <!-- Download Button -->
+    <div class="download-section">
+      <button class="btn-download" (click)="downloadPDF()">
+        تحميل التقرير
+      </button>
+    </div>
+
+    <!-- Date -->
+    <div class="letter-date">
+      {{ currentDate }}
+    </div>
+
+    <!-- Greeting -->
+    <div class="letter-greeting">
+      السلام عليكم ورحمة الله وبركاته، وبعد...
+    </div>
+
+    <!-- Main Content -->
+    <div class="letter-content">
+      <p class="content-paragraph">
+        نفيد سعادتكم بأن الطالب/ <strong>{{ studentName }}</strong> ({{ studentNameEn }}) - سجل مدني (<strong>{{ civilId }}</strong>) قد تقدم بطلب استرداد الرسوم الدراسية المدفوعة لبرنامج <strong>{{ program }}</strong> - بجامعة <strong>{{ university }}</strong>.
+      </p>
+
+      <p class="content-paragraph">
+        وبعد مراجعة الطلب والتحقق من استيفاء كافة الشروط والمتطلبات، تمت الموافقة على استرداد مبلغ <strong>{{ refundAmount }}</strong> ريال سعودي. سيتم تحويل المبلغ إلى الحساب البنكي المسجل خلال <strong>{{ processingDays }}</strong> يوم عمل من تاريخه بتاريخ <strong>{{ approvalDate }}</strong> الموافق <strong>{{ approvalDateHijri }}</strong>.
+      </p>
+
+      <p class="content-paragraph">
+        للاستفسارات يرجى التواصل مع قسم الشؤون المالية على الرقم: <strong>{{ contactNumber }}</strong>
+      </p>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="letter-footer">
+      <div class="footer-left">
+        <div class="verification-section">
+          <p class="verify-text">للتحقق امسح الكود</p>
+          <div class="qr-code">
+            <img [src]="qrCodeUrl" alt="QR Code">
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-right">
+        <p class="dean-title">عميد كلية التقنية والأعمال</p>
+        <p class="dean-name">{{ deanName }}</p>
+        <div class="signature">
+          <img [src]="signatureUrl" alt="Signature">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,257 @@
+<div class="print-wrapper">
+  <!-- Download/Print Button (hidden when printing) -->
+  <div class="no-print">
+    <button class="btn-download" (click)="downloadPDF()">Download Report</button>
+  </div>
+
+  <div class="print-content" *ngIf="form">
+    
+    <!-- Header -->
+    <div class="form-header-print">
+      <h1>Refund Form</h1>
+      <div class="form-meta-print">
+        <span><strong>Form ID:</strong> {{ form.id }}</span>
+        <span><strong>Status:</strong> {{ form.status.overall }}</span>
+        <span><strong>Date:</strong> {{ form.createdAt | date }}</span>
+      </div>
+    </div>
+
+    <!-- SECTION 1: STUDENT INFORMATION -->
+    <div class="section-print">
+      <h2><span class="section-num">1</span> Student Information</h2>
+      
+      <div class="field-grid">
+        <div class="field-item">
+          <label>Student Name:</label>
+          <span>{{ form.studentSection.name }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Mobile Number:</label>
+          <span>{{ form.studentSection.mobileNumber }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Student ID:</label>
+          <span>{{ form.studentSection.studentId }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Nationality:</label>
+          <span>{{ form.studentSection.nationality }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Major:</label>
+          <span>{{ form.studentSection.major }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Level:</label>
+          <span>{{ form.studentSection.level }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Refund Amount:</label>
+          <span>{{ form.studentSection.refundAmount }}</span>
+        </div>
+        
+        <div class="field-item full-width">
+          <label>Refund Reason:</label>
+          <span>{{ form.studentSection.refundReason }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Bank Name:</label>
+          <span>{{ form.studentSection.bankName }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Account Holder Name:</label>
+          <span>{{ form.studentSection.accountHolderName }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Relationship:</label>
+          <span>{{ form.studentSection.relationship }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>IBAN (Arabic):</label>
+          <span>{{ form.studentSection.ibanArabic }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>IBAN (English):</label>
+          <span>{{ form.studentSection.ibanEnglish }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Holder ID/Iqama:</label>
+          <span>{{ form.studentSection.holderIdIqama }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Student Signature:</label>
+          <span>{{ form.studentSection.studentSignature }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Date:</label>
+          <span>{{ form.studentSection.studentDate | date }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: REGISTRATION DEPARTMENT -->
+    <div class="section-print">
+      <h2><span class="section-num">2</span> Registration Department</h2>
+      
+      <div class="field-grid">
+        <div class="field-item">
+          <label>Withdrawal Type:</label>
+          <span>{{ form.registrationSection.withdrawalType }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Semester Timing:</label>
+          <span>{{ form.registrationSection.semesterTiming }}</span>
+        </div>
+        
+        <div class="field-item full-width">
+          <label>Other Reason:</label>
+          <span>{{ form.registrationSection.otherReason }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Department Head:</label>
+          <span>{{ form.registrationSection.departmentHead }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Signature:</label>
+          <span>{{ form.registrationSection.signature }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Date:</label>
+          <span>{{ form.registrationSection.date | date }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: ACCOUNTING VERIFICATION -->
+    <div class="section-print">
+      <h2><span class="section-num">3</span> Accounting Department - Payment Verification</h2>
+      
+      <div class="field-grid">
+        <div class="field-item">
+          <label>Payment Amount (Numeric):</label>
+          <span>{{ form.accountingVerificationSection.paymentAmountNumeric }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Payment Amount (Words):</label>
+          <span>{{ form.accountingVerificationSection.paymentAmountWords }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Accountant Name:</label>
+          <span>{{ form.accountingVerificationSection.accountantName }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Accountant Signature:</label>
+          <span>{{ form.accountingVerificationSection.accountantSignature }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Accountant Date:</label>
+          <span>{{ form.accountingVerificationSection.accountantDate | date }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Chief Accountant:</label>
+          <span>{{ form.accountingVerificationSection.chiefAccountant }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Chief Signature:</label>
+          <span>{{ form.accountingVerificationSection.chiefSignature }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Chief Date:</label>
+          <span>{{ form.accountingVerificationSection.chiefDate | date }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: AUTHORIZED PERSON -->
+    <div class="section-print">
+      <h2><span class="section-num">4</span> Authorized Person Decision</h2>
+      
+      <div class="field-grid">
+        <div class="field-item">
+          <label>Decision:</label>
+          <span *ngIf="form.authorizedSection.decision === true" class="approved">✓ Approved</span>
+          <span *ngIf="form.authorizedSection.decision === false" class="denied">✗ Denied</span>
+          <span *ngIf="form.authorizedSection.decision === null">Pending</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Approved Amount (Numeric):</label>
+          <span>{{ form.authorizedSection.approvedAmountNumeric }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Approved Amount (Words):</label>
+          <span>{{ form.authorizedSection.approvedAmountWords }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Signature:</label>
+          <span>{{ form.authorizedSection.signature }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Date:</label>
+          <span>{{ form.authorizedSection.date | date }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5: ACCOUNTING DISBURSEMENT -->
+    <div class="section-print">
+      <h2><span class="section-num">5</span> Accounting Department - Final Disbursement</h2>
+      
+      <div class="field-grid">
+        <div class="field-item">
+          <label>Cheque Number:</label>
+          <span>{{ form.accountingDisbursementSection.chequeNumber }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Issue Date:</label>
+          <span>{{ form.accountingDisbursementSection.issueDate | date }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Final Amount:</label>
+          <span>{{ form.accountingDisbursementSection.finalAmount }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Accountant Signature:</label>
+          <span>{{ form.accountingDisbursementSection.accountantSignature }}</span>
+        </div>
+        
+        <div class="field-item">
+          <label>Date:</label>
+          <span>{{ form.accountingDisbursementSection.date | date }}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

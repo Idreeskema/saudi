@@ -1,0 +1,336 @@
+<div class="dashboard-wrapper">
+  <app-sidebar></app-sidebar>
+
+  <main class="main-content">
+    <!-- Top Navigation -->
+    <header class="top-nav">
+      <div class="breadcrumb">
+        <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+        </svg></i>
+        <span>/ FINAL EXAM REPLACEMENT FORM</span>
+      </div>
+
+      <button class="menu-toggle">
+        <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+        </svg></i>
+      </button>
+
+      <div class="top-nav-right">
+        <button class="year-selector">
+          <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+          </svg></i>
+          All Years
+          <i class="arrow">▼</i>
+        </button>
+
+        <div class="user-menu">
+          <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg></i>
+          <span>{{ currentUser?.name }}</span>
+          <i class="arrow">▶</i>
+        </div>
+
+        <button class="icon-btn" (click)="logout()">
+          <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+          </svg></i>
+        </button>
+
+        <button class="icon-btn">
+          <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+          </svg></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Form Header -->
+    <div class="form-header">
+      <div class="form-logos">
+        <img src="assets/ncaaa-logo.png" alt="NCAAA" class="logo">
+      </div>
+      <div class="form-title">
+        <h1>نموذج إعادة اختبار نهائي</h1>
+        <h2>Final Exam Replacement Form</h2>
+      </div>
+      <div class="form-logos">
+        <img src="assets/riyadh-logo.png" alt="Riyadh University" class="logo">
+      </div>
+    </div>
+
+    <!-- Form Content -->
+    <div class="final-exam-form">
+      
+      <!-- Student Information Section -->
+      <div class="form-section" *ngIf="canViewSection('student')">
+        <div class="section-header">
+          <h3>● Information Completed by the student :</h3>
+          <h3 class="arabic">● معلومات تستكمل من الطالب / الطالبة:</h3>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <span>Student's Name</span>
+            <span class="arabic">اسم الطالب / الطالبة:</span>
+          </label>
+          <input type="text" class="form-control underline" [(ngModel)]="formData.studentName" [disabled]="!canEditSection('student')">
+        </div>
+
+        <div class="form-group id-group">
+          <label class="id-label">
+            <span>Student ID</span>
+            <span class="arabic">الرقم الجامعي</span>
+          </label>
+          <div class="id-boxes">
+            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[0]" [disabled]="!canEditSection('student')">
+            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[1]" [disabled]="!canEditSection('student')">
+            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[2]" [disabled]="!canEditSection('student')">
+            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[3]" [disabled]="!canEditSection('student')">
+            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[4]" [disabled]="!canEditSection('student')">
+            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[5]" [disabled]="!canEditSection('student')">
+            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[6]" [disabled]="!canEditSection('student')">
+            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[7]" [disabled]="!canEditSection('student')">
+            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[8]" [disabled]="!canEditSection('student')">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>
+              <span>Major</span>
+              <span class="arabic">التخصص</span>
+            </label>
+            <input type="text" class="form-control underline" [(ngModel)]="formData.major" [disabled]="!canEditSection('student')">
+          </div>
+          <div class="form-group">
+            <label>
+              <span>E-mail</span>
+              <span class="arabic">البريد الإلكتروني:</span>
+            </label>
+            <input type="email" class="form-control underline" [(ngModel)]="formData.email" [disabled]="!canEditSection('student')">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>
+              <span>Mobile :</span>
+              <span class="arabic">رقم الجوال</span>
+            </label>
+            <input type="text" class="form-control underline" [(ngModel)]="formData.mobile" [disabled]="!canEditSection('student')">
+          </div>
+          <div class="form-group">
+            <label>
+              <span>Level</span>
+              <span class="arabic">المستوى</span>
+            </label>
+            <input type="text" class="form-control underline" [(ngModel)]="formData.level" [disabled]="!canEditSection('student')">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <span>The course which I couldn't attend</span>
+            <span class="arabic">المقرر الذي لم أتمكن من حضوره :</span>
+          </label>
+          <input type="text" class="form-control underline" [(ngModel)]="formData.courseNotAttended" [disabled]="!canEditSection('student')">
+        </div>
+
+        <!-- Semester Details -->
+        <div class="semester-details">
+          <div class="semester-label arabic">الفصل الدراسي:</div>
+          
+          <div class="semester-options">
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="formData.semesterFirst" [disabled]="!canEditSection('student')">
+              <span>الأول</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="formData.semesterSecond" [disabled]="!canEditSection('student')">
+              <span>الثاني</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="formData.semesterSummer" [disabled]="!canEditSection('student')">
+              <span>الصيفي</span>
+            </label>
+          </div>
+
+          <div class="academic-year-section">
+            <span class="label arabic">للعام</span>
+            <div class="year-inputs">
+              <input type="text" class="year-input" maxlength="2" [(ngModel)]="formData.academicYear1" [disabled]="!canEditSection('student')">
+              <span>/</span>
+              <input type="text" class="year-input" maxlength="2" [(ngModel)]="formData.academicYear2" [disabled]="!canEditSection('student')">
+              <span class="arabic">هـ</span>
+            </div>
+          </div>
+
+          <div class="semester-english">
+            <span>Semester :</span>
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="formData.semesterFirst" [disabled]="!canEditSection('student')">
+              <span>First</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="formData.semesterSecond" [disabled]="!canEditSection('student')">
+              <span>Second</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="formData.semesterSummer" [disabled]="!canEditSection('student')">
+              <span>Summer</span>
+            </label>
+            <span>Academic year: 20</span>
+            <input type="text" class="year-input small" [(ngModel)]="formData.academicYear3" [disabled]="!canEditSection('student')">
+            <span>/20</span>
+          </div>
+        </div>
+
+        <!-- Reasons of Absence -->
+        <div class="reasons-section">
+          <h4>Reasons of Abcesence : <span class="arabic">سبب عدم حضور الاختبار:</span></h4>
+          <div class="reason-lines">
+            <input type="text" class="reason-input" [(ngModel)]="formData.reason1" [disabled]="!canEditSection('student')">
+            <input type="text" class="reason-input" [(ngModel)]="formData.reason2" [disabled]="!canEditSection('student')">
+          </div>
+        </div>
+
+        <!-- Previous Absence Question -->
+        <div class="question-section">
+          <label>Have you ever missed on exam for ather courses</label>
+          <label class="arabic">هل سبق لكم عدم حضور اختبار في مقرر آخر؟</label>
+          <div class="radio-options">
+            <label class="radio-label">
+              <input type="radio" name="previousAbsence" value="no" [(ngModel)]="formData.previousAbsence" [disabled]="!canEditSection('student')">
+              <span>No / لا</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="previousAbsence" value="yes" [(ngModel)]="formData.previousAbsence" [disabled]="!canEditSection('student')">
+              <span>Yes / نعم</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Student Signature -->
+        <div class="signature-field">
+          <label>
+            <span>Student's signature</span>
+            <span class="arabic">توقيع الطالب / الطالبة:</span>
+          </label>
+          <div class="signature-box"></div>
+        </div>
+      </div>
+
+      <!-- Lecturer Information Section -->
+      <div class="form-section lecturer-section" *ngIf="canViewSection('lecturer')">
+        <div class="section-header">
+          <h3>● Information Completed by the lecturer:</h3>
+          <h3 class="arabic">● معلومات تستكمل من مدرس المقرر:</h3>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <span>Continues Assessment Mark</span>
+            <span class="arabic">درجة الأعمال الفصلية:</span>
+          </label>
+          <input type="text" class="form-control" [(ngModel)]="formData.continuesAssessmentMark" [disabled]="!canEditSection('lecturer')">
+        </div>
+
+        <div class="question-section">
+          <label>Has the student missed a midterm of this course before ?</label>
+          <label class="arabic">هل سبق (للطالب / الطالبة) عدم حضور اختبار شهري للمقرر؟</label>
+          <div class="radio-options">
+            <label class="radio-label">
+              <input type="radio" name="missedMidterm" value="no" [(ngModel)]="formData.missedMidterm" [disabled]="!canEditSection('lecturer')">
+              <span>No / لا</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="missedMidterm" value="yes" [(ngModel)]="formData.missedMidterm" [disabled]="!canEditSection('lecturer')">
+              <span>Yes / نعم</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Course Director's Opinion -->
+        <div class="opinion-section">
+          <label>
+            <span>Course Directers opinion :</span>
+            <span class="arabic">رأي مدرس المقرر:</span>
+          </label>
+          <textarea class="form-control" rows="3" [(ngModel)]="formData.directorOpinion" [disabled]="!canEditSection('lecturer')"></textarea>
+        </div>
+
+        <div class="signature-field">
+          <label>
+            <span>signature</span>
+            <span class="arabic">التوقيع:</span>
+          </label>
+          <div class="signature-box small"></div>
+        </div>
+      </div>
+
+      <!-- College Board Decision Section -->
+      <div class="form-section board-section" *ngIf="canViewSection('board')">
+        <div class="section-header">
+          <h3>● College Board Dicission :</h3>
+          <h3 class="arabic">● رأي مجلس الكلية:</h3>
+        </div>
+
+        <div class="decision-options">
+          <label class="decision-label">
+            <input type="checkbox" [(ngModel)]="formData.approved" [disabled]="!canEditSection('board')">
+            <span>الموافقة على إعطاء اختبار بديل</span>
+          </label>
+          <label class="decision-label">
+            <input type="checkbox" [(ngModel)]="formData.approved" [disabled]="!canEditSection('board')">
+            <span>Approved</span>
+          </label>
+        </div>
+
+        <div class="decision-options">
+          <label class="decision-label">
+            <input type="checkbox" [(ngModel)]="formData.denied" [disabled]="!canEditSection('board')">
+            <span>عدم الموافقة على إعطاء اختبار بديل</span>
+          </label>
+          <label class="decision-label">
+            <input type="checkbox" [(ngModel)]="formData.denied" [disabled]="!canEditSection('board')">
+            <span>Denied</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Important Note -->
+      <div class="note-section">
+        <p class="note-text">
+          <strong>*Note:</strong> The reason of absence must be attached with the form
+        </p>
+        <p class="note-text arabic">
+          <strong>*ملاحظة :</strong> يرفق للنموذج مبررات الغياب
+        </p>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button class="btn btn-cancel" (click)="cancel()">Cancel</button>
+        <button class="btn btn-save" (click)="saveForm()" *ngIf="canEditAnySection()">Save Form</button>
+        <button class="btn btn-submit" (click)="submitForm()" *ngIf="canSubmitForm()">Submit Request</button>
+      </div>
+    </div>
+
+    <!-- Contact Footer -->
+    <div class="form-footer">
+      <div class="footer-content">
+        <span class="form-number">Form No. 5</span>
+        <div class="contact-info">
+          <span>🌐 www.riyadh.edu.sa</span>
+          <span>📧 admissionriyadh.edu.sa</span>
+          <span>📞 920000842</span>
+        </div>
+        <span class="form-number arabic">نموذج رقم ٥</span>
+      </div>
+    </div>
+  </main>
+</div>

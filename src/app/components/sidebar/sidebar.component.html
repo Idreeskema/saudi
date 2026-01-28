@@ -1,0 +1,98 @@
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="university-logo">
+      <div class="logo-img">REU</div>
+      <div class="logo-text">
+        <div class="logo-en">RIYADH ELM UNIVERSITY</div>
+        <div class="logo-ar">جامعة رياض العلم</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a href="javascript:void(0)" class="nav-item" [class.active]="activeRoute === 'dashboard'"
+      (click)="navigateToDashboard()">
+      <i class="icon">🏠</i>
+      <span>Dashboard</span>
+    </a>
+
+    <a href="javascript:void(0)" class="nav-item">
+      <i class="icon">📅</i>
+      <span>Schedule</span>
+      <i class="arrow">›</i>
+    </a>
+
+    <div class="nav-section-title">STUDENT MANAGEMENT</div>
+
+    <a href="javascript:void(0)" class="nav-item" [class.active]="activeRoute === 'form'"
+      (click)="toggleNewRequestsMenu($event)">
+      <i class="icon">✏️</i>
+      <span>New Requests</span>
+      <i class="arrow" [class.arrow-down]="showNewRequestsMenu">›</i>
+    </a>
+
+    <!-- Submenu -->
+    <div class="submenu" *ngIf="showNewRequestsMenu">
+      <a *ngFor="let form of forms" href="javascript:void(0)" class="submenu-item"
+        [class.active]="activeRoute === 'form'" (click)="createForm(form.id)">
+        <i class="submenu-icon">📄</i>
+        <span>{{form.englishName}}</span>
+      </a>
+      <a href="javascript:void(0)" class="submenu-item" (click)="createOtherForm()">
+        <i class="submenu-icon">📋</i>
+        <span>Other Request</span>
+      </a>
+    </div>
+    <a href="javascript:void(0)" class="nav-item" [class.active]="activeRoute === 'request-list'"
+      (click)="navigateToAllRequests()">
+      <i class="icon">📋</i>
+      <span>Previous Requests</span>
+    </a>
+    <div class="nav-section-title" *ngIf="isAdmin">SYSTEM ADMIN</div>
+
+    <a href="javascript:void(0)" class="nav-item" *ngIf="isAdmin" (click)="toggleSystemAdminMenu($event)">
+      <i class="icon">⚙️</i>
+      <span>Sequence</span>
+      <i class="arrow" [class.arrow-down]="showSystemAdminMenu">›</i>
+    </a>
+
+    <!-- System Admin Submenu -->
+    <div class="submenu" *ngIf="showSystemAdminMenu && isAdmin">
+      <a href="javascript:void(0)" class="submenu-item" [class.active]="activeRoute === 'list-sequence'"
+        (click)="navigateToListSequence()">
+        <i class="submenu-icon">📋</i>
+        <span>List Sequence Model</span>
+      </a>
+      <a href="javascript:void(0)" class="submenu-item" (click)="navigateTocreateSequence()"
+        [class.active]="activeRoute === 'create-sequence'">
+        <i class="submenu-icon">➕</i>
+        <span>Create Sequence</span>
+      </a>
+      <a href="javascript:void(0)" class="submenu-item" [class.active]="activeRoute === 'view-sequence'"
+        (click)="navigateToViewSequence()">
+        <i class="submenu-icon">👁️</i>
+        <span>View Sequence</span>
+      </a>
+      <a href="javascript:void(0)" class="submenu-item" [class.active]="activeRoute === 'sequence-form'"
+        (click)="navigateToSequenceForm()">
+        <i class="submenu-icon">📝</i>
+        <span>Sequence Form</span>
+      </a>
+      <a href="javascript:void(0)" class="submenu-item" [class.active]="activeRoute === 'listsequence-status'"
+        (click)="navigateToListSequenceStatus()">
+        <i class="submenu-icon">📊</i>
+        <span>List Sequence Status</span>
+      </a>
+    </div>
+
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="help-card">
+      <div class="help-icon">💎</div>
+      <h4>Need help?</h4>
+      <p>Please Send Email</p>
+      <div class="help-email">POSTGRADUATERIYADH.EDU.SA</div>
+    </div>
+  </div>
+</aside>

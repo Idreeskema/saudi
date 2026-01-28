@@ -1,0 +1,42 @@
+@import "ngx-toastr/toastr";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: #f8f9fa;
+  color: #344767;
+  line-height: 1.6;
+}
+
+.icon {
+  font-style: normal;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Print styles */
+@media print {
+  .sidebar,
+  .top-nav,
+  .no-print {
+    display: none !important;
+  }
+
+  .main-content {
+    padding: 0 !important;
+  }
+}

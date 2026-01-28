@@ -1,0 +1,154 @@
+.print-wrapper {
+  background: white;
+  min-height: 100vh;
+  padding: 40px;
+}
+
+.no-print {
+  text-align: right;
+  margin-bottom: 30px;
+}
+
+.btn-download {
+  background: #28a745;
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  
+  &:hover {
+    background: #218838;
+  }
+}
+
+.print-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: white;
+}
+
+.form-header-print {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid #344767;
+  
+  h1 {
+    font-size: 32px;
+    color: #344767;
+    margin-bottom: 15px;
+  }
+  
+  .form-meta-print {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    font-size: 14px;
+    color: #67748e;
+    
+    strong {
+      color: #344767;
+    }
+  }
+}
+
+.section-print {
+  margin-bottom: 40px;
+  page-break-inside: avoid;
+  
+  h2 {
+    font-size: 20px;
+    color: #344767;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background: linear-gradient(90deg, #f8f9fa 0%, white 100%);
+    border-left: 4px solid #17c1e8;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+.section-num {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #17c1e8 0%, #0d6efd 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px 30px;
+  padding: 20px;
+  background: #fafbfc;
+  border-radius: 8px;
+}
+
+.field-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  
+  &.full-width {
+    grid-column: 1 / -1;
+  }
+  
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #67748e;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  
+  span {
+    font-size: 15px;
+    color: #344767;
+    padding: 8px 12px;
+    background: white;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.approved {
+  color: #28a745 !important;
+  font-weight: 600;
+}
+
+.denied {
+  color: #dc3545 !important;
+  font-weight: 600;
+}
+
+// Print styles
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-wrapper {
+    padding: 20px;
+  }
+  
+  .section-print {
+    page-break-inside: avoid;
+  }
+  
+  body {
+    background: white !important;
+  }
+}

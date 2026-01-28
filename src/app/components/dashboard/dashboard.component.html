@@ -1,0 +1,150 @@
+<div class="dashboard-wrapper">
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+  
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Top Navigation -->
+    <header class="top-nav">
+      <div class="breadcrumb">
+        <i class="icon">🏠</i>
+        <span>/ DASHBOARD</span>
+      </div>
+      
+      <button class="menu-toggle">
+        <i class="icon">☰</i>
+      </button>
+      
+      <div class="top-nav-right">
+        <button class="year-selector">
+          <i class="icon">📅</i>
+          {{ selectedYear }}
+          <i class="arrow">▼</i>
+        </button>
+        
+        <div class="user-menu">
+          <i class="icon">👤</i>
+          <span>{{ currentUser?.name }}</span>
+          <!-- <i class="arrow">▶</i> -->
+        </div>
+        
+        <button class="icon-btn" (click)="logout()">
+          <i class="icon">🚪</i>
+        </button>
+        
+        <button class="icon-btn">
+          <i class="icon">🌐</i>
+        </button>
+      </div>
+    </header>
+    
+    <!-- Info Alert -->
+    <div class="alert alert-warning">
+      <i class="icon">ℹ️</i>
+      <span>To protect your personal data, please update your password <a href="javascript:void(0)">(Click Here)</a></span>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card" (click)="navigateToAllRequests()">
+        <div class="stat-label">All Requests</div>
+        <div class="stat-value">{{ stats.total }}</div>
+      </div>
+      
+      <div class="stat-card stat-info">
+        <div class="stat-label">InProgress Requests</div>
+        <div class="stat-value">{{ stats.inProgress }}</div>
+      </div>
+      
+      <div class="stat-card stat-danger">
+        <div class="stat-label">Rejected Requests</div>
+        <div class="stat-value">{{ stats.rejected }}</div>
+      </div>
+      
+      <div class="stat-card stat-success">
+        <div class="stat-label">Approved Requests</div>
+        <div class="stat-value">{{ stats.approved }}</div>
+      </div>
+    </div>
+    
+    <!-- Main Grid -->
+    <div class="dashboard-grid">
+      <!-- Requests Section -->
+      <div class="card requests-card">
+        <div class="card-header">
+          <h3>Requests</h3>
+          <button class="info-btn">ℹ️</button>
+        </div>
+        
+        <div class="requests-summary">
+          <div class="requests-count">{{ stats.total }}</div>
+          <div class="requests-label">Request</div>
+        </div>
+        
+        <div class="requests-list">
+          <div class="request-item" *ngFor="let type of requestTypes" (click)="navigateToAllRequests()">
+            <div class="request-icon" [style.background]="type.color">
+              {{ type.icon }}
+            </div>
+            <span class="request-name">{{ type.name }}</span>
+            <span class="request-count">{{ type.count }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Calendar Section -->
+      <div class="card calendar-card">
+        <!-- <div class="calendar-tabs">
+          <button class="tab-btn active">Seminar</button>
+          <button class="tab-btn">Defense</button>
+          <button class="tab-btn">Clinic / Lecture</button>
+          <button class="info-btn">ℹ️</button>
+        </div> -->
+
+        <div class="calendar-tabs">
+  <button class="tab-btn tab-seminar active" style="width: 200px;">Seminar</button>
+  <button class="tab-btn tab-defense" style="width: 200px;">Defense</button>
+  <button class="tab-btn tab-clinic" style="width: 200px;">Clinic / Lecture</button>
+  <button class="info-btn">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+    </svg>
+  </button>
+</div>
+        <div class="calendar-header">
+          <button class="calendar-btn" (click)="goToToday()">today</button>
+          <button class="calendar-btn" (click)="previousMonth()">‹</button>
+          <button class="calendar-btn" (click)="nextMonth()">›</button>
+          <h3 class="calendar-title">{{ getMonthName() }}</h3>
+          <div class="calendar-view-btns">
+            <button class="view-btn active">month</button>
+            <button class="view-btn">week</button>
+            <button class="view-btn">day</button>
+            <button class="view-btn">list</button>
+          </div>
+        </div>
+        
+        <div class="calendar">
+          <div class="calendar-weekdays">
+            <div class="weekday" *ngFor="let day of getWeekdays()">{{ day }}</div>
+          </div>
+          
+          <div class="calendar-days">
+            <!-- Empty cells for days before month starts -->
+            <div class="calendar-day empty" *ngFor="let i of [].constructor(getFirstDayOfMonth())"></div>
+            
+            <!-- Days of the month -->
+            <div class="calendar-day" 
+                 *ngFor="let day of getDaysInMonth()"
+                 [class.has-event]="hasEvent(day)">
+              <div class="day-number">{{ day }}</div>
+              <div class="day-event" *ngIf="hasEvent(day)">
+                <div class="event-badge">{{ getEventForDay(day)?.title }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
