@@ -79,26 +79,8 @@
             <span>Student's ID No.</span>
             <span class="arabic">الرقم الجامعي</span>
           </label>
-          <div class="id-boxes">
-            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[0]"
-              [disabled]="!canEditSection('student')">
-            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[1]"
-              [disabled]="!canEditSection('student')">
-            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[2]"
-              [disabled]="!canEditSection('student')">
-            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[3]"
-              [disabled]="!canEditSection('student')">
-            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[4]"
-              [disabled]="!canEditSection('student')">
-            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[5]"
-              [disabled]="!canEditSection('student')">
-            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[6]"
-              [disabled]="!canEditSection('student')">
-            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[7]"
-              [disabled]="!canEditSection('student')">
-            <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[8]"
-              [disabled]="!canEditSection('student')">
-          </div>
+          <input type="text" class="form-control" [(ngModel)]="formData.studentId"
+            [disabled]="!canEditSection('student')">
         </div>
 
         <!-- Student Name -->
@@ -124,10 +106,19 @@
         <!-- Course Name and Code -->
         <div class="form-group">
           <label>
-            <span>Name of Course and Code</span>
-            <span class="arabic">اسم المقرر ورمزه:</span>
+            <span>Name of Course</span>
+            <span class="arabic">اسم المقرر:</span>
           </label>
-          <input type="text" class="form-control underline" [(ngModel)]="formData.courseNameCode"
+          <input type="text" class="form-control underline" [(ngModel)]="formData.courseName"
+            [disabled]="!canEditSection('student')">
+        </div>
+
+        <div class="form-group">
+          <label>
+            <span>Course Code</span>
+            <span class="arabic">رمز المقرر:</span>
+          </label>
+          <input type="text" class="form-control underline" [(ngModel)]="formData.courseCode"
             [disabled]="!canEditSection('student')">
         </div>
 
@@ -191,16 +182,8 @@
               <span>Date</span>
               <span class="arabic">التاريخ :</span>
             </label>
-            <div class="date-inputs">
-              <input type="text" class="date-input" [(ngModel)]="formData.dateDay"
-                [disabled]="!canEditSection('student')">
-              <span>/</span>
-              <input type="text" class="date-input" [(ngModel)]="formData.dateMonth"
-                [disabled]="!canEditSection('student')">
-              <span>/</span>
-              <input type="text" class="date-input" [(ngModel)]="formData.dateYear"
-                [disabled]="!canEditSection('student')">
-            </div>
+            <input type="date" class="form-control" [(ngModel)]="formData.studentDate"
+              [disabled]="!canEditSection('student')">
           </div>
 
           <div class="signature-field">
@@ -217,7 +200,8 @@
       <!-- Form Actions -->
       <div class="form-actions">
         <button class="btn btn-cancel" (click)="cancel()">Cancel</button>
-        <button class="btn btn-save" (click)="saveForm()" *ngIf="canEditAnySection()">Save Form</button>
+        <!-- <button class="btn btn-save" (click)="saveForm()" *ngIf="canEditAnySection()">Save Form</button> -->
+        <button class="btn btn-submit" (click)="submitForm()" *ngIf="canSubmitForm()">Submit Appeal</button>
       </div>
     </div>
 

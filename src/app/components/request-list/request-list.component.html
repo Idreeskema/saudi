@@ -80,7 +80,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let form of forms" (click)="viewForm(form.orderId)">
+            <tr *ngFor="let form of forms" (click)="viewForm(form.orderId, form.requestType)">
               <td>
                 <strong>{{ form.orderId }}</strong>
               </td>
@@ -103,7 +103,7 @@
               </td>
               <td>
                 <div class="action-buttons">
-                  <button class="action-btn" (click)="viewForm(form.orderId)" title="View">
+                  <button class="action-btn" (click)="viewForm(form.orderId, form.requestType)" title="View">
                     <i class="icon">👁️</i>
                   </button>
                   <button class="action-btn" (click)="printForm(form.orderId, $event)" title="Print"

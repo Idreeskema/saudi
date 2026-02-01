@@ -1,0 +1,69 @@
+<div class="app-container">
+    <app-sidebar></app-sidebar>
+
+    <main class="main-content">
+        <div class="header-section">
+            <div class="title-wrapper">
+                <h1 class="page-title">Program Director Decision</h1>
+                <p class="subtitle">Review and provide your final decision for the request.</p>
+            </div>
+        </div>
+
+        <div class="decision-card">
+            <div class="card-header">
+                <div class="info-item">
+                    <span class="label">Request ID:</span>
+                    <span class="value">#{{ requestId }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Form Type:</span>
+                    <span class="value">{{ formType }}</span>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="section-label">Decision</label>
+                    <div class="decision-toggle">
+                        <label class="toggle-option" [class.active]="decision === true">
+                            <input type="radio" name="decision" [value]="true" [(ngModel)]="decision">
+                            <div class="toggle-content">
+                                <i class="fas fa-check-circle"></i>
+                                <div class="text">
+                                    <span class="main">Approve</span>
+                                    <span class="sub">Proceed with the request</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="toggle-option" [class.active]="decision === false">
+                            <input type="radio" name="decision" [value]="false" [(ngModel)]="decision">
+                            <div class="toggle-content">
+                                <i class="fas fa-times-circle"></i>
+                                <div class="text">
+                                    <span class="main">Reject</span>
+                                    <span class="sub">Decline the request</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group mt-4">
+                    <label class="section-label" for="comments">Comments / Rationale</label>
+                    <textarea id="comments" class="form-control" rows="5" [(ngModel)]="comments"
+                        placeholder="Provide details about your decision (required for rejections)..."></textarea>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button class="btn btn-secondary" (click)="router.navigate(['/pending-requests'])">Cancel</button>
+                <button class="btn btn-primary" [disabled]="isLoading || (decision === false && !comments)"
+                    (click)="submitDecision()">
+                    <span *ngIf="isLoading" class="loader"></span>
+                    {{ isLoading ? 'Submitting...' : 'Confirm Decision' }}
+                </button>
+            </div>
+        </div>
+    </main>
+</div>

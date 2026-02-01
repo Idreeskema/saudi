@@ -18,6 +18,7 @@ export class ViewRequestComponent implements OnInit {
   currentUser: User | null = null;
   requestId: string = "";
   statusData: any = null;
+  requestTypeDisplay: string = "";
 
   constructor(
     private authService: AuthService,
@@ -40,10 +41,30 @@ export class ViewRequestComponent implements OnInit {
 
   loadRequestStatus(): void {
     const apiId = parseInt(this.requestId, 10);
+    const requestType = this.route.snapshot.queryParams["type"] || "FeeRefund";
+
+    // Map request types to API endpoints
+    const requestTypeEndpointMap: { [key: string]: string } = {
+      'FeeRefund': 'RefundForms',
+      'ReEntry': 're-entry-forms',
+      'MidTermExamReplacement': 'MidTermExamReplacementForm',
+      'SemesterPostponement': 'semester-postponement-forms',
+      'MajorTransfer': 'major-transfer-forms',
+      'SemesterWithdrawal': 'semester-withdrawals',
+      'ReplacementExamDeclaration': 'declaration-replacement-exam',
+      'MedicalExamination': 'medical-exams',
+      'CourseAddingDropping': 'adddrop',
+      'StudentAppeal': 'student-appeals',
+      'UniversityWithdrawal': 'university-withdrawals'
+    };
+
+    const endpoint = requestType || 'RefundForms';
+    this.requestTypeDisplay = requestType.replace(/([A-Z])/g, ' $1').trim();
+
     if (apiId) {
-      this.apiService.getRefundFormStatus(apiId).subscribe({
+      this.apiService.getFormStatus(endpoint, apiId).subscribe({
         next: (response) => {
-          this.statusData = response;
+          this.statusData = response.data || response;
         },
         error: (error) => {
           console.error("Error loading request status:", error);

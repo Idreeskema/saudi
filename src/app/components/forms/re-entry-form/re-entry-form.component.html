@@ -6,44 +6,49 @@
     <header class="top-nav">
       <div class="breadcrumb">
         <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-        </svg></i>
+            <path
+              d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+          </svg></i>
         <span>/ RE-ENTRY FORM</span>
       </div>
 
       <button class="menu-toggle">
         <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-        </svg></i>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg></i>
       </button>
 
       <div class="top-nav-right">
         <button class="year-selector">
           <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
-          </svg></i>
+              <path
+                d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
+            </svg></i>
           All Years
           <i class="arrow">▼</i>
         </button>
 
         <div class="user-menu">
           <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-          </svg></i>
+              <path
+                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+            </svg></i>
           <span>{{ currentUser?.name }}</span>
           <i class="arrow">▶</i>
         </div>
 
         <button class="icon-btn" (click)="logout()">
           <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
-          </svg></i>
+              <path
+                d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+            </svg></i>
         </button>
 
         <button class="icon-btn">
           <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-          </svg></i>
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+            </svg></i>
         </button>
       </div>
     </header>
@@ -64,7 +69,7 @@
 
     <!-- Form Content -->
     <div class="reentry-form">
-      
+
       <!-- Personal Information Section -->
       <div class="form-section" *ngIf="canViewSection('student')">
         <div class="section-header">
@@ -72,12 +77,23 @@
           <h3 class="arabic">● البيانات الشخصية:</h3>
         </div>
 
-        <div class="form-group full-width">
-          <label>
-            Student's Name: 
-            <span class="arabic">اسم الطالب / الطالبة:</span>
-          </label>
-          <input type="text" class="form-control" [(ngModel)]="formData.studentName" [disabled]="!canEditSection('student')">
+        <div class="form-row">
+          <div class="form-group">
+            <label>
+              Student ID:
+              <span class="arabic">الرقم الجامعي:</span>
+            </label>
+            <input type="text" class="form-control" [(ngModel)]="formData.studentId"
+              [disabled]="!canEditSection('student')">
+          </div>
+          <div class="form-group">
+            <label>
+              Student's Name:
+              <span class="arabic">اسم الطالب / الطالبة:</span>
+            </label>
+            <input type="text" class="form-control" [(ngModel)]="formData.studentName"
+              [disabled]="!canEditSection('student')">
+          </div>
         </div>
 
         <div class="form-row">
@@ -86,14 +102,16 @@
               Mobile
               <span class="arabic">رقم الجوال:</span>
             </label>
-            <input type="text" class="form-control" [(ngModel)]="formData.mobile" [disabled]="!canEditSection('student')">
+            <input type="text" class="form-control" [(ngModel)]="formData.mobileNumber"
+              [disabled]="!canEditSection('student')">
           </div>
           <div class="form-group">
             <label>
               E-mail:
               <span class="arabic">البريد الإلكتروني:</span>
             </label>
-            <input type="email" class="form-control" [(ngModel)]="formData.email" [disabled]="!canEditSection('student')">
+            <input type="email" class="form-control" [(ngModel)]="formData.email"
+              [disabled]="!canEditSection('student')">
           </div>
         </div>
 
@@ -103,14 +121,16 @@
               GPA
               <span class="arabic">المعدل التراكمي:</span>
             </label>
-            <input type="text" class="form-control" [(ngModel)]="formData.gpa" [disabled]="!canEditSection('student')">
+            <input type="number" step="0.01" class="form-control" [(ngModel)]="formData.gpa"
+              [disabled]="!canEditSection('student')">
           </div>
           <div class="form-group">
             <label>
               Major :
               <span class="arabic">التخصص:</span>
             </label>
-            <input type="text" class="form-control" [(ngModel)]="formData.major" [disabled]="!canEditSection('student')">
+            <input type="text" class="form-control" [(ngModel)]="formData.major"
+              [disabled]="!canEditSection('student')">
           </div>
         </div>
 
@@ -123,28 +143,24 @@
             <div class="semester-option">
               <span class="arabic">الفصل الأول</span>
               <label class="checkbox-label">
-                <input type="checkbox" [(ngModel)]="formData.enrollmentFirstSemester" [disabled]="!canEditSection('student')">
+                <input type="checkbox" [(ngModel)]="formData.enrollmentFirstSemester"
+                  [disabled]="!canEditSection('student')">
                 <span>First Semester</span>
               </label>
             </div>
             <div class="semester-option">
               <span class="arabic">الفصل الثاني</span>
               <label class="checkbox-label">
-                <input type="checkbox" [(ngModel)]="formData.enrollmentSecondSemester" [disabled]="!canEditSection('student')">
+                <input type="checkbox" [(ngModel)]="formData.enrollmentSecondSemester"
+                  [disabled]="!canEditSection('student')">
                 <span>Second Semester</span>
               </label>
             </div>
             <div class="academic-year">
               <span class="arabic">في العام الدراسي:</span>
               <span>Academic year:</span>
-              <input type="text" class="year-input" [(ngModel)]="formData.enrollmentYear1" placeholder="14" [disabled]="!canEditSection('student')">
-              <span>/</span>
-              <input type="text" class="year-input" [(ngModel)]="formData.enrollmentYear2" placeholder="14" [disabled]="!canEditSection('student')">
-              <span class="arabic">هـ</span>
-              <br>
-              <input type="text" class="year-input" [(ngModel)]="formData.enrollmentYear3" placeholder="20" [disabled]="!canEditSection('student')">
-              <span>/</span>
-              <input type="text" class="year-input" [(ngModel)]="formData.enrollmentYear4" placeholder="20" [disabled]="!canEditSection('student')">
+              <input type="text" class="form-control underline" style="width: 100px;" placeholder="2024/2025"
+                [(ngModel)]="formData.enrollmentAcademicYear" [disabled]="!canEditSection('student')">
             </div>
           </div>
         </div>
@@ -165,21 +181,16 @@
             <div class="semester-option">
               <span class="arabic">الفصل الثاني</span>
               <label class="checkbox-label">
-                <input type="checkbox" [(ngModel)]="formData.lastSemesterSecond" [disabled]="!canEditSection('student')">
+                <input type="checkbox" [(ngModel)]="formData.lastSemesterSecond"
+                  [disabled]="!canEditSection('student')">
                 <span>Second Semester</span>
               </label>
             </div>
             <div class="academic-year">
               <span class="arabic">في العام الدراسي:</span>
               <span>Academic year:</span>
-              <input type="text" class="year-input" [(ngModel)]="formData.lastSemesterYear1" placeholder="14" [disabled]="!canEditSection('student')">
-              <span>/</span>
-              <input type="text" class="year-input" [(ngModel)]="formData.lastSemesterYear2" placeholder="14" [disabled]="!canEditSection('student')">
-              <span class="arabic">هـ</span>
-              <br>
-              <input type="text" class="year-input" [(ngModel)]="formData.lastSemesterYear3" placeholder="20" [disabled]="!canEditSection('student')">
-              <span>/</span>
-              <input type="text" class="year-input" [(ngModel)]="formData.lastSemesterYear4" placeholder="20" [disabled]="!canEditSection('student')">
+              <input type="text" class="form-control underline" style="width: 100px;" placeholder="2024/2025"
+                [(ngModel)]="formData.lastSemesterAcademicYear" [disabled]="!canEditSection('student')">
             </div>
           </div>
         </div>
@@ -187,14 +198,17 @@
         <!-- Declaration -->
         <div class="declaration-section">
           <p class="declaration-text arabic">
-            أقر أنا الطالب / الطالبة 
-            <input type="text" class="inline-input" [(ngModel)]="formData.declarationName" [disabled]="!canEditSection('student')">
+            أقر أنا الطالب / الطالبة
+            <input type="text" class="inline-input" [(ngModel)]="formData.declarationName"
+              [disabled]="!canEditSection('student')">
             رغبتي من إعادة قيدي في جامعة رياض العلم وأتعهد بتسديد الرسوم الدراسية.
           </p>
           <p class="declaration-text">
-            I, 
-            <input type="text" class="inline-input" [(ngModel)]="formData.declarationNameEn" [disabled]="!canEditSection('student')">
-            the undersigned student hereby declare my desire to re-enroll in Riyadh ELM University, and I pledge to pay my tuition fee.
+            I,
+            <input type="text" class="inline-input" [(ngModel)]="formData.declarationNameEn"
+              [disabled]="!canEditSection('student')">
+            the undersigned student hereby declare my desire to re-enroll in Riyadh ELM University, and I pledge to pay
+            my tuition fee.
           </p>
         </div>
 
@@ -204,7 +218,8 @@
             Student's signature
             <span class="arabic">توقيع الطالب / الطالبة:</span>
           </label>
-          <div class="signature-box"></div>
+          <input type="text" class="form-control underline" style="width: 250px;"
+            [(ngModel)]="formData.studentSignature" [disabled]="!canEditSection('student')">
         </div>
       </div>
 
@@ -212,41 +227,41 @@
       <div class="form-section" *ngIf="canViewSection('faculty')">
         <div class="decision-header">
           <p class="arabic">
-            قرر مجلس كلية 
-            <input type="text" class="inline-input" [(ngModel)]="formData.facultyName" [disabled]="!canEditSection('faculty')">
-            بجلسته رقم 
-            <input type="text" class="inline-input small" [(ngModel)]="formData.sessionNo" [disabled]="!canEditSection('faculty')">
-            بتاريخ 
-            <input type="text" class="date-input" [(ngModel)]="formData.decisionDateDay" [disabled]="!canEditSection('faculty')">
-            /
-            <input type="text" class="date-input" [(ngModel)]="formData.decisionDateMonth" [disabled]="!canEditSection('faculty')">
-            /
-            <input type="text" class="date-input" [(ngModel)]="formData.decisionDateYear" [disabled]="!canEditSection('faculty')">
+            قرر مجلس كلية
+            <input type="text" class="form-control underline" style="width: 200px;" [(ngModel)]="formData.facultyName"
+              [disabled]="!canEditSection('faculty')">
+            بجلسته رقم
+            <input type="text" class="form-control underline" style="width: 80px;"
+              [(ngModel)]="formData.facultySessionNo" [disabled]="!canEditSection('faculty')">
+            بتاريخ
+            <input type="date" class="form-control" style="width: 150px;" [(ngModel)]="formData.facultyDate"
+              [disabled]="!canEditSection('faculty')">
             هـ
           </p>
           <p>
             Faculty council decision
-            <input type="text" class="inline-input" [disabled]="true">
+            <input type="text" class="form-control underline" style="width: 200px;" [(ngModel)]="formData.facultyName"
+              [disabled]="!canEditSection('faculty')">
             Session no
-            <input type="text" class="inline-input small" [(ngModel)]="formData.sessionNo" [disabled]="!canEditSection('faculty')">
+            <input type="text" class="form-control underline" style="width: 80px;"
+              [(ngModel)]="formData.facultySessionNo" [disabled]="!canEditSection('faculty')">
             Date:
-            <input type="text" class="date-input" [(ngModel)]="formData.decisionDateYear" [disabled]="!canEditSection('faculty')">
-            /
-            <input type="text" class="date-input" [(ngModel)]="formData.decisionDateMonth" [disabled]="!canEditSection('faculty')">
-            /
-            <input type="text" class="date-input" [(ngModel)]="formData.decisionDateDay" [disabled]="!canEditSection('faculty')">
+            <input type="date" class="form-control" style="width: 150px;" [(ngModel)]="formData.facultyDate"
+              [disabled]="!canEditSection('faculty')">
           </p>
         </div>
 
         <!-- Decision Options -->
         <div class="decision-options">
           <label class="decision-label">
-            <input type="radio" name="decision" value="denial" [(ngModel)]="formData.decision" [disabled]="!canEditSection('faculty')">
+            <input type="radio" name="facultyDecision" [value]="false" [(ngModel)]="formData.facultyDecision"
+              [disabled]="!canEditSection('faculty')">
             <span>Denial</span>
             <span class="arabic">عدم الموافقة</span>
           </label>
           <label class="decision-label">
-            <input type="radio" name="decision" value="approval" [(ngModel)]="formData.decision" [disabled]="!canEditSection('faculty')">
+            <input type="radio" name="facultyDecision" [value]="true" [(ngModel)]="formData.facultyDecision"
+              [disabled]="!canEditSection('faculty')">
             <span>Approval</span>
             <span class="arabic">الموافقة على إعادة القيد</span>
           </label>
@@ -267,14 +282,16 @@
                 Name
                 <span class="arabic">الاسم</span>
               </label>
-              <input type="text" class="form-control" [(ngModel)]="formData.deanName" [disabled]="!canEditSection('dean')">
+              <input type="text" class="form-control" [(ngModel)]="formData.deanName"
+                [disabled]="!canEditSection('dean')">
             </div>
             <div class="dean-field">
               <label>
                 Signature
                 <span class="arabic">التوقيع</span>
               </label>
-              <div class="signature-box small"></div>
+              <input type="text" class="form-control" style="width: 200px;" [(ngModel)]="formData.deanSignature"
+                [disabled]="!canEditSection('dean')">
             </div>
           </div>
           <div class="dean-date">
@@ -282,18 +299,25 @@
               Date:
               <span class="arabic">التاريخ</span>
             </label>
-            <div class="date-inputs">
-              <input type="text" class="date-input" [(ngModel)]="formData.deanDateDay" [disabled]="!canEditSection('dean')">
-              <span>/</span>
-              <input type="text" class="date-input" [(ngModel)]="formData.deanDateMonth" [disabled]="!canEditSection('dean')">
-              <span>/</span>
-              <input type="text" class="date-input" [(ngModel)]="formData.deanDateYear" [disabled]="!canEditSection('dean')">
-              <span class="arabic">هـ</span>
-              <br>
-              <input type="text" class="date-input" [(ngModel)]="formData.deanDateYear2" [disabled]="!canEditSection('dean')">
-              <span>/20</span>
-            </div>
+            <input type="date" class="form-control" style="width: 150px;" [(ngModel)]="formData.deanDate"
+              [disabled]="!canEditSection('dean')">
           </div>
+        </div>
+
+        <!-- Dean Decision -->
+        <div class="decision-options">
+          <label class="decision-label">
+            <input type="radio" name="deanDecision" [value]="false" [(ngModel)]="formData.deanDecision"
+              [disabled]="!canEditSection('dean')">
+            <span>Denial</span>
+            <span class="arabic">عدم الموافقة</span>
+          </label>
+          <label class="decision-label">
+            <input type="radio" name="deanDecision" [value]="true" [(ngModel)]="formData.deanDecision"
+              [disabled]="!canEditSection('dean')">
+            <span>Approval</span>
+            <span class="arabic">الموافقة</span>
+          </label>
         </div>
       </div>
 
@@ -302,6 +326,10 @@
         <button class="btn btn-cancel" (click)="cancel()">Cancel</button>
         <button class="btn btn-save" (click)="saveForm()" *ngIf="canEditAnySection()">Save Form</button>
         <button class="btn btn-submit" (click)="submitForm()" *ngIf="canSubmitForm()">Submit Form</button>
+        <button class="btn btn-submit" (click)="submitFacultySection()" *ngIf="canProcessFaculty()">Submit Faculty
+          Decision</button>
+        <button class="btn btn-submit" (click)="submitDeanSection()" *ngIf="canProcessDean()">Submit Dean
+          Section</button>
       </div>
     </div>
 

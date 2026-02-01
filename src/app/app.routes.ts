@@ -2,6 +2,7 @@ import { Routes } from "@angular/router";
 import { LoginComponent } from "./components/login/login.component";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { RequestListComponent } from "./components/request-list/request-list.component";
+import { PendingRequestsComponent } from "./components/pending-requests/pending-requests.component";
 import { RefundFormComponent } from "./components/forms/refund-form/refund-form.component";
 import { PrintFormComponent } from "./components/print-form/print-form.component";
 import { ListSequenceComponent } from "./components/sequence/list-sequence/list-sequence.component";
@@ -22,13 +23,16 @@ import { SemesterWithdrawalFormComponent } from "./components/forms/semester-wit
 import { FinalExamReplacementFormComponent } from "./components/forms/final-exam-replacement-form/final-exam-replacement-form.component";
 import { MajorTransferFormComponent } from "./components/forms/major-transfer-form/major-transfer-form.component";
 import { ReplacementExamDeclarationFormComponent } from "./components/forms/replacement-exam-declaration-form/replacement-exam-declaration-form.component";
+import { ProgramDirectorDecisionComponent } from "./components/program-director-decision/program-director-decision.component";
 
 export const routes: Routes = [
   { path: "", redirectTo: "/login", pathMatch: "full" },
   { path: "login", component: LoginComponent },
   { path: "dashboard", component: DashboardComponent },
   { path: "request-list", component: RequestListComponent },
-  { path: "form/:id", component: RefundFormComponent },
+  { path: "pending-requests", component: PendingRequestsComponent },
+  { path: "program-director-decision/:id", component: ProgramDirectorDecisionComponent },
+  { path: "FeeRefund/:id", component: RefundFormComponent },
   { path: "print-form/:id", component: PrintFormComponent },
   { path: "list-sequence", component: ListSequenceComponent },
   { path: "view-sequence", component: ViewSequenceComponent },
@@ -37,16 +41,16 @@ export const routes: Routes = [
   { path: "create-sequence", component: CreateSequenceComponent },
   { path: "view-request/:id", component: ViewRequestComponent },
   { path: "letter/:id", component: LetterDocumentComponent },
-  { path: "medical-exam/:id", component: MedicalExamFormComponent },
+  { path: "MedicalExamination/:id", component: MedicalExamFormComponent },
   // { path: '**', redirectTo: '/login' }  // Keep commented for debugging
-  { path: 'course-add-drop/:id', component: CourseAddDropFormComponent },
-  { path: 'student-appeal/:id', component: StudentAppealFormComponent },
-  { path: 're-entry/:id', component: ReEntryFormComponent },
-  { path: 'withdrawal/:id', component: WithdrawalFormComponent },
-  { path: 'semester-postponement/:id', component: SemesterPostponementFormComponent },
-  { path: 'midterm-replacement/:id', component: MidtermReplacementFormComponent },
-  { path: 'semester-withdrawal/:id', component: SemesterWithdrawalFormComponent },
-  { path: 'final-exam-replacement/:id', component: FinalExamReplacementFormComponent },
-  { path: 'major-transfer/:id', component: MajorTransferFormComponent },
-  { path: 'replacement-exam-declaration/:id', component: ReplacementExamDeclarationFormComponent },
+  { path: 'CourseAddingDropping/:id', component: CourseAddDropFormComponent },
+  { path: 'StudentAppeal/:id', component: StudentAppealFormComponent },
+  { path: 'ReEntry/:id', component: ReEntryFormComponent },
+  { path: 'UniversityWithdrawal/:id', component: WithdrawalFormComponent },
+  { path: 'SemesterPostponement/:id', component: SemesterPostponementFormComponent },
+  { path: 'MidTermExamReplacement/:id', component: MidtermReplacementFormComponent },
+  { path: 'SemesterWithdrawal/:id', component: SemesterWithdrawalFormComponent },
+  { path: 'FinalExamReplacement/:id', component: FinalExamReplacementFormComponent },
+  { path: 'MajorTransfer/:id', component: MajorTransferFormComponent },
+  { path: 'ReplacementExamDeclaration/:id', component: ReplacementExamDeclarationFormComponent },
 ];

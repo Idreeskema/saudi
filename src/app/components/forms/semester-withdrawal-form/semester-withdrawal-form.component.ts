@@ -1,10 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../../../services/auth.service";
+import { ApiService } from "../../../services/api.service";
 import { User } from "../../../models/form.model";
 import { SidebarComponent } from "../../sidebar/sidebar.component";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-semester-withdrawal-form",
@@ -15,55 +17,81 @@ import { SidebarComponent } from "../../sidebar/sidebar.component";
 })
 export class SemesterWithdrawalFormComponent implements OnInit {
   currentUser: User | null = null;
+  formId: number = 22; // Default, can be from route
 
   formData = {
     // Personal Information
     studentName: "",
-    studentId: ["", "", "", "", "", "", "", "", ""],
+    studentId: "",
     level: "",
     major: "",
-    gpa: "",
-    creditHours: "",
+    gpa: 0,
+    creditHours: 0,
 
-    // Semester Selection
-    semesterFirst: false,
-    semesterSecond: false,
-    semesterSummer: false,
+    // Withdrawal Details
+    semesterRequested: "",
+    mobileNumber: "",
 
-    // Student and Guardian Signatures
-    applicationDateDay: "",
-    applicationDateMonth: "",
-    applicationDateYear: "",
-    applicationDateYear2: "",
-    mobile: "",
+    // Dates
+    dateOfApplication: "",
+    studentSignature: "",
+    guardianSignature: "",
 
     // Accounting Department
-    tuitionFee: "",
     accountingName: "",
-    accountingDateDay: "",
-    accountingDateMonth: "",
-    accountingDateYear: "",
-    accountingDateYear2: "",
+    accountingSignature: "",
+    accountingDate: "",
+    tuitionFeeApplicable: false,
 
     // Registration Department
     registrationName: "",
-    registrationDateDay: "",
-    registrationDateMonth: "",
-    registrationDateYear: "",
-    registrationDateYear2: "",
+    registrationSignature: "",
+    registrationDate: "",
   };
 
   constructor(
     private authService: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
+    private apiService: ApiService,
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {
     this.currentUser = this.authService.currentUserValue;
+    this.route.params.subscribe(params => {
+      this.formId = +params['id'] || 22; 
+      if (this.formId > 0) {
+        this.loadFormData();
+      }
+    });
     if (!this.currentUser) {
       this.router.navigate(["/login"]);
       return;
     }
+  }
+
+  loadFormData(): void {
+    this.apiService.get(`semester-withdrawals/${this.formId}`).subscribe({
+      next: (response: any) => {
+        const data = response.data || response;
+        if (data) {
+          this.formData = {
+            ...this.formData,
+            ...data,
+            accountingName: data.accounting?.accountingName || data.accountingName || "",
+            accountingSignature: data.accounting?.accountingSignature || data.accountingSignature || "",
+            accountingDate: data.accounting?.accountingDate || data.accountingDate || "",
+            registrationName: data.registration?.registrationName || data.registrationName || "",
+            registrationSignature: data.registration?.registrationSignature || data.registrationSignature || "",
+            registrationDate: data.registration?.registrationDate || data.registrationDate || "",
+          };
+        }
+      },
+      error: (error) => {
+        console.error("Error loading semester withdrawal data:", error);
+      }
+    });
   }
 
   canViewSection(section: string): boolean {
@@ -116,21 +144,84 @@ export class SemesterWithdrawalFormComponent implements OnInit {
   }
 
   saveForm(): void {
-    console.log("Form Data:", this.formData);
-    alert("Form saved successfully!");
+    this.submitForm();
   }
 
   submitForm(): void {
-    if (
-      confirm(
-        "Are you sure you want to submit this semester withdrawal request? This action cannot be undone.",
-      )
-    ) {
-      console.log("Withdrawal submitted");
-      alert(
-        'Semester withdrawal form submitted successfully! You will receive a "W" grade for this semester.',
-      );
-      this.router.navigate(["/dashboard"]);
+    if (!this.currentUser) {
+      this.toastr.error('User not authenticated');
+      return;
+    }
+
+    if (this.currentUser.role === 'student') {
+      // Student submits new form
+      const studentPayload = {
+        formId: this.formId,
+        studentId: this.formData.studentId,
+        studentName: this.formData.studentName,
+        mobileNumber: this.formData.mobileNumber,
+        major: this.formData.major,
+        level: this.formData.level,
+        creditHours: this.formData.creditHours,
+        gpa: this.formData.gpa,
+        semesterRequested: this.formData.semesterRequested,
+        dateOfApplication: this.formData.dateOfApplication,
+        guardianSignature: this.formData.guardianSignature,
+      };
+
+      this.apiService.post('semester-withdrawals', studentPayload).subscribe({
+        next: (response) => {
+          this.toastr.success('Semester withdrawal form submitted successfully!');
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          this.toastr.error('Failed to submit form. Please try again.');
+          console.error('Submit error:', error);
+        }
+      });
+    } else if (this.currentUser.role === 'accounting') {
+      // Accounting officer updates existing form
+      const accountingPayload = {
+        id: this.formId,
+        accounting: {
+          accountingName: this.formData.accountingName,
+          accountingSignature: this.formData.accountingSignature,
+          accountingDate: this.formData.accountingDate,
+          tuitionFeeApplicable: this.formData.tuitionFeeApplicable,
+        }
+      };
+
+      this.apiService.patch(`semester-withdrawals`, accountingPayload).subscribe({
+        next: (response) => {
+          this.toastr.success('Accounting section updated successfully!');
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          this.toastr.error('Failed to update form. Please try again.');
+          console.error('Update error:', error);
+        }
+      });
+    } else if (this.currentUser.role === 'registration') {
+      // Registration officer updates existing form
+      const registrationPayload = {
+        id: this.formId,
+        registration: {
+          registrationName: this.formData.registrationName,
+          registrationSignature: this.formData.registrationSignature,
+          registrationDate: this.formData.registrationDate,
+        }
+      };
+
+      this.apiService.patch(`semester-withdrawals`, registrationPayload).subscribe({
+        next: (response) => {
+          this.toastr.success('Registration section updated successfully!');
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          this.toastr.error('Failed to update form. Please try again.');
+          console.error('Update error:', error);
+        }
+      });
     }
   }
 

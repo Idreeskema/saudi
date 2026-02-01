@@ -24,7 +24,8 @@
 
     <div class="nav-section-title">STUDENT MANAGEMENT</div>
 
-    <a href="javascript:void(0)" class="nav-item" [class.active]="activeRoute === 'form'"
+    <!-- New Requests - Only visible to students -->
+    <a href="javascript:void(0)" class="nav-item" *ngIf="isStudent" [class.active]="activeRoute === 'form'"
       (click)="toggleNewRequestsMenu($event)">
       <i class="icon">✏️</i>
       <span>New Requests</span>
@@ -32,7 +33,7 @@
     </a>
 
     <!-- Submenu -->
-    <div class="submenu" *ngIf="showNewRequestsMenu">
+    <div class="submenu" *ngIf="showNewRequestsMenu && isStudent">
       <a *ngFor="let form of forms" href="javascript:void(0)" class="submenu-item"
         [class.active]="activeRoute === 'form'" (click)="createForm(form.id)">
         <i class="submenu-icon">📄</i>
@@ -43,6 +44,15 @@
         <span>Other Request</span>
       </a>
     </div>
+
+    <!-- Pending Requests - Visible to all except students -->
+    <a href="javascript:void(0)" class="nav-item" *ngIf="!isStudent" [class.active]="activeRoute === 'pending-requests'"
+      (click)="navigateToPendingRequests()">
+      <i class="icon">⏳</i>
+      <span>Pending Requests</span>
+    </a>
+
+    <!-- Previous Requests - Visible to all authenticated users -->
     <a href="javascript:void(0)" class="nav-item" [class.active]="activeRoute === 'request-list'"
       (click)="navigateToAllRequests()">
       <i class="icon">📋</i>

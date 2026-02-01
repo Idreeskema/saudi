@@ -75,6 +75,7 @@ export type UserRole =
   | "faculty"
   | "dean"
   | "lecturer"
+  | "courseDirector"
   | "board"
   | "registration"
   | "accounting"
@@ -84,8 +85,9 @@ export type UserRole =
   | "lab-technician"
   | "radiologist"
   | "medical-director"
-  | "radiologist"
-  | "medical-director";
+  | "medicalExamination"
+  | "program-director"
+  | "xray";
 
 export interface FormStatus {
   overall: "draft" | "in-progress" | "completed";

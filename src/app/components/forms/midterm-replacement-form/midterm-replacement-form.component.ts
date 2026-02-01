@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AuthService } from "../../../services/auth.service";
+import { ApiService } from "../../../services/api.service";
 import { User } from "../../../models/form.model";
 import { SidebarComponent } from "../../sidebar/sidebar.component";
 
@@ -15,41 +16,36 @@ import { SidebarComponent } from "../../sidebar/sidebar.component";
 })
 export class MidtermReplacementFormComponent implements OnInit {
   currentUser: User | null = null;
-  reasonLines: number[] = Array(6).fill(0); // 6 lines for reasons
 
   formData = {
-    // Student Information
+    formId: 0,
+    studentId: "",
     studentName: "",
-    studentId: ["", "", "", "", "", "", "", "", ""],
     major: "",
     level: "",
-    courseNotAttended: "",
-    mobile: "",
     email: "",
-
-    // Exam Details
-    semesterFirst: false,
-    semesterSecond: false,
-    semesterSummer: false,
-    academicYear1: "",
-    academicYear2: "",
-    academicYear3: "",
-
-    midtermFirst: false,
-    midtermSecond: false,
-    midtermSummer: false,
-
-    // Reasons (6 lines)
-    reasonLines: Array(6).fill(""),
-
-    // Decision
+    mobileNumber: "",
+    courseName: "",
+    semesterRequested: "",
+    academicYear: "",
+    absenceReason: "",
+    hasMissedOtherExams: false,
+    studentSignature: "",
+    dateSigned: "",
     approvalDecision: false,
     denialDecision: false,
   };
 
+  semesters = [
+    { value: "First", arabic: "الأول" },
+    { value: "Second", arabic: "الثاني" },
+    { value: "Summer", arabic: "الصيفي" },
+  ];
+
   constructor(
     private authService: AuthService,
-    private router: Router,
+    private apiService: ApiService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -58,6 +54,31 @@ export class MidtermReplacementFormComponent implements OnInit {
       this.router.navigate(["/login"]);
       return;
     }
+    // Get formId from route parameters
+    // Note: If you add route params for this component later, use them here.
+    // For now, attempting to load if a default or stored ID exists might be useful if integrated into requests list.
+    if (this.formData.formId > 0) {
+      this.loadFormData();
+    }
+    // Auto-fill student info from current user
+    this.formData.studentName = this.currentUser?.name || "";
+  }
+
+  loadFormData(): void {
+    this.apiService.get(`MidTermExamReplacementForm/${this.formData.formId}`).subscribe({
+      next: (response: any) => {
+        const data = response.data || response;
+        if (data) {
+          this.formData = {
+            ...this.formData,
+            ...data
+          };
+        }
+      },
+      error: (error) => {
+        console.error("Error loading mid-term replacement data:", error);
+      }
+    });
   }
 
   canViewSection(section: string): boolean {
@@ -67,9 +88,9 @@ export class MidtermReplacementFormComponent implements OnInit {
 
     switch (section) {
       case "student":
-        return true; // Everyone can see student info
-      case "dean":
-        return ["dean", "admin"].includes(role);
+        return true;
+      case "authorized":
+        return ["authorized", "admin"].includes(role);
       default:
         return false;
     }
@@ -83,21 +104,28 @@ export class MidtermReplacementFormComponent implements OnInit {
     switch (section) {
       case "student":
         return role === "student";
-      case "dean":
-        return role === "dean" || role === "admin";
+      case "authorized":
+        return role === "authorized" || role === "admin";
       default:
         return false;
     }
   }
 
   canEditAnySection(): boolean {
-    return this.canEditSection("student") || this.canEditSection("dean");
+    return this.canEditSection("student") || this.canEditSection("authorized");
   }
 
   canSubmitForm(): boolean {
-    return (
-      this.currentUser?.role === "dean" || this.currentUser?.role === "admin"
-    );
+    return this.currentUser?.role === "student" || this.currentUser?.role === "authorized" || this.currentUser?.role === "admin";
+  }
+
+  getAcademicYear(): string {
+    const year1 = this.formData.academicYear.split("/")[0];
+    const year2 = this.formData.academicYear.split("/")[1];
+    if (year1 && year2) {
+      return `20${year1}/20${year2}`;
+    }
+    return "";
   }
 
   saveForm(): void {
@@ -108,23 +136,85 @@ export class MidtermReplacementFormComponent implements OnInit {
   submitForm(): void {
     if (
       confirm(
-        "Are you sure you want to submit this mid-term exam replacement request?",
+        "Are you sure you want to submit this mid-term exam replacement request?"
       )
     ) {
-      console.log("Request submitted");
-      alert("Mid-term exam replacement form submitted successfully!");
-      this.router.navigate(["/dashboard"]);
+      const payload = {
+        formId: 25,
+        studentId: this.formData.studentId,
+        studentName: this.formData.studentName,
+        major: this.formData.major,
+        level: this.formData.level,
+        email: this.formData.email,
+        mobileNumber: this.formData.mobileNumber,
+        courseName: this.formData.courseName,
+        semesterRequested: this.formData.semesterRequested,
+        academicYear: this.getAcademicYear(),
+        absenceReason: this.formData.absenceReason,
+        hasMissedOtherExams: this.formData.hasMissedOtherExams,
+        studentSignature: this.formData.studentSignature,
+        dateSigned: new Date().toISOString(),
+      };
+
+      this.apiService
+        .post("MidTermExamReplacementForm", payload)
+        .subscribe({
+          next: (response) => {
+            console.log("Request submitted successfully", response);
+            alert("Mid-term exam replacement form submitted successfully!");
+            this.router.navigate(["/dashboard"]);
+          },
+          error: (error) => {
+            console.error("Error submitting form", error);
+            alert("Error submitting form. Please try again.");
+          },
+        });
     }
   }
 
   cancel(): void {
     if (
       confirm(
-        "Are you sure you want to cancel? All unsaved changes will be lost.",
+        "Are you sure you want to cancel? All unsaved changes will be lost."
       )
     ) {
       this.router.navigate(["/dashboard"]);
     }
+  }
+
+  authorizeForm(approvalDecision: boolean): void {
+    if (
+      confirm(
+        `Are you sure you want to ${approvalDecision ? "approve" : "reject"} this request?`
+      )
+    ) {
+      const payload = {
+        id: this.formData.formId,
+        authorizedPersonApproval: {
+          approvalDecision: approvalDecision,
+        },
+      };
+
+      this.apiService
+        .patch("MidTermExamReplacementForm", payload)
+        .subscribe({
+          next: (response) => {
+            console.log("Authorization submitted successfully", response);
+            alert(
+              `Mid-term exam replacement form ${approvalDecision ? "approved" : "rejected"} successfully!`
+            );
+            this.router.navigate(["/dashboard"]);
+          },
+          error: (error) => {
+            console.error("Error authorizing form", error);
+            alert("Error authorizing form. Please try again.");
+          },
+        });
+    }
+  }
+
+  isFormProcessed(): boolean {
+    return this.formData.approvalDecision === true || this.formData.denialDecision === true;
   }
 
   logout(): void {

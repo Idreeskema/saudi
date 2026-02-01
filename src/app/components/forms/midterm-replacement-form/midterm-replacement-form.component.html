@@ -6,44 +6,49 @@
     <header class="top-nav">
       <div class="breadcrumb">
         <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-        </svg></i>
+            <path
+              d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+          </svg></i>
         <span>/ MID-TERM EXAM REPLACEMENT FORM</span>
       </div>
 
       <button class="menu-toggle">
         <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-        </svg></i>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg></i>
       </button>
 
       <div class="top-nav-right">
         <button class="year-selector">
           <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
-          </svg></i>
+              <path
+                d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
+            </svg></i>
           All Years
           <i class="arrow">▼</i>
         </button>
 
         <div class="user-menu">
           <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-          </svg></i>
+              <path
+                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+            </svg></i>
           <span>{{ currentUser?.name }}</span>
           <i class="arrow">▶</i>
         </div>
 
         <button class="icon-btn" (click)="logout()">
           <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
-          </svg></i>
+              <path
+                d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+            </svg></i>
         </button>
 
         <button class="icon-btn">
           <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-          </svg></i>
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+            </svg></i>
         </button>
       </div>
     </header>
@@ -64,7 +69,7 @@
 
     <!-- Form Content -->
     <div class="midterm-form">
-      
+
       <!-- Student Information Section -->
       <div class="form-section" *ngIf="canViewSection('student')">
         <div class="section-header">
@@ -77,33 +82,26 @@
             <span>Student's Name</span>
             <span class="arabic">اسم الطالب / الطالبة:</span>
           </label>
-          <input type="text" class="form-control underline" [(ngModel)]="formData.studentName" [disabled]="!canEditSection('student')">
+          <input type="text" class="form-control underline" [(ngModel)]="formData.studentName"
+            [disabled]="!canEditSection('student')">
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label>
-              <span>Major</span>
-              <span class="arabic">التخصص</span>
-            </label>
-            <input type="text" class="form-control underline" [(ngModel)]="formData.major" [disabled]="!canEditSection('student')">
-          </div>
-          <div class="form-group id-field">
-            <label>
               <span>Student ID</span>
               <span class="arabic">الرقم الجامعي</span>
             </label>
-            <div class="id-boxes">
-              <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[0]" [disabled]="!canEditSection('student')">
-              <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[1]" [disabled]="!canEditSection('student')">
-              <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[2]" [disabled]="!canEditSection('student')">
-              <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[3]" [disabled]="!canEditSection('student')">
-              <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[4]" [disabled]="!canEditSection('student')">
-              <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[5]" [disabled]="!canEditSection('student')">
-              <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[6]" [disabled]="!canEditSection('student')">
-              <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[7]" [disabled]="!canEditSection('student')">
-              <input type="text" class="id-box" maxlength="1" [(ngModel)]="formData.studentId[8]" [disabled]="!canEditSection('student')">
-            </div>
+            <input type="text" class="form-control underline" [(ngModel)]="formData.studentId"
+              [disabled]="!canEditSection('student')">
+          </div>
+          <div class="form-group">
+            <label>
+              <span>Major</span>
+              <span class="arabic">التخصص</span>
+            </label>
+            <input type="text" class="form-control underline" [(ngModel)]="formData.major"
+              [disabled]="!canEditSection('student')">
           </div>
         </div>
 
@@ -113,14 +111,16 @@
               <span>Level</span>
               <span class="arabic">المستوى</span>
             </label>
-            <input type="text" class="form-control underline" [(ngModel)]="formData.level" [disabled]="!canEditSection('student')">
+            <input type="text" class="form-control underline" [(ngModel)]="formData.level"
+              [disabled]="!canEditSection('student')">
           </div>
           <div class="form-group">
             <label>
-              <span>Course I couldn't attend :</span>
-              <span class="arabic">المقرر الذي لم أتمكن من حضور :</span>
+              <span>Course Name</span>
+              <span class="arabic">اسم المقرر</span>
             </label>
-            <input type="text" class="form-control underline" [(ngModel)]="formData.courseNotAttended" [disabled]="!canEditSection('student')">
+            <input type="text" class="form-control underline" [(ngModel)]="formData.courseName"
+              [disabled]="!canEditSection('student')">
           </div>
         </div>
 
@@ -130,105 +130,109 @@
               <span>Mobile</span>
               <span class="arabic">رقم الجوال</span>
             </label>
-            <input type="text" class="form-control underline" [(ngModel)]="formData.mobile" [disabled]="!canEditSection('student')">
+            <input type="text" class="form-control underline" [(ngModel)]="formData.mobileNumber"
+              [disabled]="!canEditSection('student')">
           </div>
           <div class="form-group">
             <label>
               <span>E-mail</span>
               <span class="arabic">البريد الإلكتروني</span>
             </label>
-            <input type="email" class="form-control underline" [(ngModel)]="formData.email" [disabled]="!canEditSection('student')">
+            <input type="email" class="form-control underline" [(ngModel)]="formData.email"
+              [disabled]="!canEditSection('student')">
           </div>
         </div>
 
-        <!-- Exam Details -->
-        <div class="exam-details">
-          <div class="exam-label arabic">اختبار شهري للفصل:</div>
-          
-          <div class="exam-options">
-            <label class="checkbox-label">
-              <input type="checkbox" [(ngModel)]="formData.semesterFirst" [disabled]="!canEditSection('student')">
-              <span>الأول</span>
+        <!-- Semester and Academic Year -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>
+              <span>Semester Requested</span>
+              <span class="arabic">الفصل الدراسي</span>
             </label>
-            <label class="checkbox-label">
-              <input type="checkbox" [(ngModel)]="formData.semesterSecond" [disabled]="!canEditSection('student')">
-              <span>الثاني</span>
-            </label>
-            <label class="checkbox-label">
-              <input type="checkbox" [(ngModel)]="formData.semesterSummer" [disabled]="!canEditSection('student')">
-              <span>الصيفي</span>
-            </label>
+            <select class="form-control underline" [(ngModel)]="formData.semesterRequested"
+              [disabled]="!canEditSection('student')">
+              <option value="">Select Semester</option>
+              <option *ngFor="let semester of semesters" [value]="semester.value">
+                {{ semester.value }} ({{ semester.arabic }})
+              </option>
+            </select>
           </div>
-
-          <div class="academic-year-section">
-            <span class="label arabic">للعام</span>
-            <div class="year-inputs">
-              <input type="text" class="year-input" maxlength="2" [(ngModel)]="formData.academicYear1" [disabled]="!canEditSection('student')">
-              <span>/</span>
-              <input type="text" class="year-input" maxlength="2" [(ngModel)]="formData.academicYear2" [disabled]="!canEditSection('student')">
-              <span class="arabic">هـ</span>
-            </div>
-          </div>
-
-          <div class="midterm-section">
-            <span>Mid-term of the:</span>
-            <label class="checkbox-label">
-              <input type="checkbox" [(ngModel)]="formData.midtermFirst" [disabled]="!canEditSection('student')">
-              <span>First</span>
+          <div class="form-group">
+            <label>
+              <span>Academic Year</span>
+              <span class="arabic">العام الدراسي</span>
             </label>
-            <label class="checkbox-label">
-              <input type="checkbox" [(ngModel)]="formData.midtermSecond" [disabled]="!canEditSection('student')">
-              <span>Second</span>
-            </label>
-            <label class="checkbox-label">
-              <input type="checkbox" [(ngModel)]="formData.midtermSummer" [disabled]="!canEditSection('student')">
-              <span>Summer Semester</span>
-            </label>
-            <span>Academic year: 20</span>
-            <input type="text" class="year-input small" [(ngModel)]="formData.academicYear3" [disabled]="!canEditSection('student')">
-            <span>/20</span>
+            <input type="text" class="form-control underline" placeholder="2025/2026"
+              [(ngModel)]="formData.academicYear" [disabled]="!canEditSection('student')">
           </div>
         </div>
-      </div>
 
-      <!-- Reasons of Absence Section -->
-      <div class="reasons-section" *ngIf="canViewSection('student')">
-        <div class="reasons-header">
-          <h3>● Reasons of absence :</h3>
-          <h3 class="arabic">● سبب عدم حضور الاختبار الشهري:</h3>
+        <!-- Absence Reason -->
+        <div class="form-group">
+          <label>
+            <span>Reason for Absence</span>
+            <span class="arabic">سبب الغياب</span>
+          </label>
+          <textarea class="form-control underline" rows="4" [(ngModel)]="formData.absenceReason"
+            [disabled]="!canEditSection('student')"></textarea>
         </div>
 
-        <div class="reason-lines">
-          <div class="reason-line" *ngFor="let line of reasonLines; let i = index">
-            <input 
-              type="text" 
-              class="reason-input" 
-              [(ngModel)]="formData.reasonLines[i]"
+        <!-- Has Missed Other Exams -->
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="formData.hasMissedOtherExams" [disabled]="!canEditSection('student')">
+            <span>I have missed other exams during this semester</span>
+            <span class="arabic">لقد تغيبت عن اختبارات أخرى خلال هذا الفصل</span>
+          </label>
+        </div>
+
+        <!-- Student Signature -->
+        <div class="form-row signature-row">
+          <div class="form-group">
+            <label>
+              <span>Student Signature</span>
+              <span class="arabic">توقيع الطالب / الطالبة</span>
+            </label>
+            <input type="text" class="form-control underline" [(ngModel)]="formData.studentSignature"
+              [disabled]="!canEditSection('student')">
+          </div>
+          <div class="form-group">
+            <label>
+              <span>Date</span>
+              <span class="arabic">التاريخ</span>
+            </label>
+            <input type="date" class="form-control underline" [(ngModel)]="formData.dateSigned"
               [disabled]="!canEditSection('student')">
           </div>
         </div>
       </div>
 
       <!-- Decision Section -->
-      <div class="decision-section" *ngIf="canViewSection('dean')">
+      <div class="decision-section" *ngIf="canViewSection('authorized')">
+        <div class="decision-header">
+          <h3>● Decision:</h3>
+          <h3 class="arabic">● القرار:</h3>
+        </div>
+
         <div class="decision-options">
           <label class="decision-label">
-            <input type="checkbox" [(ngModel)]="formData.approvalDecision" [disabled]="!canEditSection('dean')">
+            <input type="checkbox" [(ngModel)]="formData.approvalDecision" [disabled]="!canEditSection('authorized')">
             <span>الموافقة على إعطاء اختبار بديل واستكمال الإقرار الخاص بذلك</span>
           </label>
           <label class="decision-label">
-            <input type="checkbox" [(ngModel)]="formData.approvalDecision" [disabled]="!canEditSection('dean')">
+            <input type="checkbox" [(ngModel)]="formData.approvalDecision" [disabled]="!canEditSection('authorized')">
             <span>Approval of giving a replacement exam</span>
           </label>
         </div>
 
         <div class="decision-options">
           <label class="decision-label">
-            <input type="checkbox" [(ngModel)]="formData.denialDecision" [disabled]="!canEditSection('dean')">
+            <input type="checkbox" [(ngModel)]="formData.denialDecision" [disabled]="!canEditSection('authorized')">
             <span>عدم الموافقة على إعطاء اختبار بديل</span>
           </label>
           <label class="decision-label">
-            <input type="checkbox" [(ngModel)]="formData.denialDecision" [disabled]="!canEditSection('dean')">
+            <input type="checkbox" [(ngModel)]="formData.denialDecision" [disabled]="!canEditSection('authorized')">
             <span>Denial of giving a replacement exam</span>
           </label>
         </div>
@@ -244,10 +248,27 @@
         </p>
       </div>
 
-      <!-- College Dean Signature -->
-      <div class="dean-section" *ngIf="canViewSection('dean')">
-        <div class="dean-title arabic">عميد الكلية</div>
-        <div class="dean-signature-area">
+      <!-- Authorized Person Actions -->
+      <div class="authorized-actions" *ngIf="canViewSection('authorized') && !isFormProcessed()">
+        <button class="btn btn-approve" (click)="authorizeForm(true)">
+          <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+            </svg></i>
+          Approve
+        </button>
+        <button class="btn btn-reject" (click)="authorizeForm(false)">
+          <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+            </svg></i>
+          Reject
+        </button>
+      </div>
+
+      <!-- Authorized Person Signature -->
+      <div class="authorized-section" *ngIf="canViewSection('authorized')">
+        <div class="authorized-title arabic">الموظف المخول</div>
+        <div class="authorized-signature-area">
           <div class="signature-box"></div>
           <div class="signature-line"></div>
         </div>

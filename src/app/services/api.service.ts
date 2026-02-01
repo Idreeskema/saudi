@@ -87,7 +87,19 @@ export class ApiService {
     return this.get(`RefundForms/${id}/status`);
   }
 
+  getFormStatus(endpoint: string, id: number): Observable<any> {
+    return this.get(`StudentRequest/${id}/status/${endpoint}`);
+  }
+
   getStudentRequests(studentId: number): Observable<any> {
     return this.get(`StudentRequest/${studentId}/requests`);
+  }
+
+  createStudentAppeal(data: any): Observable<any> {
+    return this.post("student-appeals", data);
+  }
+
+  getStudentAppeal(id: number): Observable<any> {
+    return this.get(`student-appeals/${id}`);
   }
 }

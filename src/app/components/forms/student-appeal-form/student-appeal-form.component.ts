@@ -1,8 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../../../services/auth.service";
+import { ApiService } from "../../../services/api.service";
 import { User } from "../../../models/form.model";
 import { SidebarComponent } from "../../sidebar/sidebar.component";
 
@@ -15,13 +16,15 @@ import { SidebarComponent } from "../../sidebar/sidebar.component";
 })
 export class StudentAppealFormComponent implements OnInit {
   currentUser: User | null = null;
+  formId: string = "";
 
   formData = {
     // Student Information
-    studentId: ["", "", "", "", "", "", "", "", ""],
+    studentId: "",
     studentName: "",
     program: "",
-    courseNameCode: "",
+    courseName: "",
+    courseCode: "",
     level: "",
     continuousAssessmentMark: "",
     courseDirectorName: "",
@@ -30,15 +33,15 @@ export class StudentAppealFormComponent implements OnInit {
     reason: "",
 
     // Signature
-    dateDay: "",
-    dateMonth: "",
-    dateYear: "",
     studentSignature: "",
+    studentDate: "",
   };
 
   constructor(
     private authService: AuthService,
     private router: Router,
+    private apiService: ApiService,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +49,44 @@ export class StudentAppealFormComponent implements OnInit {
     if (!this.currentUser) {
       this.router.navigate(["/login"]);
       return;
+    }
+
+    // Get formId from route parameters
+    this.route.params.subscribe((params) => {
+      this.formId = params["id"];
+      this.checkExistingAppeal();
+    });
+  }
+
+  checkExistingAppeal(): void {
+    if (this.currentUser && this.formId) {
+      this.apiService.getStudentAppeal(parseInt(this.formId)).subscribe({
+        next: (response) => {
+          if (response && response.data) {
+            // Populate form with existing data
+            const appealData = response.data;
+            this.formData.studentId = appealData.studentId || "";
+            this.formData.studentName = appealData.studentName || "";
+            this.formData.program = appealData.program || "";
+            this.formData.courseName = appealData.courseName || "";
+            this.formData.courseCode = appealData.courseCode || "";
+            this.formData.level = appealData.level || "";
+            this.formData.continuousAssessmentMark =
+              appealData.continuousAssessmentMark?.toString() || "";
+            this.formData.courseDirectorName =
+              appealData.courseDirectorName || "";
+            this.formData.reason = appealData.reason || "";
+            this.formData.studentSignature = appealData.studentSignature || "";
+            this.formData.studentDate = appealData.studentDate || "";
+          }
+        },
+        error: (error) => {
+          // If the appeal doesn't exist (404), that's expected - the student can submit a new one
+          if (error.status !== 404) {
+            console.error("Error checking existing appeal:", error);
+          }
+        },
+      });
     }
   }
 
@@ -82,11 +123,37 @@ export class StudentAppealFormComponent implements OnInit {
         "Are you sure you want to submit this appeal? This will be sent to the department head and course director via email.",
       )
     ) {
-      console.log("Appeal submitted");
-      alert(
-        "Appeal submitted successfully! The form will be sent to the department head and course director via email.",
-      );
-      this.router.navigate(["/dashboard"]);
+      // Prepare the payload according to the API requirements
+      const payload = {
+        formId: parseInt(this.formId),
+        studentId: this.formData.studentId,
+        studentName: this.formData.studentName,
+        program: this.formData.program,
+        courseName: this.formData.courseName,
+        courseCode: this.formData.courseCode,
+        level: this.formData.level,
+        continuousAssessmentMark: parseFloat(
+          this.formData.continuousAssessmentMark,
+        ),
+        courseDirectorName: this.formData.courseDirectorName,
+        reason: this.formData.reason,
+        studentSignature: this.formData.studentSignature,
+        studentDate: new Date().toISOString(),
+      };
+
+      this.apiService.createStudentAppeal(payload).subscribe({
+        next: (response) => {
+          console.log("Appeal submitted successfully:", response);
+          alert(
+            "Appeal submitted successfully! The form will be sent to the department head and course director via email.",
+          );
+          this.router.navigate(["/dashboard"]);
+        },
+        error: (error) => {
+          console.error("Error submitting appeal:", error);
+          alert("Error submitting appeal. Please try again.");
+        },
+      });
     }
   }
 

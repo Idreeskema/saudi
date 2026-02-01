@@ -45,6 +45,7 @@ export class RefundFormComponent implements OnInit {
       this.formId = paramMap.get("id") || "1002-5096";
       this.loadForm();
       this.loadApiId();
+      this.fetchFormData();
     });
   }
 
@@ -61,9 +62,108 @@ export class RefundFormComponent implements OnInit {
   }
 
   loadApiId(): void {
+    // Attempt to get API ID from URL (formId) first
+    if (this.formId && !isNaN(parseInt(this.formId, 10))) {
+      this.apiId = parseInt(this.formId, 10);
+      return;
+    }
+
     const storedApiId = localStorage.getItem(`apiId_${this.formId}`);
     if (storedApiId) {
       this.apiId = parseInt(storedApiId, 10);
+    }
+  }
+
+  fetchFormData(): void {
+    if (this.apiId) {
+      this.apiService.get(`RefundForms/${this.apiId}`).subscribe({
+        next: (response: any) => {
+          const data = response.data || response;
+          if (data && this.form) {
+             // Map student section
+             if (data.studentSection || data.studentName) {
+               this.form.studentSection = {
+                 ...this.form.studentSection,
+                 name: data.studentName || this.form.studentSection.name,
+                 studentId: data.studentId || this.form.studentSection.studentId,
+                 nationality: data.nationality || this.form.studentSection.nationality,
+                 major: data.major || this.form.studentSection.major,
+                 level: data.level || this.form.studentSection.level,
+                 refundAmount: data.refundAmount || this.form.studentSection.refundAmount,
+                 refundReason: data.refundReason || this.form.studentSection.refundReason,
+                 bankName: data.bankName || this.form.studentSection.bankName,
+                 accountHolderName: data.accountHolderName || this.form.studentSection.accountHolderName,
+                 relationship: data.relationship || this.form.studentSection.relationship,
+                 ibanArabic: data.iban_Arabic || this.form.studentSection.ibanArabic,
+                 ibanEnglish: data.iban_English || this.form.studentSection.ibanEnglish,
+                 holderIdIqama: data.holderIdIqama || this.form.studentSection.holderIdIqama,
+                 studentSignature: data.studentSignature || this.form.studentSection.studentSignature,
+                 studentDate: data.studentDate || this.form.studentSection.studentDate,
+                 completed: true
+               };
+             }
+             
+             // Map registration section
+             if (data.registration) {
+               this.form.registrationSection = {
+                 ...this.form.registrationSection,
+                 withdrawalType: data.registration.withdrawalType === "Voluntary" ? "complete" : "partial",
+                 semesterTiming: data.registration.semesterTiming,
+                 otherReason: data.registration.OtherReason,
+                 departmentHead: data.registration.departmentHead,
+                 signature: data.registration.registrationSignature,
+                 date: data.registration.registrationDate,
+                 completed: true
+               };
+             }
+             
+             // Map accounting section
+             if (data.accounting) {
+               this.form.accountingVerificationSection = {
+                 ...this.form.accountingVerificationSection,
+                 paymentAmountNumeric: data.accounting.paymentAmount_Numeric,
+                 paymentAmountWords: data.accounting.paymentAmount_Words,
+                 accountantName: data.accounting.accountantName,
+                 accountantSignature: data.accounting.accountantSignature,
+                 accountantDate: data.accounting.accountantDate,
+                 chiefAccountant: data.accounting.chiefAccountant,
+                 chiefSignature: data.accounting.chiefSignature,
+                 chiefDate: data.accounting.chiefDate,
+                 completed: true
+               };
+             }
+             
+             // Map authorized section
+             if (data.authorized) {
+               this.form.authorizedSection = {
+                 ...this.form.authorizedSection,
+                 decision: data.authorized.decision,
+                 approvedAmountNumeric: data.authorized.approvedAmount_Numeric,
+                 approvedAmountWords: data.authorized.approvedAmount_Words,
+                 signature: data.authorized.authorizedSignature,
+                 date: data.authorized.authorizedDate,
+                 completed: true
+               };
+             }
+             
+             // Map final disbursement
+             if (data.finalDisbursement) {
+               this.form.accountingDisbursementSection = {
+                 ...this.form.accountingDisbursementSection,
+                 chequeNumber: data.finalDisbursement.chequeNumber,
+                 issueDate: data.finalDisbursement.issueDate,
+                 finalAmount: data.finalDisbursement.finalAmount,
+                 accountantSignature: data.finalDisbursement.finalAccountantSignature,
+                 date: data.finalDisbursement.finalAccountantDate,
+                 completed: true
+               };
+             }
+          }
+        },
+        error: (error) => {
+          console.error("Error fetching form data:", error);
+        }
+      });
     }
   }
 
@@ -74,18 +174,19 @@ export class RefundFormComponent implements OnInit {
 
   canEditSection(section: string): boolean {
     if (!this.currentUser) return false;
+    const role = this.currentUser.role;
 
     switch (section) {
       case "student":
-        return this.currentUser.role === "student";
+        return role === "student" || role === "admin";
       case "registration":
-        return this.currentUser.role === "registration";
+        return role === "registration" || role === "admin";
       case "accountingVerification":
-        return this.currentUser.role === "accounting";
+        return role === "accounting" || role === "admin";
       case "authorized":
-        return this.currentUser.role === "authorized";
+        return role === "authorized" || role === "admin";
       case "accountingDisbursement":
-        return this.currentUser.role === "accounting";
+        return role === "accounting" || role === "admin";
       default:
         return false;
     }
@@ -93,21 +194,14 @@ export class RefundFormComponent implements OnInit {
 
   canViewSection(section: string): boolean {
     if (!this.currentUser) return false;
-
-    switch (section) {
-      case "student":
-        return this.currentUser.role === "student";
-      case "registration":
-        return this.currentUser.role === "registration";
-      case "accountingVerification":
-        return this.currentUser.role === "accounting";
-      case "authorized":
-        return this.currentUser.role === "authorized";
-      case "accountingDisbursement":
-        return this.currentUser.role === "accounting";
-      default:
-        return false;
+    
+    // Students should ONLY see the student section
+    if (this.currentUser.role === "student") {
+      return section === "student";
     }
+    
+    // All other roles (Registration, Accounting, Authorized, Admin, etc.) can see everything
+    return true;
   }
 
   saveSection(section: string): void {
@@ -135,7 +229,7 @@ export class RefundFormComponent implements OnInit {
   private submitStudentSection(): void {
     if (!this.form) return;
 
-    const studentId = parseInt(this.form.studentSection.studentId) || 3;
+    const studentId = this.form.studentSection.studentId || "3";
 
     const payload = {
       formId: this.formId,
@@ -159,12 +253,12 @@ export class RefundFormComponent implements OnInit {
     };
 
     this.apiService.post<{ id: number }>("RefundForms", payload).subscribe({
-      next: (response) => {
-        this.saveApiId(response.id);
+      next: (response: any) => {
+        this.saveApiId(response.data.id);
         // Save studentId to localStorage
         localStorage.setItem("currentStudentId", studentId.toString());
         this.form!.studentSection.completed = true;
-        this.toastr.success("Student section submitted successfully!");
+        this.toastr.success(response.message || "Student section submitted successfully!");
         setTimeout(() => {
           this.router.navigate(["/request-list"]);
         }, 2000); // Navigate after 2 seconds to allow user to see the success message
@@ -202,9 +296,9 @@ export class RefundFormComponent implements OnInit {
     };
 
     this.apiService.patch("RefundForms", payload).subscribe({
-      next: () => {
+      next: (response: any) => {
         this.form!.registrationSection.completed = true;
-        this.toastr.success("Registration section submitted successfully!");
+        this.toastr.success(response.message || "Registration section submitted successfully!");
       },
       error: (error) => {
         console.error("Error submitting registration section:", error);
@@ -243,11 +337,9 @@ export class RefundFormComponent implements OnInit {
     };
 
     this.apiService.patch("RefundForms", payload).subscribe({
-      next: () => {
+      next: (response: any) => {
         this.form!.accountingVerificationSection.completed = true;
-        this.toastr.success(
-          "Accounting verification section submitted successfully!",
-        );
+        this.toastr.success(response.message || "Accounting verification section submitted successfully!");
       },
       error: (error) => {
         console.error(
@@ -282,9 +374,9 @@ export class RefundFormComponent implements OnInit {
     };
 
     this.apiService.patch("RefundForms", payload).subscribe({
-      next: () => {
+      next: (response: any) => {
         this.form!.authorizedSection.completed = true;
-        this.toastr.success("Authorized section submitted successfully!");
+        this.toastr.success(response.message || "Authorized section submitted successfully!");
       },
       error: (error) => {
         console.error("Error submitting authorized section:", error);
@@ -317,11 +409,9 @@ export class RefundFormComponent implements OnInit {
     };
 
     this.apiService.patch("RefundForms", payload).subscribe({
-      next: () => {
+      next: (response: any) => {
         this.form!.accountingDisbursementSection.completed = true;
-        this.toastr.success(
-          "Accounting disbursement section submitted successfully!",
-        );
+        this.toastr.success(response.message || "Accounting disbursement section submitted successfully!");
       },
       error: (error) => {
         console.error(

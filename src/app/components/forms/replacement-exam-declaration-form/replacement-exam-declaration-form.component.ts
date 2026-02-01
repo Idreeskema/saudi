@@ -3,6 +3,8 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AuthService } from "../../../services/auth.service";
+import { ApiService } from "../../../services/api.service";
+import { ToastrService } from "ngx-toastr";
 import { User } from "../../../models/form.model";
 import { SidebarComponent } from "../../sidebar/sidebar.component";
 
@@ -15,33 +17,36 @@ import { SidebarComponent } from "../../sidebar/sidebar.component";
 })
 export class ReplacementExamDeclarationFormComponent implements OnInit {
   currentUser: User | null = null;
+  formId: number = 24;
 
   formData = {
-    // Declaration Text
-    studentName: "",
-    courseName: "",
-    semester: "",
-    year1: "",
-    year2: "",
-
-    studentNameEn: "",
-    courseNameEn: "",
-    semesterEn: "",
-    year3: "",
-
     // Student Information
-    studentNameFinal: "",
-    studentId: ["", "", "", "", "", "", "", "", ""],
-    dateDay: "",
-    dateMonth: "",
-    dateYear: "",
-    dateYear2: "",
-    dateYear3: "",
+    studentId: "",
+    studentName: "",
+    major: "",
+    level: "",
+    email: "",
+    mobileNumber: "",
+
+    // Course Information
+    courseName: "",
+    semesterRequested: "",
+    academicYear: "",
+
+    // Declaration
+    absenceReason: "",
+    hasMissedOtherExams: false,
+
+    // Signature
+    studentSignature: "",
+    dateSigned: "",
   };
 
   constructor(
     private authService: AuthService,
     private router: Router,
+    private apiService: ApiService,
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -50,11 +55,30 @@ export class ReplacementExamDeclarationFormComponent implements OnInit {
       this.router.navigate(["/login"]);
       return;
     }
+    if (this.formId > 0) {
+      this.loadFormData();
+    }
+  }
+
+  loadFormData(): void {
+    this.apiService.get(`declaration-replacement-exam/${this.formId}`).subscribe({
+      next: (response: any) => {
+        const data = response.data || response;
+        if (data) {
+          this.formData = {
+            ...this.formData,
+            ...data
+          };
+        }
+      },
+      error: (error) => {
+        console.error("Error loading declaration data:", error);
+      }
+    });
   }
 
   canViewSection(section: string): boolean {
     if (!this.currentUser) return false;
-    // All sections are for students in this declaration form
     return true;
   }
 
@@ -70,7 +94,8 @@ export class ReplacementExamDeclarationFormComponent implements OnInit {
 
   canSubmitForm(): boolean {
     return (
-      this.currentUser?.role === "student" || this.currentUser?.role === "admin"
+      this.currentUser?.role === "student" ||
+      this.currentUser?.role === "admin"
     );
   }
 
@@ -80,21 +105,47 @@ export class ReplacementExamDeclarationFormComponent implements OnInit {
   }
 
   submitForm(): void {
-    if (
-      confirm(
-        "Are you sure you want to submit this replacement examination declaration? By submitting, you acknowledge that you understand the terms and conditions.",
-      )
-    ) {
-      console.log("Declaration submitted");
-      alert("Replacement examination declaration submitted successfully!");
-      this.router.navigate(["/dashboard"]);
+    if (!this.currentUser) {
+      this.toastr.error("Please login first", "Error");
+      return;
     }
+
+    const payload = {
+      formId: this.formId,
+      studentId: this.formData.studentId,
+      studentName: this.formData.studentName,
+      major: this.formData.major,
+      level: this.formData.level,
+      email: this.formData.email,
+      mobileNumber: this.formData.mobileNumber,
+      courseName: this.formData.courseName,
+      semesterRequested: this.formData.semesterRequested,
+      academicYear: this.formData.academicYear,
+      absenceReason: this.formData.absenceReason,
+      hasMissedOtherExams: this.formData.hasMissedOtherExams,
+      studentSignature: this.formData.studentSignature,
+      dateSigned: this.formData.dateSigned,
+    };
+
+    this.apiService.post("declaration-replacement-exam", payload).subscribe({
+      next: (response) => {
+        this.toastr.success(
+          "Replacement examination declaration submitted successfully!",
+          "Success"
+        );
+        this.router.navigate(["/dashboard"]);
+      },
+      error: (error) => {
+        this.toastr.error("Failed to submit declaration", "Error");
+        console.error("Error submitting form:", error);
+      },
+    });
   }
 
   cancel(): void {
     if (
       confirm(
-        "Are you sure you want to cancel? All unsaved changes will be lost.",
+        "Are you sure you want to cancel? All unsaved changes will be lost."
       )
     ) {
       this.router.navigate(["/dashboard"]);

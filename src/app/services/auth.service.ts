@@ -29,10 +29,25 @@ export class AuthService {
         role: "student",
         name: "Idrees Kema - Test",
       },
+      "faculty@riyadh.edu.sa": {
+        username: "faculty@riyadh.edu.sa",
+        role: "faculty",
+        name: "Dr. Mohammed Al-Fahad",
+      },
+      "dean@riyadh.edu.sa": {
+        username: "dean@riyadh.edu.sa",
+        role: "dean",
+        name: "Dr. Abdullah Al-Mansour",
+      },
       "registration@riyadh.edu.sa": {
         username: "registration@riyadh.edu.sa",
         role: "registration",
         name: "Registration Officer",
+      },
+      "director@riyadh.edu.sa": {
+        username: "director@riyadh.edu.sa",
+        role: "courseDirector",
+        name: "Dr. Sarah Al-Director",
       },
       "accounting@riyadh.edu.sa": {
         username: "accounting@riyadh.edu.sa",
@@ -44,10 +59,25 @@ export class AuthService {
         role: "authorized",
         name: "Authorized Person",
       },
+      "medexam@riyadh.edu.sa": {
+        username: "medexam@riyadh.edu.sa",
+        role: "medicalExamination",
+        name: "Medical Examiner",
+      },
       "admin@riyadh.edu.sa": {
         username: "admin@riyadh.edu.sa",
         role: "admin",
         name: "System Administrator",
+      },
+      "lecturer@riyadh.edu.sa": {
+        username: "lecturer@riyadh.edu.sa",
+        role: "lecturer",
+        name: "Course Lecturer",
+      },
+      "pd@riyadh.edu.sa": {
+        username: "pd@riyadh.edu.sa",
+        role: "program-director",
+        name: "Program Director",
       },
       "physician@riyadh.edu.sa": {
         username: "physician@riyadh.edu.sa",
@@ -68,6 +98,11 @@ export class AuthService {
         username: "medical-director@riyadh.edu.sa",
         role: "medical-director",
         name: "Dr. Khalid Al-Rashid",
+      },
+      "xray@riyadh.edu.sa": {
+        username: "xray@riyadh.edu.sa",
+        role: "xray",
+        name: "X-ray Technician Ali",
       },
     };
 

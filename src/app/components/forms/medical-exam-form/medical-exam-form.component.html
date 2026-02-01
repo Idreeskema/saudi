@@ -6,44 +6,49 @@
     <header class="top-nav">
       <div class="breadcrumb">
         <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-        </svg></i>
+            <path
+              d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+          </svg></i>
         <span>/ MEDICAL EXAMINATION FORM</span>
       </div>
 
       <button class="menu-toggle">
         <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-        </svg></i>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg></i>
       </button>
 
       <div class="top-nav-right">
         <button class="year-selector">
           <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
-          </svg></i>
+              <path
+                d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
+            </svg></i>
           All Years
           <i class="arrow">▼</i>
         </button>
 
         <div class="user-menu">
           <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-          </svg></i>
+              <path
+                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+            </svg></i>
           <span>{{ currentUser?.name }}</span>
           <i class="arrow">▶</i>
         </div>
 
         <button class="icon-btn" (click)="logout()">
           <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
-          </svg></i>
+              <path
+                d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+            </svg></i>
         </button>
 
         <button class="icon-btn">
           <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-          </svg></i>
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+            </svg></i>
         </button>
       </div>
     </header>
@@ -65,7 +70,7 @@
 
     <!-- Form Content -->
     <div class="medical-form">
-      
+
       <!-- SECTION I: Student Information -->
       <div class="form-section" *ngIf="canViewSection('student')">
         <div class="section-header">
@@ -75,37 +80,55 @@
 
         <div class="form-group">
           <label>Student Name: <span class="arabic">اسم الطالب / الطالبة رباعي:</span></label>
-          <input type="text" class="form-control" [(ngModel)]="formData.studentName" [disabled]="!canEditSection('student')">
+          <input type="text" class="form-control" [(ngModel)]="formData.studentName"
+            [disabled]="!canEditSection('student')">
+        </div>
+
+        <div class="form-group">
+          <label>Student ID: <span class="arabic">الرقم الجامعي:</span></label>
+          <input type="text" class="form-control" [(ngModel)]="formData.studentId"
+            [disabled]="!canEditSection('student')">
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label>ID Number: <span class="arabic">السجل المدني:</span></label>
-            <input type="text" class="form-control" [(ngModel)]="formData.idNumber" [disabled]="!canEditSection('student')">
+            <input type="text" class="form-control" [(ngModel)]="formData.idNumber"
+              [disabled]="!canEditSection('student')">
           </div>
           <div class="form-group">
             <label>Gender: <span class="arabic">الجنس:</span></label>
             <select class="form-control" [(ngModel)]="formData.gender" [disabled]="!canEditSection('student')">
               <option value="">Select</option>
-              <option value="male">Male / ذكر</option>
-              <option value="female">Female / أنثى</option>
+              <option value="Male">Male / ذكر</option>
+              <option value="Female">Female / أنثى</option>
             </select>
           </div>
         </div>
 
         <div class="form-group">
           <label>Any Medicine Taken?: <span class="arabic">هل تتناول علاجات معينة:</span></label>
-          <textarea class="form-control" rows="2" [(ngModel)]="formData.medicineTaken" [disabled]="!canEditSection('student')"></textarea>
+          <textarea class="form-control" rows="2" [(ngModel)]="formData.medicineTaken"
+            [disabled]="!canEditSection('student')"></textarea>
         </div>
 
         <div class="form-group">
           <label>Any Allergy: <span class="arabic">هل تعاني من حساسية معينة:</span></label>
-          <textarea class="form-control" rows="2" [(ngModel)]="formData.allergy" [disabled]="!canEditSection('student')"></textarea>
+          <textarea class="form-control" rows="2" [(ngModel)]="formData.allergy"
+            [disabled]="!canEditSection('student')"></textarea>
         </div>
 
         <div class="form-group">
           <label>Any Diseases: <span class="arabic">هل تعاني من مرض مزمن:</span></label>
-          <textarea class="form-control" rows="2" [(ngModel)]="formData.diseases" [disabled]="!canEditSection('student')"></textarea>
+          <textarea class="form-control" rows="2" [(ngModel)]="formData.diseases"
+            [disabled]="!canEditSection('student')"></textarea>
+        </div>
+
+        <div class="section-actions" *ngIf="canEditSection('student')">
+          <button class="btn btn-save" (click)="saveStudentSection()" [disabled]="isLoading">
+            <span *ngIf="isLoading">Saving...</span>
+            <span *ngIf="!isLoading">Save Student Information</span>
+          </button>
         </div>
       </div>
 
@@ -114,22 +137,26 @@
         <div class="section-header">
           <h3>SECTION II: Physical Examination: To be completed by a physician</h3>
           <h3 class="arabic">القسم الثاني: الفحص الجسدي: يقوم به الطبيب</h3>
-          <p class="note">Please tick (✓) appropriate item <span class="arabic">(يرجى وضع علامة (✓) عند الحالة المناسبة)</span></p>
+          <p class="note">Please tick (✓) appropriate item <span class="arabic">(يرجى وضع علامة (✓) عند الحالة
+              المناسبة)</span></p>
         </div>
 
         <div class="condition-group">
           <label>General condition: <span class="arabic">الحالة العامة:</span></label>
           <div class="radio-group">
             <label class="radio-label">
-              <input type="radio" name="generalCondition" value="good" [(ngModel)]="formData.generalCondition" [disabled]="!canEditSection('physician')">
+              <input type="radio" name="generalCondition" value="good" [(ngModel)]="formData.generalCondition"
+                [disabled]="!canEditSection('physician')">
               <span>Good / ممتازة</span>
             </label>
             <label class="radio-label">
-              <input type="radio" name="generalCondition" value="fair" [(ngModel)]="formData.generalCondition" [disabled]="!canEditSection('physician')">
+              <input type="radio" name="generalCondition" value="fair" [(ngModel)]="formData.generalCondition"
+                [disabled]="!canEditSection('physician')">
               <span>Fair / جيدة</span>
             </label>
             <label class="radio-label">
-              <input type="radio" name="generalCondition" value="poor" [(ngModel)]="formData.generalCondition" [disabled]="!canEditSection('physician')">
+              <input type="radio" name="generalCondition" value="poor" [(ngModel)]="formData.generalCondition"
+                [disabled]="!canEditSection('physician')">
               <span>Poor / ضعيفة</span>
             </label>
           </div>
@@ -138,11 +165,13 @@
         <div class="form-row">
           <div class="form-group">
             <label>Blood Pressure (mmHg): <span class="arabic">ضغط الدم (مليمتر زئبقي):</span></label>
-            <input type="text" class="form-control" [(ngModel)]="formData.bloodPressure" [disabled]="!canEditSection('physician')">
+            <input type="text" class="form-control" [(ngModel)]="formData.bloodPressure"
+              [disabled]="!canEditSection('physician')">
           </div>
           <div class="form-group">
             <label>Pulse (min): <span class="arabic">النبض (الدقيقة):</span></label>
-            <input type="text" class="form-control" [(ngModel)]="formData.pulse" [disabled]="!canEditSection('physician')">
+            <input type="text" class="form-control" [(ngModel)]="formData.pulse"
+              [disabled]="!canEditSection('physician')">
           </div>
         </div>
 
@@ -154,20 +183,24 @@
                 <th>Local / Regional Examination<br><span class="arabic">فحص موضعي</span></th>
                 <th>Normal<br><span class="arabic">سليم</span></th>
                 <th>Abnormal<br><span class="arabic">غير سليم</span></th>
-                <th>If abnormal, Please indicate details<br><span class="arabic">يرجى تفصيل الحالة الغير سليمة</span></th>
+                <th>If abnormal, Please indicate details<br><span class="arabic">يرجى تفصيل الحالة الغير سليمة</span>
+                </th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let exam of regionalExaminations">
                 <td>{{ exam.nameEn }}<br><span class="arabic">{{ exam.nameAr }}</span></td>
                 <td>
-                  <input type="radio" [name]="'exam_' + exam.id" value="normal" [(ngModel)]="exam.status" [disabled]="!canEditSection('physician')">
+                  <input type="radio" [name]="'exam_' + exam.id" value="normal" [(ngModel)]="exam.status"
+                    [disabled]="!canEditSection('physician')">
                 </td>
                 <td>
-                  <input type="radio" [name]="'exam_' + exam.id" value="abnormal" [(ngModel)]="exam.status" [disabled]="!canEditSection('physician')">
+                  <input type="radio" [name]="'exam_' + exam.id" value="abnormal" [(ngModel)]="exam.status"
+                    [disabled]="!canEditSection('physician')">
                 </td>
                 <td>
-                  <input type="text" class="form-control" [(ngModel)]="exam.details" [disabled]="!canEditSection('physician') || exam.status !== 'abnormal'">
+                  <input type="text" class="form-control" [(ngModel)]="exam.details"
+                    [disabled]="!canEditSection('physician') || exam.status !== 'abnormal'">
                 </td>
               </tr>
             </tbody>
@@ -175,33 +208,50 @@
         </div>
 
         <div class="form-group">
-          <label>Does the applicant show any sign of disease(s) or any abnormal phenomena? <span class="arabic">هل لدى المريض أعراض مرضية؟</span></label>
+          <label>Does the applicant show any sign of disease(s) or any abnormal phenomena? <span class="arabic">هل لدى
+              المريض أعراض مرضية؟</span></label>
           <div class="radio-inline">
             <label class="radio-label">
-              <input type="radio" name="diseaseSign" value="yes" [(ngModel)]="formData.diseaseSign" [disabled]="!canEditSection('physician')">
+              <input type="radio" name="diseaseSign" value="yes" [(ngModel)]="formData.diseaseSign"
+                [disabled]="!canEditSection('physician')">
               <span>Yes / نعم</span>
             </label>
             <label class="radio-label">
-              <input type="radio" name="diseaseSign" value="no" [(ngModel)]="formData.diseaseSign" [disabled]="!canEditSection('physician')">
+              <input type="radio" name="diseaseSign" value="no" [(ngModel)]="formData.diseaseSign"
+                [disabled]="!canEditSection('physician')">
               <span>No / لا</span>
             </label>
           </div>
-          <input type="text" class="form-control mt-2" placeholder="Explain details / وضح التفاصيل" [(ngModel)]="formData.diseaseSignDetails" [disabled]="!canEditSection('physician') || formData.diseaseSign !== 'yes'">
+          <input type="text" class="form-control mt-2" placeholder="Explain details / وضح التفاصيل"
+            [(ngModel)]="formData.diseaseSignDetails"
+            [disabled]="!canEditSection('physician') || formData.diseaseSign !== 'yes'">
         </div>
 
         <div class="form-group">
-          <label>Has the applicant received any previous treatment for advanced organic or psychiatric disease? <span class="arabic">هل سبق وأن خضع مقدم الطلب لأي علاج لمرض عضوي أو نفسي متقدم؟</span></label>
+          <label>Has the applicant received any previous treatment for advanced organic or psychiatric disease? <span
+              class="arabic">هل سبق وأن خضع مقدم الطلب لأي علاج لمرض عضوي أو نفسي متقدم؟</span></label>
           <div class="radio-inline">
             <label class="radio-label">
-              <input type="radio" name="previousTreatment" value="yes" [(ngModel)]="formData.previousTreatment" [disabled]="!canEditSection('physician')">
+              <input type="radio" name="previousTreatment" value="yes" [(ngModel)]="formData.previousTreatment"
+                [disabled]="!canEditSection('physician')">
               <span>Yes / نعم</span>
             </label>
             <label class="radio-label">
-              <input type="radio" name="previousTreatment" value="no" [(ngModel)]="formData.previousTreatment" [disabled]="!canEditSection('physician')">
+              <input type="radio" name="previousTreatment" value="no" [(ngModel)]="formData.previousTreatment"
+                [disabled]="!canEditSection('physician')">
               <span>No / لا</span>
             </label>
           </div>
-          <input type="text" class="form-control mt-2" placeholder="Explain Details / وضح التفاصيل" [(ngModel)]="formData.previousTreatmentDetails" [disabled]="!canEditSection('physician') || formData.previousTreatment !== 'yes'">
+          <input type="text" class="form-control mt-2" placeholder="Explain Details / وضح التفاصيل"
+            [(ngModel)]="formData.previousTreatmentDetails"
+            [disabled]="!canEditSection('physician') || formData.previousTreatment !== 'yes'">
+        </div>
+
+        <div class="section-actions" *ngIf="canEditSection('physician')">
+          <button class="btn btn-save" (click)="savePhysicalExamSection()" [disabled]="isLoading">
+            <span *ngIf="isLoading">Saving...</span>
+            <span *ngIf="!isLoading">Save Physical Examination</span>
+          </button>
         </div>
       </div>
 
@@ -210,7 +260,8 @@
         <div class="section-header">
           <h3>SECTION III: Laboratory Test</h3>
           <h3 class="arabic">القسم الثالث: الفحوصات المخبرية</h3>
-          <p class="note">Please tick (✓) where applicable <span class="arabic">(يرجى وضع علامة (✓) عند الحالة المناسبة)</span></p>
+          <p class="note">Please tick (✓) where applicable <span class="arabic">(يرجى وضع علامة (✓) عند الحالة
+              المناسبة)</span></p>
         </div>
 
         <div class="lab-table">
@@ -227,10 +278,12 @@
               <tr *ngFor="let test of labTests">
                 <td>{{ test.nameEn }}<br><span class="arabic">{{ test.nameAr }}</span></td>
                 <td>
-                  <input type="radio" [name]="'lab_' + test.id" value="normal" [(ngModel)]="test.status" [disabled]="!canEditSection('lab')">
+                  <input type="radio" [name]="'lab_' + test.id" value="normal" [(ngModel)]="test.status"
+                    [disabled]="!canEditSection('lab')">
                 </td>
                 <td>
-                  <input type="radio" [name]="'lab_' + test.id" value="abnormal" [(ngModel)]="test.status" [disabled]="!canEditSection('lab')">
+                  <input type="radio" [name]="'lab_' + test.id" value="abnormal" [(ngModel)]="test.status"
+                    [disabled]="!canEditSection('lab')">
                 </td>
                 <td>
                   <input type="text" class="form-control" [(ngModel)]="test.notes" [disabled]="!canEditSection('lab')">
@@ -239,31 +292,52 @@
             </tbody>
           </table>
         </div>
+
+        <div class="section-actions" *ngIf="canEditSection('lab')">
+          <button class="btn btn-save" (click)="saveLabSection()" [disabled]="isLoading">
+            <span *ngIf="isLoading">Saving...</span>
+            <span *ngIf="!isLoading">Save Laboratory Tests</span>
+          </button>
+        </div>
       </div>
 
-      <!-- SECTION IV: Chest X-ray Examination -->
-      <div class="form-section" *ngIf="canViewSection('radiology')">
+      <!-- SECTION IV: Chest x-ray Examination -->
+      <div class="form-section" *ngIf="canViewSection('xray')">
         <div class="section-header">
           <h3>SECTION IV: Chest x-ray Examination</h3>
           <h3 class="arabic">القسم الرابع: تصوير الصدر بالأشعة السينية</h3>
+          <p class="note">Please tick (✓) where applicable <span class="arabic">(يرجى وضع علامة (✓) عند الحالة
+              المناسبة)</span></p>
         </div>
 
         <div class="radio-group mb-3">
           <label class="radio-label">
-            <input type="radio" name="xrayResult" value="normal" [(ngModel)]="formData.xrayResult" [disabled]="!canEditSection('radiology')">
+            <input type="radio" name="xrayResult" value="Normal" [(ngModel)]="formData.xrayResult"
+              [disabled]="!canEditSection('xray')">
             <span>Normal / سليم</span>
           </label>
           <label class="radio-label">
-            <input type="radio" name="xrayResult" value="abnormal" [(ngModel)]="formData.xrayResult" [disabled]="!canEditSection('radiology')">
+            <input type="radio" name="xrayResult" value="Abnormal" [(ngModel)]="formData.xrayResult"
+              [disabled]="!canEditSection('xray')">
             <span>Abnormal / غير سليم</span>
           </label>
         </div>
 
         <div class="form-group">
           <label>Explain details: <span class="arabic">وضح التفاصيل:</span></label>
-          <textarea class="form-control" rows="3" [(ngModel)]="formData.xrayDetails" [disabled]="!canEditSection('radiology')"></textarea>
+          <textarea class="form-control" rows="3" [(ngModel)]="formData.xrayDetails"
+            [disabled]="!canEditSection('xray')"></textarea>
+        </div>
+
+        <div class="section-actions" *ngIf="canEditSection('xray')">
+          <button class="btn btn-save" (click)="saveXraySection()" [disabled]="isLoading">
+            <span *ngIf="isLoading">Saving...</span>
+            <span *ngIf="!isLoading">Save X-ray Examination</span>
+          </button>
         </div>
       </div>
+
+
 
       <!-- Medical Examination Result -->
       <div class="form-section result-section" *ngIf="canViewSection('result')">
@@ -274,18 +348,21 @@
 
         <div class="result-content">
           <p>
-            Examination showed that applicant named 
-            <input type="text" class="inline-input" [(ngModel)]="formData.applicantName" [disabled]="!canEditSection('result')">
+            Examination showed that applicant named
+            <input type="text" class="inline-input" [(ngModel)]="formData.applicantName"
+              [disabled]="!canEditSection('result')">
             <span class="arabic">اتضح من نتائج الفحص الطبي أن مقدم الطلب</span>
           </p>
 
           <div class="fit-status">
             <label class="radio-label">
-              <input type="radio" name="fitStatus" value="fit" [(ngModel)]="formData.fitStatus" [disabled]="!canEditSection('result')">
+              <input type="radio" name="fitStatus" value="fit" [(ngModel)]="formData.fitStatus"
+                [disabled]="!canEditSection('result')">
               <span>is fit / لائق</span>
             </label>
             <label class="radio-label">
-              <input type="radio" name="fitStatus" value="unfit" [(ngModel)]="formData.fitStatus" [disabled]="!canEditSection('result')">
+              <input type="radio" name="fitStatus" value="unfit" [(ngModel)]="formData.fitStatus"
+                [disabled]="!canEditSection('result')">
               <span>unfit / غير لائق</span>
             </label>
             <span>to study at RCsDP <span class="arabic">للدراسة في كليات الرياض لطب الأسنان والصيدلة</span></span>
@@ -297,44 +374,58 @@
           <div class="signature-row">
             <div class="signature-field">
               <label>Physician's name: <span class="arabic">اسم الطبيب:</span></label>
-              <input type="text" class="form-control" [(ngModel)]="formData.physicianName" [disabled]="!canEditSection('result')">
+              <input type="text" class="form-control" [(ngModel)]="formData.physicianName"
+                [disabled]="!canEditSection('result')">
             </div>
             <div class="signature-field">
               <label>Date: <span class="arabic">التاريخ:</span></label>
-              <input type="date" class="form-control" [(ngModel)]="formData.signatureDate" [disabled]="!canEditSection('result')">
+              <input type="date" class="form-control" [(ngModel)]="formData.signatureDate"
+                [disabled]="!canEditSection('result')">
             </div>
             <div class="signature-field">
               <label>Signature: <span class="arabic">التوقيع:</span></label>
-              <div class="signature-box"></div>
+              <input type="text" class="form-control" [(ngModel)]="formData.physicianSignature"
+                [disabled]="!canEditSection('result')">
             </div>
           </div>
 
           <div class="signature-row">
             <div class="signature-field">
               <label>Hospital / Clinic name: <span class="arabic">اسم المستشفى/ العيادة:</span></label>
-              <input type="text" class="form-control" [(ngModel)]="formData.hospitalName" [disabled]="!canEditSection('result')">
+              <input type="text" class="form-control" [(ngModel)]="formData.hospitalName"
+                [disabled]="!canEditSection('result')">
             </div>
             <div class="signature-field">
               <label>Medical Director: <span class="arabic">المدير الطبي:</span></label>
-              <input type="text" class="form-control" [(ngModel)]="formData.medicalDirector" [disabled]="!canEditSection('result')">
+              <input type="text" class="form-control" [(ngModel)]="formData.medicalDirector"
+                [disabled]="!canEditSection('result')">
             </div>
             <div class="signature-field">
               <label>Signature: <span class="arabic">التوقيع:</span></label>
-              <div class="signature-box"></div>
+              <input type="text" class="form-control" [(ngModel)]="formData.medicalDirectorSignature"
+                [disabled]="!canEditSection('result')">
             </div>
           </div>
 
           <div class="stamp-section">
             <label>Official Stamp: <span class="arabic">ختم المكتب:</span></label>
-            <div class="stamp-box"></div>
+            <input type="text" class="form-control" [(ngModel)]="formData.officialStamp"
+              [disabled]="!canEditSection('result')">
           </div>
+        </div>
+
+        <div class="section-actions" *ngIf="canEditSection('result')">
+          <button class="btn btn-save" (click)="saveResultSection()" [disabled]="isLoading">
+            <span *ngIf="isLoading">Saving...</span>
+            <span *ngIf="!isLoading">Save Result</span>
+          </button>
         </div>
       </div>
 
       <!-- Form Actions -->
       <div class="form-actions">
         <button class="btn btn-cancel" (click)="cancel()">Cancel</button>
-        <button class="btn btn-save" (click)="saveForm()" *ngIf="canEditAnySection()">Save Form</button>
+        <!-- <button class="btn btn-save" (click)="saveForm()" *ngIf="canEditAnySection()">Save Form</button> -->
         <button class="btn btn-submit" (click)="submitForm()" *ngIf="canSubmitForm()">Submit Form</button>
       </div>
     </div>

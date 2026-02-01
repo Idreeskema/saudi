@@ -37,7 +37,8 @@ export class MedicalExamFormComponent implements OnInit {
 
   formData = {
     // Section I - Student
-    studentId: 0,
+    formId: 0,
+    studentId: "",
     studentName: "",
     idNumber: "",
     gender: "",
@@ -65,7 +66,14 @@ export class MedicalExamFormComponent implements OnInit {
     signatureDate: "",
     hospitalName: "",
     medicalDirector: "",
+    physicianSignature: "",
+    medicalDirectorSignature: "",
+    officialStamp: "",
   };
+
+  medicalExamId: number | null = null;
+  isFormSubmitted: boolean = false;
+  isLoading: boolean = false;
 
   regionalExaminations: RegionalExamination[] = [
     {
@@ -174,56 +182,334 @@ export class MedicalExamFormComponent implements OnInit {
   }
 
   loadFormData(): void {
+    this.isLoading = true;
     this.apiService.get(`medical-exams/${this.formId}`).subscribe({
-      next: (data: any) => {
+      next: (response: any) => {
+        // Handle wrapper response structure
+        const data = response.data || response;
+        
+        console.log("Loaded Form Data:", data);
+
+        this.medicalExamId = data.id;
+        this.isFormSubmitted = data.isCompleted || false; // Note: Payload says isCompleted, checked against isFormSubmitted
+        
+        const pe = data.physicalExam || {};
+        const lab = data.laboratory || {};
+        
         this.formData = {
-          studentId: data.studentId || data.id || 0,
+          formId: data.formId || this.formId || 0,
+          studentId: data.studentId || data.id || "",
           studentName: data.studentName || "",
           idNumber: data.idNumber || "",
           gender: data.gender || "",
           medicineTaken: data.medicineTaken || "",
           allergy: data.allergy || "",
           diseases: data.diseases || "",
-          // Other sections remain empty or can be populated if data exists
-          generalCondition:
-            data.generalCondition || data.physicalExam?.generalCondition || "",
-          bloodPressure:
-            data.bloodPressure || data.physicalExam?.bloodPressure || "",
-          pulse: data.pulse || data.physicalExam?.pulse || "",
-          diseaseSign: data.diseaseSign || data.physicalExam?.diseaseSign || "",
-          diseaseSignDetails:
-            data.diseaseSignDetails ||
-            data.physicalExam?.diseaseSignDetails ||
-            "",
-          previousTreatment:
-            data.previousTreatment ||
-            data.physicalExam?.previousTreatment ||
-            "",
-          previousTreatmentDetails:
-            data.previousTreatmentDetails ||
-            data.physicalExam?.previousTreatmentDetails ||
-            "",
+          
+          // Section II - Physical Examination
+          // Handle flattened structure from API response
+          generalCondition: data.generalCondition || pe.generalCondition || "",
+          bloodPressure: data.bloodPressure || pe.bloodPressure || "",
+          pulse: data.pulse || pe.pulse || "",
+          diseaseSign: data.diseaseSign || pe.diseaseSign || "",
+          diseaseSignDetails: data.diseaseSignDetails || pe.diseaseSignDetails || "",
+          previousTreatment: data.previousTreatment || pe.previousTreatment || "",
+          previousTreatmentDetails: data.previousTreatmentDetails || pe.previousTreatmentDetails || "",
+
+          // Section IV - X-ray
           xrayResult: data.xrayResult || data.xray?.xrayResult || "",
           xrayDetails: data.xrayDetails || data.xray?.xrayDetails || "",
+
+          // Result Section
           applicantName: data.applicantName || data.result?.applicantName || "",
           fitStatus: data.fitStatus || data.result?.fitStatus || "",
           physicianName: data.physicianName || data.result?.physicianName || "",
           signatureDate: data.signatureDate || data.result?.signatureDate || "",
           hospitalName: data.hospitalName || data.result?.hospitalName || "",
-          medicalDirector:
-            data.medicalDirector || data.result?.medicalDirector || "",
+          medicalDirector: data.medicalDirector || data.result?.medicalDirector || "",
+          physicianSignature: data.physicianSignature || data.result?.physicianSignature || "",
+          medicalDirectorSignature: data.medicalDirectorSignature || data.result?.medicalDirectorSignature || "",
+          officialStamp: data.officialStamp || data.result?.officialStamp || "",
         };
-        // Populate regionalExaminations and labTests if data exists
-        if (data.regionalExaminations) {
-          this.regionalExaminations = data.regionalExaminations;
+
+        // Handle regional examinations mapping from flat object if available
+        if (data.physicalExam) {
+          const pe = data.physicalExam;
+          this.regionalExaminations = this.regionalExaminations.map(exam => {
+            switch(exam.id) {
+              case "1": return { ...exam, status: pe.eyeResult || "", details: pe.eyeDetails || "" };
+              case "2": return { ...exam, status: pe.entResult || "", details: pe.entDetails || "" };
+              case "3": return { ...exam, status: pe.muscularResult || "", details: pe.muscularDetails || "" };
+              case "4": return { ...exam, status: pe.cardioResult || "", details: pe.cardioDetails || "" };
+              case "5": return { ...exam, status: pe.abdomenResult || "", details: pe.abdomenDetails || "" };
+              case "6": return { ...exam, status: pe.neurologicalResult || "", details: pe.neurologicalDetails || "" };
+              case "7": return { ...exam, status: pe.skinResult || "", details: pe.skinDetails || "" };
+              default: return exam;
+            }
+          });
         }
-        if (data.labTests) {
-          this.labTests = data.labTests;
+
+        // Handle laboratory tests - mapping from flat object if available
+        if (data.laboratory) {
+          const lab = data.laboratory;
+          this.labTests = this.labTests.map(test => {
+            switch(test.id) {
+              case "1": 
+                return { ...test, status: lab.urinalysisResult || "", notes: lab.urinalysisNotes || "" };
+              case "2": 
+                return { ...test, status: lab.hepatitisBCResult || "", notes: lab.hepatitisBCNotes || "" };
+              case "3": 
+                return { ...test, status: lab.hivResult || "", notes: lab.hivNotes || "" };
+              case "4": 
+                return { ...test, status: lab.bloodTypeResult || "", notes: lab.bloodTypeNotes || "" };
+              default: return test;
+            }
+          });
         }
+
+
+        
+        this.isLoading = false;
       },
       error: (error) => {
         console.error("Error loading form data:", error);
-        this.toastr.error("Failed to load form data.");
+        this.isLoading = false;
+      },
+    });
+  }
+
+  // POST API - Create initial medical exam form with student data
+  saveStudentSection(): void {
+    if (!this.formData.studentName || !this.formData.idNumber) {
+      this.toastr.error(
+        "Please fill in required fields (Student Name and ID Number)",
+      );
+      return;
+    }
+
+    const payload = {
+      formId: this.formId,
+      studentId: this.formData.studentId || this.currentUser?.username || "",
+      studentName: this.formData.studentName,
+      idNumber: this.formData.idNumber,
+      gender: this.formData.gender,
+      medicineTaken: this.formData.medicineTaken,
+      allergy: this.formData.allergy,
+      diseases: this.formData.diseases,
+    };
+
+    this.isLoading = true;
+    this.apiService.post<{ id: number; data?: { id: number } }>("medical-exams", payload).subscribe({
+      next: (response: any) => {
+        this.medicalExamId = response.data?.id || response.id;
+        this.toastr.success("Student information saved successfully!");
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error("Error saving student section:", error);
+        this.toastr.error(
+          "Failed to save student information. Please try again.",
+        );
+        this.isLoading = false;
+      },
+    });
+  }
+
+  // PATCH API - Update physical exam data
+  savePhysicalExamSection(): void {
+    if (!this.medicalExamId) {
+      this.toastr.error("Please save student information first");
+      return;
+    }
+
+    const eye = this.regionalExaminations.find(e => e.id === "1");
+    const ent = this.regionalExaminations.find(e => e.id === "2");
+    const muscular = this.regionalExaminations.find(e => e.id === "3");
+    const cardio = this.regionalExaminations.find(e => e.id === "4");
+    const abdomen = this.regionalExaminations.find(e => e.id === "5");
+    const neurological = this.regionalExaminations.find(e => e.id === "6");
+    const skin = this.regionalExaminations.find(e => e.id === "7");
+
+    const payload = {
+      id: this.medicalExamId,
+      physicalExam: {
+        generalCondition: this.formData.generalCondition,
+        bloodPressure: this.formData.bloodPressure,
+        pulse: this.formData.pulse,
+        diseaseSign: this.formData.diseaseSign,
+        diseaseSignDetails: this.formData.diseaseSignDetails,
+        previousTreatment: this.formData.previousTreatment,
+        previousTreatmentDetails: this.formData.previousTreatmentDetails,
+        // Regional exams mapping to hardcoded keys
+        eyeExam: "Eye examination",
+        eyeResult: eye?.status,
+        eyeDetails: eye?.details,
+        entExam: "Examination of ears, nose & throat",
+        entResult: ent?.status,
+        entDetails: ent?.details,
+        muscularExam: "Muscular/ skeletal",
+        muscularResult: muscular?.status,
+        muscularDetails: muscular?.details,
+        cardioExam: "Examination of the cardio-respiratory system",
+        cardioResult: cardio?.status,
+        cardioDetails: cardio?.details,
+        abdomenExam: "Examination of the abdomen",
+        abdomenResult: abdomen?.status,
+        abdomenDetails: abdomen?.details,
+        neurologicalExam: "Neurological Examination",
+        neurologicalResult: neurological?.status,
+        neurologicalDetails: neurological?.details,
+        skinExam: "Skin Examination",
+        skinResult: skin?.status,
+        skinDetails: skin?.details
+      },
+    };
+
+    this.isLoading = true;
+    this.apiService.patch("medical-exams", payload).subscribe({
+      next: (response) => {
+        this.toastr.success("Physical examination saved successfully!");
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error("Error saving physical exam section:", error);
+        this.toastr.error(
+          "Failed to save physical examination. Please try again.",
+        );
+        this.isLoading = false;
+      },
+    });
+  }
+
+  // PATCH API - Update x-ray data
+  saveXraySection(): void {
+    if (!this.medicalExamId) {
+      this.toastr.error("Please save student information first");
+      return;
+    }
+
+    const payload = {
+      id: this.medicalExamId,
+      xray: {
+        xrayResult: this.formData.xrayResult,
+        xrayDetails: this.formData.xrayDetails,
+      },
+    };
+
+    console.log("Saving X-Ray Payload:", payload);
+
+    this.isLoading = true;
+    this.apiService.patch("medical-exams", payload).subscribe({
+      next: (response) => {
+        this.toastr.success("X-ray examination saved successfully!");
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error("Error saving x-ray section:", error);
+        this.toastr.error(
+          "Failed to save x-ray examination. Please try again.",
+        );
+        this.isLoading = false;
+      },
+    });
+  }
+
+  // PATCH API - Update lab test data
+  saveLabSection(): void {
+    if (!this.medicalExamId) {
+      this.toastr.error("Please save student information first");
+      return;
+    }
+
+    // Map lab test array to specific fields requested by user
+    const urinalysis = this.labTests.find(t => t.id === "1");
+    const hepatitis = this.labTests.find(t => t.id === "2");
+    const hiv = this.labTests.find(t => t.id === "3");
+    const bloodType = this.labTests.find(t => t.id === "4");
+
+    const payload = {
+      id: this.medicalExamId,
+      laboratory: {
+        urinalysis: "Urinalysis",
+        urinalysisResult: urinalysis?.status || "",
+        urinalysisNotes: urinalysis?.notes || "",
+        hepatitisBC: "Hepatitis B&C",
+        hepatitisBCResult: hepatitis?.status || "",
+        hepatitisBCNotes: hepatitis?.notes || "",
+        hiv: "HIV",
+        hivResult: hiv?.status || "",
+        hivNotes: hiv?.notes || "",
+        bloodType: "Blood type",
+        bloodTypeResult: bloodType?.status || "",
+        bloodTypeNotes: bloodType?.notes || ""
+      }
+    };
+
+    console.log("Saving Laboratory Payload:", payload);
+
+    this.isLoading = true;
+    this.apiService.patch("medical-exams", payload).subscribe({
+      next: (response: any) => {
+        this.toastr.success(response.message || "Laboratory tests saved successfully!");
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error("Error saving lab section:", error);
+        this.toastr.error("Failed to save laboratory tests. Please try again.");
+        this.isLoading = false;
+      },
+    });
+  }
+
+  // PATCH API - Update result data
+  saveResultSection(): void {
+    if (!this.medicalExamId) {
+      this.toastr.error("Please save student information first");
+      return;
+    }
+
+    const payload = {
+      id: this.medicalExamId,
+      result: {
+        applicantName: this.formData.applicantName || this.formData.studentName,
+        fitStatus: this.formData.fitStatus,
+        physicianName: this.formData.physicianName,
+        signatureDate: this.formData.signatureDate,
+        hospitalName: this.formData.hospitalName,
+        medicalDirector: this.formData.medicalDirector,
+        physicianSignature: this.formData.physicianSignature,
+        medicalDirectorSignature: this.formData.medicalDirectorSignature,
+        officialStamp: this.formData.officialStamp,
+      },
+    };
+
+    this.isLoading = true;
+    this.apiService.patch("medical-exams", payload).subscribe({
+      next: (response) => {
+        this.toastr.success("Medical examination result saved successfully!");
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error("Error saving result section:", error);
+        this.toastr.error("Failed to save result. Please try again.");
+        this.isLoading = false;
+      },
+    });
+  }
+
+  // Check if form is already submitted
+  checkFormSubmissionStatus(): void {
+    if (!this.formId) return;
+
+    this.apiService.get(`medical-exams/${this.formId}`).subscribe({
+      next: (data: any) => {
+        this.isFormSubmitted = data.isSubmitted || false;
+        if (this.isFormSubmitted) {
+          this.toastr.info("This form has already been submitted.");
+        }
+      },
+      error: (error) => {
+        console.error("Error checking form status:", error);
       },
     });
   }
@@ -237,23 +523,25 @@ export class MedicalExamFormComponent implements OnInit {
       case "student":
         return true; // Everyone can see student info
       case "physician":
-        return ["physician", "admin", "medical-director"].includes(role);
+        return ["physician", "admin", "medical-director", "medicalExamination"].includes(role);
       case "lab":
         return [
           "lab-technician",
           "physician",
           "admin",
           "medical-director",
+          "medicalExamination",
         ].includes(role);
-      case "radiology":
+      case "xray":
         return [
-          "radiologist",
+          "xray",
           "physician",
           "admin",
           "medical-director",
+          "medicalExamination",
         ].includes(role);
       case "result":
-        return ["physician", "medical-director", "admin"].includes(role);
+        return ["physician", "medical-director", "admin", "medicalExamination"].includes(role);
       default:
         return false;
     }
@@ -271,13 +559,14 @@ export class MedicalExamFormComponent implements OnInit {
         return role === "physician" || role === "admin";
       case "lab":
         return role === "lab-technician" || role === "admin";
-      case "radiology":
-        return role === "radiologist" || role === "admin";
+      case "xray":
+        return role === "xray" || role === "admin";
       case "result":
         return (
           role === "physician" ||
           role === "medical-director" ||
-          role === "admin"
+          role === "admin" ||
+          role === "medicalExamination"
         );
       default:
         return false;
@@ -289,7 +578,7 @@ export class MedicalExamFormComponent implements OnInit {
       this.canEditSection("student") ||
       this.canEditSection("physician") ||
       this.canEditSection("lab") ||
-      this.canEditSection("radiology") ||
+      this.canEditSection("xray") ||
       this.canEditSection("result")
     );
   }

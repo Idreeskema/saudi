@@ -27,9 +27,24 @@ export class LoginComponent {
       label: "Student",
     },
     {
+      email: "faculty@riyadh.edu.sa",
+      role: "faculty" as UserRole,
+      label: "Faculty",
+    },
+    {
+      email: "dean@riyadh.edu.sa",
+      role: "dean" as UserRole,
+      label: "Dean",
+    },
+    {
       email: "registration@riyadh.edu.sa",
       role: "registration" as UserRole,
       label: "Registration",
+    },
+    {
+      email: "director@riyadh.edu.sa",
+      role: "courseDirector" as UserRole,
+      label: "Course Director",
     },
     {
       email: "accounting@riyadh.edu.sa",
@@ -61,6 +76,26 @@ export class LoginComponent {
       email: "medical-director@riyadh.edu.sa",
       role: "medical-director" as UserRole,
       label: "Medical Director",
+    },
+    {
+      email: "medexam@riyadh.edu.sa",
+      role: "medicalExamination" as UserRole,
+      label: "Medical Examiner",
+    },
+    {
+      email: "lecturer@riyadh.edu.sa",
+      role: "lecturer" as UserRole,
+      label: "Lecturer",
+    },
+    {
+      email: "pd@riyadh.edu.sa",
+      role: "program-director" as UserRole,
+      label: "Program Director",
+    },
+    {
+      email: "xray@riyadh.edu.sa",
+      role: "xray" as UserRole,
+      label: "X-ray Technician",
     },
   ];
 

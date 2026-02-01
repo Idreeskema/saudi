@@ -19,14 +19,7 @@ export class RequestListComponent implements OnInit {
   forms: any[] = [];
 
   requestSummary = [
-    { title: "All Requests", count: 0, type: "all" },
-    { title: "Leave Request", count: 0, type: "leave" },
-    { title: "Recommendation Letter", count: 0, type: "recommendation" },
-    { title: "Reference Letter", count: 0, type: "reference" },
-    { title: "Clearance Request", count: 0, type: "clearance" },
-    { title: "Thesis Defense Request", count: 0, type: "thesis-defense" },
-    { title: "Degree Granting Request", count: 0, type: "degree" },
-    { title: "Thesis Proposal Request", count: 0, type: "thesis-proposal" },
+    { title: "All Requests", count: 0, type: "all" }
   ];
 
   constructor(
@@ -49,14 +42,35 @@ export class RequestListComponent implements OnInit {
   loadForms(): void {
     // Get studentId from localStorage (saved from refund-form component)
     const studentId = localStorage.getItem("currentStudentId");
-    const studentIdNumber = studentId ? parseInt(studentId, 10) : 3; // Default to 3 if not found
+    const studentIdNumber = studentId ? parseInt(studentId, 10) : 101; // Default to 3 if not found
 
     // First try to load from API
     this.apiService.getStudentRequests(studentIdNumber).subscribe({
       next: (response) => {
         this.forms = response.data || response;
-        this.requestSummary[0].count = this.forms.length;
-        // Update other counts based on form types when implemented
+        console.log(this.forms);
+        // Calculate counts dynamically
+        const typeCounts = new Map<string, number>();
+        this.forms.forEach(form => {
+          const type = form.requestType || 'Unknown';
+          typeCounts.set(type, (typeCounts.get(type) || 0) + 1);
+        });
+
+        // Rebuild summary array
+        this.requestSummary = [
+          { title: "All Requests", count: this.forms.length, type: "all" }
+        ];
+
+        // Add cards for each unique type found
+        typeCounts.forEach((count, type) => {
+          // Format basic camelCase or PascalCase to spaced words if needed
+          const title = type.replace(/([A-Z])/g, ' $1').trim();
+          this.requestSummary.push({
+            title: title,
+            count: count,
+            type: type
+          });
+        });
       },
       error: (error) => {
         console.error("Error loading requests from API:", error);
@@ -67,11 +81,12 @@ export class RequestListComponent implements OnInit {
     });
   }
 
-  viewForm(formId: string): void {
-    if (!formId) {
-      formId = "13";
-    }
-    this.router.navigate(["/view-request", formId]);
+  viewForm(formId: string | number, requestType?: string): void {
+    if (!formId) return;
+    
+    this.router.navigate(["/view-request", formId], { 
+      queryParams: { type: requestType || 'FeeRefund' } 
+    });
   }
 
   deleteForm(formId: string, event: Event): void {

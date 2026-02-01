@@ -17,6 +17,12 @@ export class SidebarComponent implements OnInit {
   showNewRequestsMenu: boolean = false;
   showSystemAdminMenu: boolean = false;
   isAdmin: boolean = false;
+  isStudent: boolean = false;
+  isFaculty: boolean = false;
+  isDean: boolean = false;
+  isAccounting: boolean = false;
+  isRegistration: boolean = false;
+  isPD: boolean = false;
   forms: any[] = [];
 
   constructor(
@@ -26,7 +32,14 @@ export class SidebarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isAdmin = this.authService.getUserRole() === "admin";
+    const role = this.authService.getUserRole();
+    this.isAdmin = role === "admin";
+    this.isStudent = role === "student";
+    this.isFaculty = role === "faculty";
+    this.isDean = role === "dean";
+    this.isAccounting = role === "accounting";
+    this.isRegistration = role === "registration";
+    this.isPD = role === "program-director";
     this.updateActiveRoute(this.router.url);
 
     this.apiService.getSequenceForms(1, 50).subscribe((data: any) => {
@@ -78,24 +91,42 @@ export class SidebarComponent implements OnInit {
   createForm(id: string): void {
     const form = this.forms.find((f) => f.id.toString() === id);
     if (form) {
-      switch (form.sequenceModelName) {
+      switch (form.sequenceModelName.trim()) {
         case "MedicalExamination":
-          this.router.navigate(["/medical-exam/" + id]);
+          this.router.navigate(["/MedicalExamination/" + id]);
           break;
         case "FeeRefund":
-          this.router.navigate(["/form/" + id]);
+          this.router.navigate(["/FeeRefund/" + id]);
           break;
         case "StudentAppeal":
-          this.router.navigate(["/student-appeal/" + id]);
+          this.router.navigate(["/StudentAppeal/" + id]);
           break;
         case "CourseAddingDropping":
-          this.router.navigate(["/course-add-drop/" + id]);
+          this.router.navigate(["/CourseAddingDropping/" + id]);
           break;
         case "SemesterWithdrawal":
-          this.router.navigate(["/semester-withdrawal/" + id]);
+          this.router.navigate(["/SemesterWithdrawal/" + id]);
           break;
         case "UniversityWithdrawal":
-          this.router.navigate(["/withdrawal/" + id]);
+          this.router.navigate(["/UniversityWithdrawal/" + id]);
+          break;
+        case "SemesterPostponement":
+          this.router.navigate(["/SemesterPostponement/" + id]);
+          break;
+        case "MidTermExamReplacement":
+          this.router.navigate(["/MidTermExamReplacement/" + id]);
+          break;
+        case "FinalExamReplacement":
+          this.router.navigate(["/FinalExamReplacement/" + id]);
+          break;
+        case "MajorTransfer":
+          this.router.navigate(["/MajorTransfer/" + id]);
+          break;
+        case "ReEntry":
+          this.router.navigate(["/ReEntry/" + id]);
+          break;
+        case "ReplacementExamDeclaration":
+          this.router.navigate(["/ReplacementExamDeclaration/" + id]);
           break;
         default:
           this.router.navigate(["/form/" + id]);
@@ -116,6 +147,10 @@ export class SidebarComponent implements OnInit {
 
   navigateToAllRequests(): void {
     this.router.navigate(["/request-list"]);
+  }
+
+  navigateToPendingRequests(): void {
+    this.router.navigate(["/pending-requests"]);
   }
 
   navigateToDashboard(): void {
