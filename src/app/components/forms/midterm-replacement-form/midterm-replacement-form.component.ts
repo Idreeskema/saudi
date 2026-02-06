@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "../../../services/auth.service";
 import { ApiService } from "../../../services/api.service";
 import { User } from "../../../models/form.model";
@@ -18,6 +18,7 @@ export class MidtermReplacementFormComponent implements OnInit {
   currentUser: User | null = null;
 
   formData = {
+    id:0,
     formId: 0,
     studentId: "",
     studentName: "",
@@ -41,11 +42,12 @@ export class MidtermReplacementFormComponent implements OnInit {
     { value: "Second", arabic: "الثاني" },
     { value: "Summer", arabic: "الصيفي" },
   ];
-
+  id: any;
   constructor(
     private authService: AuthService,
     private apiService: ApiService,
-    private router: Router
+    private router: Router,
+      private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -54,12 +56,15 @@ export class MidtermReplacementFormComponent implements OnInit {
       this.router.navigate(["/login"]);
       return;
     }
+     this.id = this.route.snapshot.paramMap.get("id");
+    if (this.id) {
+      this.formData.formId = +this.id;
+      this.loadFormData();
+    }
     // Get formId from route parameters
     // Note: If you add route params for this component later, use them here.
     // For now, attempting to load if a default or stored ID exists might be useful if integrated into requests list.
-    if (this.formData.formId > 0) {
-      this.loadFormData();
-    }
+    
     // Auto-fill student info from current user
     this.formData.studentName = this.currentUser?.name || "";
   }
@@ -140,7 +145,8 @@ export class MidtermReplacementFormComponent implements OnInit {
       )
     ) {
       const payload = {
-        formId: 25,
+        formId: this.formData.formId,
+        id: this.formData.id,
         studentId: this.formData.studentId,
         studentName: this.formData.studentName,
         major: this.formData.major,
@@ -189,7 +195,7 @@ export class MidtermReplacementFormComponent implements OnInit {
       )
     ) {
       const payload = {
-        id: this.formData.formId,
+        id: this.formData.id,
         authorizedPersonApproval: {
           approvalDecision: approvalDecision,
         },

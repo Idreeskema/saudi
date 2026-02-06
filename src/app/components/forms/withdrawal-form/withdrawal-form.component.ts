@@ -58,7 +58,7 @@ export class WithdrawalFormComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.authService.currentUserValue;
     this.route.params.subscribe(params => {
-      this.formId = +params['formId'] || 23; 
+      this.formId = +params['id'] || 0; 
       this.id = +params['id'] || 0; 
       this.loadFormData();
     });
@@ -69,7 +69,7 @@ export class WithdrawalFormComponent implements OnInit {
   }
 
   loadFormData(): void {
-    const fetchId = this.id || this.formId;
+    const fetchId = this.id;
     if (fetchId > 0) {
       this.apiService.get(`university-withdrawals/${fetchId}`).subscribe({
         next: (response: any) => {
@@ -179,7 +179,7 @@ export class WithdrawalFormComponent implements OnInit {
           this.router.navigate(["/dashboard"]);
         },
         error: (error) => {
-          this.toastr.error("Failed to submit withdrawal form", "Error");
+          this.toastr.error(error.error.message, "Error");
           console.error("Error submitting form:", error);
         },
       });

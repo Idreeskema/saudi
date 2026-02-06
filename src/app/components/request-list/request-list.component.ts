@@ -21,7 +21,7 @@ export class RequestListComponent implements OnInit {
   requestSummary = [
     { title: "All Requests", count: 0, type: "all" }
   ];
-
+  studentIdNumber: any = 0;
   constructor(
     private authService: AuthService,
     private apiService: ApiService,
@@ -42,10 +42,11 @@ export class RequestListComponent implements OnInit {
   loadForms(): void {
     // Get studentId from localStorage (saved from refund-form component)
     const studentId = localStorage.getItem("currentStudentId");
-    const studentIdNumber = studentId ? parseInt(studentId, 10) : 101; // Default to 3 if not found
+    console.log(studentId);
+    this.studentIdNumber = studentId; // Default to 3 if not found
 
     // First try to load from API
-    this.apiService.getStudentRequests(studentIdNumber).subscribe({
+    this.apiService.getStudentRequests(this.studentIdNumber).subscribe({
       next: (response) => {
         this.forms = response.data || response;
         console.log(this.forms);

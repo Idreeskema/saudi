@@ -5,28 +5,34 @@
         <!-- Top Navigation -->
         <header class="top-nav">
             <div class="breadcrumb">
-                <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                <i class="icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
                         <path
                             d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
-                    </svg></i>
-                <span>/ PENDING REQUESTS</span>
+                    </svg>
+                </i>
+                <span>Portal / Pending Requests</span>
             </div>
 
             <div class="top-nav-right">
                 <div class="user-menu">
-                    <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                    <i class="icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
                             <path
                                 d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                        </svg></i>
+                        </svg>
+                    </i>
                     <span>{{ currentUser?.name }}</span>
-                    <i class="arrow">▶</i>
+                    <i class="arrow">▼</i>
                 </div>
 
-                <button class="icon-btn" (click)="logout()">
-                    <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                <button class="icon-btn" (click)="logout()" title="Logout">
+                    <i class="icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
                             <path
                                 d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
-                        </svg></i>
+                        </svg>
+                    </i>
                 </button>
             </div>
         </header>
@@ -35,58 +41,69 @@
         <div class="pending-requests-content">
             <div class="content-header">
                 <h1>Pending Requests</h1>
-                <p>Requests awaiting your approval</p>
+                <p>Manage and approve incoming student applications</p>
             </div>
 
+            <!-- Loading State -->
             <div *ngIf="loading" class="loading-state">
                 <div class="spinner"></div>
-                <p>Loading pending requests...</p>
+                <p>Fetching requests...</p>
             </div>
 
+            <!-- Error State -->
             <div *ngIf="error" class="error-state">
-                <i class="icon">⚠️</i>
+                <div class="icon">🚫</div>
                 <p>{{ error }}</p>
-                <button class="btn btn-primary" (click)="loadPendingRequests()">Retry</button>
+                <button class="btn-primary" (click)="loadPendingRequests()">Try Again</button>
             </div>
 
+            <!-- Requests List -->
             <div *ngIf="!loading && !error" class="requests-table-container">
                 <table class="requests-table" *ngIf="pendingRequests.length > 0">
                     <thead>
                         <tr>
-                            <!-- <th>Order ID</th> -->
-                            <th>Student ID</th>
-                            <th>Student Name</th>
+                            <th>Student Information</th>
                             <th>Request Type</th>
-                            <th>Request Date</th>
-                            <!-- <th>Status</th> -->
+                            <th>Submission Date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let request of pendingRequests">
-                            <!-- <td>{{ request.orderId }}</td> -->
-                            <td>{{ request.studentId }}</td>
-                            <td>{{ request.studentName }}</td>
-                            <td>{{ request.requestType }}</td>
-                            <td>{{ request.requestDate | date:'medium' }}</td>
-                            <!-- <td>
-                                <span class="status-badge" [class]="'status-' + request.status">
-                                    {{ request.status }}
-                                </span>
-                            </td> -->
                             <td>
-                                <button class="btn btn-view" (click)="viewRequest(request)">
-                                    View & Approve
+                                <div class="student-info">
+                                    <span class="name">{{ request.studentName }}</span>
+                                    <span class="id">ID: {{ request.studentId }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="request-type">{{ request.requestType | titlecase }}</span>
+                            </td>
+                            <td>
+                                <div class="date-info">
+                                    <span class="date">{{ request.requestDate | date:'mediumDate' }}</span>
+                                    <span class="time">{{ request.requestDate | date:'shortTime' }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <button class="btn-view" (click)="viewRequest(request)">
+                                    <span>Process Request</span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
                                 </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
 
+                <!-- Empty State -->
                 <div *ngIf="pendingRequests.length === 0" class="empty-state">
-                    <i class="icon">📭</i>
-                    <h3>No Pending Requests</h3>
-                    <p>There are no requests awaiting your approval at this time.</p>
+                    <div class="icon">✨</div>
+                    <h3>All caught up!</h3>
+                    <p>There are no pending requests requiring your attention right now.</p>
                 </div>
             </div>
         </div>

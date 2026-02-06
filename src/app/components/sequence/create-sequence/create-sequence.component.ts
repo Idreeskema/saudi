@@ -43,6 +43,7 @@ export class CreateSequenceComponent implements OnInit {
   currentPage: number = 1;
   sequenceModels: any[] = [];
   sequenceStatuses: any[] = [];
+  emailTemplates: any[] = [];
   sequences: Sequence[] = [
     {
       id: "1",
@@ -185,6 +186,11 @@ export class CreateSequenceComponent implements OnInit {
       isActive: true,
     },
   ];
+
+  // Toggle Status Modal
+  showToggleModal: boolean = false;
+  selectedSeqForToggle: any = null;
+
   // Employee Multiselect
   isEmployeeDropdownOpen: boolean = false;
   selectedEmployees: Employee[] = [];
@@ -239,6 +245,7 @@ export class CreateSequenceComponent implements OnInit {
     nextApprovalProgramDirector: false,
     employees: "",
     sendNotificationTo: "",
+    emailTemplateId: "",
   };
 
   constructor(
@@ -257,6 +264,32 @@ export class CreateSequenceComponent implements OnInit {
     this.loadSequenceModels();
     this.loadSequenceStatuses();
     this.loadSequences();
+  }
+
+  onModelChange(): void {
+    if (!this.sequenceData.sequenceModel) {
+      this.emailTemplates = [];
+      this.sequenceData.emailTemplate = "";
+      return;
+    }
+
+    this.apiService.getEmailTemplatesByModelId(this.sequenceData.sequenceModel).subscribe({
+      next: (response) => {
+        const data = response.data || response;
+        // Wrap in array if it's a single object, or use if it's already an array
+        this.emailTemplates = Array.isArray(data) ? data : (data ? [data] : []);
+        
+        // Optionally auto-select if only one template exists
+        if (this.emailTemplates.length === 1) {
+          this.sequenceData.emailTemplate = this.emailTemplates[0].id.toString();
+        }
+      },
+      error: (error) => {
+        console.error("Error loading email templates:", error);
+        this.emailTemplates = [];
+        this.toastr.error("Failed to load email templates for this model");
+      }
+    });
   }
 
   loadSequenceModels(): void {
@@ -319,7 +352,7 @@ export class CreateSequenceComponent implements OnInit {
             optionSequenceClass:
               this.getOptionSequenceClass(optionSequenceValue),
             emailTemplate: item.emailTemplate,
-            isActive: item.isActive === "Active",
+            isActive: item.isActive === true || item.isActive === "Active" || item.isActive === "Yes",
           };
 
           console.log(
@@ -485,6 +518,7 @@ export class CreateSequenceComponent implements OnInit {
       nextApprovalProgramDirector: false,
       employees: "",
       sendNotificationTo: "",
+      emailTemplateId: "",
     };
     this.selectedEmployees = [];
   }
@@ -502,6 +536,7 @@ export class CreateSequenceComponent implements OnInit {
       nextApprovalProgramDirector: false,
       employees: "",
       sendNotificationTo: "",
+      emailTemplateId: "",
     };
     // TODO: populate selectedEmployees from seq.employees if available
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -515,6 +550,40 @@ export class CreateSequenceComponent implements OnInit {
 
   nextPage(): void {
     this.currentPage++;
+  }
+
+  openToggleModal(seq: any): void {
+    this.selectedSeqForToggle = seq;
+    this.showToggleModal = true;
+  }
+
+  closeToggleModal(): void {
+    this.showToggleModal = false;
+    this.selectedSeqForToggle = null;
+  }
+
+  confirmToggle(): void {
+    if (!this.selectedSeqForToggle) return;
+
+    const id = parseInt(this.selectedSeqForToggle.id, 10);
+    // If it's currently active, we send false to deactivate it. 
+    // If it's currently inactive, we send true to activate it.
+    const newStatus = !this.selectedSeqForToggle.isActive;
+
+    console.log("Sending Status Toggle Payload:", { id, isActive: newStatus });
+
+    this.apiService.toggleSequenceStatus(id, newStatus).subscribe({
+      next: (response) => {
+        this.toastr.success(`Sequence ${newStatus ? 'activated' : 'deactivated'} successfully!`);
+        this.loadSequences();
+        this.closeToggleModal();
+      },
+      error: (error) => {
+        console.error("Error toggling status:", error);
+        this.toastr.error(error.error?.message || "Failed to update status");
+        this.closeToggleModal();
+      }
+    });
   }
 
   logout(): void {

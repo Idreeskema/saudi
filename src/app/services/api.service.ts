@@ -102,4 +102,22 @@ export class ApiService {
   getStudentAppeal(id: number): Observable<any> {
     return this.get(`student-appeals/${id}`);
   }
+
+  getEmailTemplatesByModelId(modelId: any): Observable<any> {
+    return this.get(`emailtemplates/${modelId}`);
+  }
+
+  toggleSequenceStatus(id: number, isActive: boolean): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/Sequence/activate/deactivate`, {
+      headers: this.getHeaders(),
+      body: { id, isActive }
+    });
+  }
+ 
+  getSequenceListForms(formType: string): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/Sequence/formtype/${formType}`, {
+    headers: this.getHeaders(),
+  });
+  }
+
 }

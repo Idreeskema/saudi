@@ -61,7 +61,7 @@
       <div class="form-row">
         <div class="form-group">
           <label>Sequence Model</label>
-          <select class="form-control" [(ngModel)]="sequenceData.sequenceModel">
+          <select class="form-control" [(ngModel)]="sequenceData.sequenceModel" (change)="onModelChange()">
             <option value="">- Select Item -</option>
             <option *ngFor="let model of sequenceModels" [value]="model.id">{{ model.englishName }}</option>
           </select>
@@ -103,8 +103,7 @@
         <label>Email Template</label>
         <select class="form-control" [(ngModel)]="sequenceData.emailTemplate">
           <option value="">- Select Item -</option>
-          <option value="template1">Template 1</option>
-          <option value="template2">Template 2</option>
+          <option *ngFor="let template of emailTemplates" [value]="template.id">{{ template.templateName }}</option>
         </select>
       </div>
 
@@ -185,13 +184,13 @@
             <th>NEXT SEQUENCE</th>
             <th>PREVIOUS SEQUENCE</th>
             <th>OPTIONS SEQUENCE</th>
-            <th>EMAIL TEMPLATE</th>
-            <th>STATUS</th>
+            <!-- <th>EMAIL TEMPLATE</th> -->
+            <!-- <th>STATUS</th> -->
             <th>ACTIONS</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let seq of sequences">
+          <tr *ngFor="let seq of sequences" [class.row-deactivated]="!seq.isActive">
             <td>{{ seq.sequenceModel | titlecase }}</td>
             <td>
               <span class="badge badge-status" [ngClass]="seq.sequenceStatusClass">
@@ -213,19 +212,32 @@
                 {{ seq.optionSequence | titlecase }}
               </span>
             </td>
-            <td>{{ seq.emailTemplate | titlecase }}</td>
-            <td>
+            <!-- <td>{{ seq.emailTemplate | titlecase }}</td> -->
+            <!-- <td>
               <span class="status-badge" [ngClass]="seq.isActive ? 'status-active' : 'status-inactive'">
                 <span class="status-dot"></span>
                 {{ seq.isActive ? 'Active' : 'Not Active' }}
               </span>
-            </td>
+            </td> -->
             <td>
-              <button class="action-btn" (click)="editSequence(seq)">
+              <!-- <button class="action-btn" (click)="editSequence(seq)" title="Edit Sequence">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path
                     d="M19 2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h4l3 3 3-3h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 3.3c1.49 0 2.7 1.21 2.7 2.7 0 1.49-1.21 2.7-2.7 2.7-1.49 0-2.7-1.21-2.7-2.7 0-1.49 1.21-2.7 2.7-2.7zM18 16H6v-.9c0-2 4-3.1 6-3.1s6 1.1 6 3.1v.9z" />
                 </svg>
+              </button> -->
+              <button class="action-btn toggle-btn" (click)="openToggleModal(seq)"
+                [title]="seq.isActive ? 'Deactivate' : 'Activate'">
+                <i class="icon" [style.color]="seq.isActive ? '#F44336' : '#4CAF50'">
+                  <svg *ngIf="seq.isActive" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z" />
+                  </svg>
+                  <svg *ngIf="!seq.isActive" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z" />
+                  </svg>
+                </i>
               </button>
             </td>
           </tr>
@@ -244,4 +256,39 @@
       </div>
     </div>
   </main>
+
+  <!-- Activation/Deactivation Modal -->
+  <div class="modal-overlay" *ngIf="showToggleModal" (click)="closeToggleModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="icon-wrapper" [ngClass]="selectedSeqForToggle?.isActive ? 'deactivate' : 'activate'">
+          <svg *ngIf="selectedSeqForToggle?.isActive" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z" />
+          </svg>
+          <svg *ngIf="!selectedSeqForToggle?.isActive" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z" />
+          </svg>
+        </div>
+        <h3>{{ selectedSeqForToggle?.isActive ? 'Deactivate Sequence?' : 'Activate Sequence?' }}</h3>
+      </div>
+
+      <div class="modal-body">
+        <p>Are you sure you want to {{ selectedSeqForToggle?.isActive ? 'deactivate' : 'activate' }} this sequence? This
+          will change its availability in the workflow.</p>
+        <div class="sequence-info">
+          {{ selectedSeqForToggle?.sequenceModel }} - {{ selectedSeqForToggle?.sequenceStatus }}
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-modal btn-cancel" (click)="closeToggleModal()">CANCEL</button>
+        <button class="btn-modal btn-confirm"
+          [ngClass]="selectedSeqForToggle?.isActive ? 'bg-deactivate' : 'bg-activate'" (click)="confirmToggle()">
+          CONFIRM {{ selectedSeqForToggle?.isActive ? 'DEACTIVATION' : 'ACTIVATION' }}
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

@@ -86,6 +86,7 @@ export class RefundFormComponent implements OnInit {
                  ...this.form.studentSection,
                  name: data.studentName || this.form.studentSection.name,
                  studentId: data.studentId || this.form.studentSection.studentId,
+                 mobileNumber: data.mobileNumber || this.form.studentSection.mobileNumber,
                  nationality: data.nationality || this.form.studentSection.nationality,
                  major: data.major || this.form.studentSection.major,
                  level: data.level || this.form.studentSection.level,

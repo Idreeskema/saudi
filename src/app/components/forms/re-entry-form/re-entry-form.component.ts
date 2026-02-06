@@ -86,7 +86,7 @@ export class ReEntryFormComponent implements OnInit {
       this.router.navigate(["/login"]);
       return;
     }
-
+    
     // Get formId from route parameters if editing an existing form
     const id = this.route.snapshot.paramMap.get("id");
     if (id) {
@@ -101,8 +101,9 @@ export class ReEntryFormComponent implements OnInit {
   }
 
   loadFormData(): void {
+    const getId = 0;
     if (this.formData.formId > 0) {
-      this.apiService.get(`re-entry-forms/${this.formData.formId}`).subscribe({
+      this.apiService.get(`re-entry-forms/${getId}`).subscribe({
         next: (response: any) => {
           console.log("Form data loaded successfully", response);
           this.populateFormData(response);
@@ -115,34 +116,34 @@ export class ReEntryFormComponent implements OnInit {
   }
 
   populateFormData(data: any): void {
-    this.formData.studentId = data.studentId || "";
-    this.formData.studentName = data.studentName || "";
-    this.formData.mobileNumber = data.mobileNumber || "";
-    this.formData.email = data.email || "";
-    this.formData.gpa = data.gpa || 0;
-    this.formData.major = data.major || "";
+    this.formData.studentId = data.data.studentId || "";
+    this.formData.studentName = data.data.studentName || "";
+    this.formData.mobileNumber = data.data.mobileNumber || "";
+    this.formData.email = data.data.email || "";
+    this.formData.gpa = data.data.gpa || 0;
+    this.formData.major = data.data.major || "";
     
     // Convert semester strings to checkboxes for enrollment
-    this.formData.dateOfEnrollmentSemester = data.dateOfEnrollmentSemester || "";
-    this.formData.enrollmentFirstSemester = data.dateOfEnrollmentSemester === "Fall";
-    this.formData.enrollmentSecondSemester = data.dateOfEnrollmentSemester === "Spring";
-    this.formData.enrollmentAcademicYear = data.dateOfEnrollmentAcademicYear || "";
-    this.formData.dateOfEnrollmentAcademicYear = data.dateOfEnrollmentAcademicYear || "";
+    this.formData.dateOfEnrollmentSemester = data.data.dateOfEnrollmentSemester || "";
+    this.formData.enrollmentFirstSemester = data.data.dateOfEnrollmentSemester === "Fall";
+    this.formData.enrollmentSecondSemester = data.data.dateOfEnrollmentSemester === "Spring";
+    this.formData.enrollmentAcademicYear = data.data.dateOfEnrollmentAcademicYear || "";
+    this.formData.dateOfEnrollmentAcademicYear = data.data.dateOfEnrollmentAcademicYear || "";
     
     // Convert semester strings to checkboxes for last semester
-    this.formData.lastSemesterEnrolled = data.lastSemesterEnrolled || "";
-    this.formData.lastSemesterFirst = data.lastSemesterEnrolled === "Fall";
-    this.formData.lastSemesterSecond = data.lastSemesterEnrolled === "Spring";
-    this.formData.lastSemesterAcademicYear = data.lastSemesterAcademicYear || "";
+    this.formData.lastSemesterEnrolled = data.data.lastSemesterEnrolled || "";
+    this.formData.lastSemesterFirst = data.data.lastSemesterEnrolled === "Fall";
+    this.formData.lastSemesterSecond = data.data.lastSemesterEnrolled === "Spring";
+    this.formData.lastSemesterAcademicYear = data.data.lastSemesterAcademicYear || "";
     
-    this.formData.studentSignature = data.studentSignature || "";
-    this.formData.dateSigned = data.dateSigned || "";
+    this.formData.studentSignature = data.data.studentSignature || "";
+    this.formData.dateSigned = data.data.dateSigned || "";
     
     // Faculty Council Data
     if (data.facultyCouncilSection) {
-      this.formData.facultySessionNo = data.facultyCouncilSection.sessionNo || "";
-      this.formData.facultyDecision = data.facultyCouncilSection.decision || false;
-      this.formData.facultyDate = data.facultyCouncilSection.date || "";
+      this.formData.facultySessionNo = data.data.facultyCouncilSection.sessionNo || "";
+      this.formData.facultyDecision = data.data.facultyCouncilSection.decision || false;
+      this.formData.facultyDate = data.data.facultyCouncilSection.date || "";
     }
     
     // Dean Data

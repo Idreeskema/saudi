@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "../../../services/auth.service";
 import { ApiService } from "../../../services/api.service";
 import { ToastrService } from "ngx-toastr";
@@ -17,7 +17,7 @@ import { SidebarComponent } from "../../sidebar/sidebar.component";
 })
 export class ReplacementExamDeclarationFormComponent implements OnInit {
   currentUser: User | null = null;
-  formId: number = 24;
+  formId: number = 0;
 
   formData = {
     // Student Information
@@ -47,6 +47,7 @@ export class ReplacementExamDeclarationFormComponent implements OnInit {
     private router: Router,
     private apiService: ApiService,
     private toastr: ToastrService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -55,9 +56,13 @@ export class ReplacementExamDeclarationFormComponent implements OnInit {
       this.router.navigate(["/login"]);
       return;
     }
+    this.route.params.subscribe((params) => {
+    this.formId = +params["id"]; // convert to number
     if (this.formId > 0) {
       this.loadFormData();
-    }
+          }
+        });
+
   }
 
   loadFormData(): void {
