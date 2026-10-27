@@ -1,6 +1,6 @@
 <div class="form-wrapper">
   <!-- Sidebar -->
-<app-sidebar ></app-sidebar>
+  <app-sidebar></app-sidebar>
 
   <!-- Main Content -->
   <main class="main-content">
@@ -10,28 +10,28 @@
         <i class="icon">🏠</i>
         <span>/ Refund Form</span>
       </div>
-      
+
       <button class="menu-toggle">
         <i class="icon">☰</i>
       </button>
-      
+
       <div class="top-nav-right">
         <button class="year-selector">
           <i class="icon">📅</i>
           All Years
           <i class="arrow">▼</i>
         </button>
-        
+
         <div class="user-menu">
           <i class="icon">👤</i>
           <span>{{ currentUser?.name }}</span>
           <!-- <i class="arrow">▶</i> -->
         </div>
-        
+
         <button class="icon-btn" (click)="logout()">
           <i class="icon">🚪</i>
         </button>
-        
+
         <button class="icon-btn">
           <i class="icon">🌐</i>
         </button>
@@ -61,7 +61,7 @@
 
     <!-- Form Content -->
     <div *ngIf="!isLoading && form" class="form-container" id="printable-form">
-      
+
       <!-- Form Header -->
       <div class="form-header">
         <h1>Refund Form</h1>
@@ -74,7 +74,8 @@
       </div>
 
       <!-- SECTION 1: STUDENT INFORMATION -->
-      <div class="form-section" [class.section-completed]="form.studentSection.completed" *ngIf="canViewSection('student')">
+      <div class="form-section" [class.section-completed]="form.studentSection.completed"
+        *ngIf="canViewSection('student')">
         <div class="section-header">
           <h2>
             <span class="section-number">1</span>
@@ -88,12 +89,8 @@
           <!-- Student Name -->
           <div class="form-group full-width">
             <label for="studentName">Student Name <span class="required">*</span></label>
-            <select 
-              id="studentName" 
-              [(ngModel)]="form.studentSection.name"
-              [disabled]="!canEditSection('student')"
-              class="form-control"
-            >
+            <select id="studentName" [(ngModel)]="form.studentSection.name" [disabled]="!canEditSection('student')"
+              class="form-control" [class.is-invalid]="studentSectionSubmitted && !form.studentSection.name">
               <option value="">Select Student</option>
               <option value="Aarak Muhammad Ibraheem">Aarak Muhammad Ibraheem - 462209561</option>
               <option value="Idrees Kema">Idrees Kema - Test</option>
@@ -103,198 +100,118 @@
           <!-- Row 1 -->
           <div class="form-group">
             <label for="mobileNumber">Mobile Number</label>
-            <input 
-              type="number" 
-              id="mobileNumber"
-              [(ngModel)]="form.studentSection.mobileNumber"
-              [readonly]="!canEditSection('student')"
-              class="form-control"
-              placeholder="Enter mobile number"
-            />
+            <input type="tel" id="mobileNumber" [(ngModel)]="form.studentSection.mobileNumber"
+              mask="+000 00 000 0000" [showMaskTyped]="true" placeHolderCharacter="_"
+              [readonly]="!canEditSection('student')" class="form-control" placeholder="Enter mobile number" />
           </div>
 
           <div class="form-group">
             <label for="studentId">Student ID <span class="required">*</span></label>
-            <input 
-              type="text" 
-              id="studentId"
-              [(ngModel)]="form.studentSection.studentId"
-              [readonly]="!canEditSection('student')"
-              class="form-control"
-              placeholder="Enter student ID"
-            />
+            <input type="text" id="studentId" [(ngModel)]="form.studentSection.studentId"
+              [readonly]="!canEditSection('student')" class="form-control" placeholder="Enter student ID"
+              [class.is-invalid]="studentSectionSubmitted && !form.studentSection.studentId" />
           </div>
 
           <!-- Row 2 -->
           <div class="form-group">
             <label for="nationality">Nationality</label>
-            <input 
-              type="text" 
-              id="nationality"
-              [(ngModel)]="form.studentSection.nationality"
-              [readonly]="!canEditSection('student')"
-              class="form-control"
-              placeholder="Enter nationality"
-            />
+            <input type="text" id="nationality" [(ngModel)]="form.studentSection.nationality"
+              [readonly]="!canEditSection('student')" class="form-control" placeholder="Enter nationality" />
           </div>
 
           <div class="form-group">
             <label for="major">Major</label>
-            <input 
-              type="text" 
-              id="major"
-              [(ngModel)]="form.studentSection.major"
-              [readonly]="!canEditSection('student')"
-              class="form-control"
-              placeholder="Enter major"
-            />
+            <input type="text" id="major" [(ngModel)]="form.studentSection.major"
+              [readonly]="!canEditSection('student')" class="form-control" placeholder="Enter major" />
           </div>
 
           <!-- Row 3 -->
           <div class="form-group">
             <label for="level">Level</label>
-            <input 
-              type="text" 
-              id="level"
-              [(ngModel)]="form.studentSection.level"
-              [readonly]="!canEditSection('student')"
-              class="form-control"
-              placeholder="Enter level"
-            />
+            <input type="text" id="level" [(ngModel)]="form.studentSection.level"
+              [readonly]="!canEditSection('student')" class="form-control" placeholder="Enter level" />
           </div>
 
           <div class="form-group">
-            <label for="refundAmount">Refund Amount</label>
-            <input 
-              type="number" 
-              id="refundAmount"
-              [(ngModel)]="form.studentSection.refundAmount"
-              [readonly]="!canEditSection('student')"
-              class="form-control"
-              placeholder="Enter amount"
-            />
+            <label for="refundAmount">Refund Amount <span class="required">*</span></label>
+            <input type="number" id="refundAmount" [(ngModel)]="form.studentSection.refundAmount"
+              [readonly]="!canEditSection('student')" class="form-control" placeholder="Enter amount"
+              [class.is-invalid]="studentSectionSubmitted && (form.studentSection.refundAmount === null || form.studentSection.refundAmount === undefined)" />
           </div>
 
           <!-- Refund Reason -->
           <div class="form-group full-width">
-            <label for="refundReason">Refund Reason</label>
-            <textarea 
-              id="refundReason"
-              [(ngModel)]="form.studentSection.refundReason"
-              [readonly]="!canEditSection('student')"
-              class="form-control"
-              rows="3"
+            <label for="refundReason">Refund Reason <span class="required">*</span></label>
+            <textarea id="refundReason" [(ngModel)]="form.studentSection.refundReason"
+              [readonly]="!canEditSection('student')" class="form-control" rows="3"
               placeholder="Enter reason for refund"
-            ></textarea>
+              [class.is-invalid]="studentSectionSubmitted && !form.studentSection.refundReason"></textarea>
           </div>
 
           <!-- Bank Details -->
           <div class="form-group">
-            <label for="bankName">Bank Name</label>
-            <input 
-              type="text" 
-              id="bankName"
-              [(ngModel)]="form.studentSection.bankName"
-              [readonly]="!canEditSection('student')"
-              class="form-control"
-              placeholder="Enter bank name"
-            />
+            <label for="bankName">Bank Name <span class="required">*</span></label>
+            <input type="text" id="bankName" [(ngModel)]="form.studentSection.bankName"
+              [readonly]="!canEditSection('student')" class="form-control" placeholder="Enter bank name"
+              [class.is-invalid]="studentSectionSubmitted && !form.studentSection.bankName" />
           </div>
 
           <div class="form-group">
             <label for="accountHolderName">Account Holder Name</label>
-            <input 
-              type="text" 
-              id="accountHolderName"
-              [(ngModel)]="form.studentSection.accountHolderName"
-              [readonly]="!canEditSection('student')"
-              class="form-control"
-              placeholder="Enter account holder name"
-            />
+            <input type="text" id="accountHolderName" [(ngModel)]="form.studentSection.accountHolderName"
+              [readonly]="!canEditSection('student')" class="form-control" placeholder="Enter account holder name" />
           </div>
 
           <div class="form-group">
             <label for="relationship">Relationship</label>
-            <input 
-              type="text" 
-              id="relationship"
-              [(ngModel)]="form.studentSection.relationship"
-              [readonly]="!canEditSection('student')"
-              class="form-control"
-              placeholder="Enter relationship"
-            />
+            <input type="text" id="relationship" [(ngModel)]="form.studentSection.relationship"
+              [readonly]="!canEditSection('student')" class="form-control" placeholder="Enter relationship" />
           </div>
 
           <div class="form-group">
-            <label for="ibanArabic">IBAN (Arabic)</label>
-            <input 
-              type="text" 
-              id="ibanArabic"
-              [(ngModel)]="form.studentSection.ibanArabic"
-              [readonly]="!canEditSection('student')"
-              class="form-control"
-              placeholder="Enter IBAN in Arabic"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="ibanEnglish">IBAN (English)</label>
-            <input 
-              type="text" 
-              id="ibanEnglish"
-              [(ngModel)]="form.studentSection.ibanEnglish"
-              [readonly]="!canEditSection('student')"
-              class="form-control"
-              placeholder="Enter IBAN in English"
-            />
+            <label for="ibanEnglish">IBAN (English) <span class="required">*</span></label>
+            <input type="text" id="ibanEnglish" name="ibanEnglish" [(ngModel)]="form.studentSection.ibanEnglish"
+              [readonly]="!canEditSection('student')" class="form-control" placeholder="SA0000000000000000000000"
+              #ibanInput="ngModel" pattern="^SA\d{22}$"
+              [class.is-invalid]="studentSectionSubmitted && (!form.studentSection.ibanEnglish || ibanInput.invalid)" />
+            <div *ngIf="studentSectionSubmitted && (!form.studentSection.ibanEnglish || ibanInput.invalid)" class="error-message">
+              IBAN must start with SA followed by 22 digits.
+            </div>
           </div>
 
           <div class="form-group">
             <label for="holderIdIqama">Holder ID/Iqama</label>
-            <input 
-              type="text" 
-              id="holderIdIqama"
-              [(ngModel)]="form.studentSection.holderIdIqama"
-              [readonly]="!canEditSection('student')"
-              class="form-control"
-              placeholder="Enter ID/Iqama number"
-            />
+            <input type="text" id="holderIdIqama" [(ngModel)]="form.studentSection.holderIdIqama"
+              [readonly]="!canEditSection('student')" class="form-control" placeholder="Enter ID/Iqama number" />
           </div>
 
           <!-- Signature and Date -->
           <div class="form-group">
             <label for="studentSignature">Student Signature</label>
-            <input 
-              type="text" 
-              id="studentSignature"
-              [(ngModel)]="form.studentSection.studentSignature"
-              [readonly]="!canEditSection('student')"
-              class="form-control"
-              placeholder="Enter signature"
-            />
+            <input type="text" id="studentSignature" [(ngModel)]="form.studentSection.studentSignature"
+              [readonly]="!canEditSection('student')" class="form-control" placeholder="Enter signature" />
           </div>
 
           <div class="form-group">
             <label for="studentDate">Date</label>
-            <input 
-              type="date" 
-              id="studentDate"
-              [(ngModel)]="form.studentSection.studentDate"
-              [readonly]="!canEditSection('student')"
-              class="form-control"
-            />
+            <input type="date" min="1900-01-01" max="2099-12-31" id="studentDate" [(ngModel)]="form.studentSection.studentDate"
+              [readonly]="!canEditSection('student')" class="form-control" />
           </div>
         </div>
 
         <div class="section-footer" *ngIf="canEditSection('student')">
-          <button class="btn btn-primary" (click)="saveSection('student')">
-            Save 
-          </button>
+          <span [title]="getMissingStudentFields().length > 0 ? 'Missing: ' + getMissingStudentFields().join(', ') : ''">
+            <button class="btn btn-primary" (click)="saveSection('student')"
+              [class.visually-disabled]="getMissingStudentFields().length > 0">
+              Save
+            </button>
+          </span>
         </div>
       </div>
 
       <!-- SECTION 2: REGISTRATION DEPARTMENT -->
-      <div class="form-section" [class.section-completed]="form.registrationSection.completed" *ngIf="canViewSection('registration')">
+      <div class="form-section" [class.section-completed]="form.registrationSection.completed"
+        *ngIf="canViewSection('registration')">
         <div class="section-header">
           <h2>
             <span class="section-number">2</span>
@@ -310,23 +227,13 @@
             <label>Withdrawal Type <span class="required">*</span></label>
             <div class="radio-group">
               <label class="radio-label">
-                <input 
-                  type="radio" 
-                  name="withdrawalType" 
-                  value="complete"
-                  [(ngModel)]="form.registrationSection.withdrawalType"
-                  [disabled]="!canEditSection('registration')"
-                />
+                <input type="radio" name="withdrawalType" value="complete"
+                  [(ngModel)]="form.registrationSection.withdrawalType" [disabled]="!canEditSection('registration')" />
                 Complete Withdrawal
               </label>
               <label class="radio-label">
-                <input 
-                  type="radio" 
-                  name="withdrawalType" 
-                  value="partial"
-                  [(ngModel)]="form.registrationSection.withdrawalType"
-                  [disabled]="!canEditSection('registration')"
-                />
+                <input type="radio" name="withdrawalType" value="partial"
+                  [(ngModel)]="form.registrationSection.withdrawalType" [disabled]="!canEditSection('registration')" />
                 Partial Withdrawal
               </label>
             </div>
@@ -337,23 +244,13 @@
             <label>Semester Timing <span class="required">*</span></label>
             <div class="radio-group">
               <label class="radio-label">
-                <input 
-                  type="radio" 
-                  name="semesterTiming" 
-                  value="before"
-                  [(ngModel)]="form.registrationSection.semesterTiming"
-                  [disabled]="!canEditSection('registration')"
-                />
+                <input type="radio" name="semesterTiming" value="before"
+                  [(ngModel)]="form.registrationSection.semesterTiming" [disabled]="!canEditSection('registration')" />
                 Before Semester
               </label>
               <label class="radio-label">
-                <input 
-                  type="radio" 
-                  name="semesterTiming" 
-                  value="after"
-                  [(ngModel)]="form.registrationSection.semesterTiming"
-                  [disabled]="!canEditSection('registration')"
-                />
+                <input type="radio" name="semesterTiming" value="after"
+                  [(ngModel)]="form.registrationSection.semesterTiming" [disabled]="!canEditSection('registration')" />
                 After Semester
               </label>
             </div>
@@ -362,62 +259,42 @@
           <!-- Other Reason -->
           <div class="form-group full-width">
             <label for="otherReason">Other Reason</label>
-            <textarea 
-              id="otherReason"
-              [(ngModel)]="form.registrationSection.otherReason"
-              [readonly]="!canEditSection('registration')"
-              class="form-control"
-              rows="3"
-              placeholder="Enter any other reason"
-            ></textarea>
+            <textarea id="otherReason" [(ngModel)]="form.registrationSection.otherReason"
+              [readonly]="!canEditSection('registration')" class="form-control" rows="3"
+              placeholder="Enter any other reason"></textarea>
           </div>
 
           <!-- Department Details -->
           <div class="form-group">
             <label for="departmentHead">Department Head</label>
-            <input 
-              type="text" 
-              id="departmentHead"
-              [(ngModel)]="form.registrationSection.departmentHead"
-              [readonly]="!canEditSection('registration')"
-              class="form-control"
-              placeholder="Enter department head name"
-            />
+            <input type="text" id="departmentHead" [(ngModel)]="form.registrationSection.departmentHead"
+              [readonly]="!canEditSection('registration')" class="form-control"
+              placeholder="Enter department head name" />
           </div>
 
           <div class="form-group">
             <label for="regSignature">Signature</label>
-            <input 
-              type="text" 
-              id="regSignature"
-              [(ngModel)]="form.registrationSection.signature"
-              [readonly]="!canEditSection('registration')"
-              class="form-control"
-              placeholder="Enter signature"
-            />
+            <input type="text" id="regSignature" [(ngModel)]="form.registrationSection.signature"
+              [readonly]="!canEditSection('registration')" class="form-control" placeholder="Enter signature" />
           </div>
 
           <div class="form-group">
             <label for="regDate">Date</label>
-            <input 
-              type="date" 
-              id="regDate"
-              [(ngModel)]="form.registrationSection.date"
-              [readonly]="!canEditSection('registration')"
-              class="form-control"
-            />
+            <input type="date" min="1900-01-01" max="2099-12-31" id="regDate" [(ngModel)]="form.registrationSection.date"
+              [readonly]="!canEditSection('registration')" class="form-control" />
           </div>
         </div>
 
         <div class="section-footer" *ngIf="canEditSection('registration')">
           <button class="btn btn-primary" (click)="saveSection('registration')">
-            Save 
+            Save
           </button>
         </div>
       </div>
 
       <!-- SECTION 3: ACCOUNTING VERIFICATION -->
-      <div class="form-section" [class.section-completed]="form.accountingVerificationSection.completed" *ngIf="canViewSection('accountingVerification')">
+      <div class="form-section" [class.section-completed]="form.accountingVerificationSection.completed"
+        *ngIf="canViewSection('accountingVerification')">
         <div class="section-header">
           <h2>
             <span class="section-number">3</span>
@@ -430,108 +307,71 @@
         <div class="form-grid">
           <div class="form-group">
             <label for="paymentAmountNumeric">Payment Amount (Numeric)</label>
-            <input 
-              type="number" 
-              id="paymentAmountNumeric"
+            <input type="number" id="paymentAmountNumeric"
               [(ngModel)]="form.accountingVerificationSection.paymentAmountNumeric"
-              [readonly]="!canEditSection('accountingVerification')"
-              class="form-control"
-              placeholder="Enter amount"
-            />
+              [readonly]="!canEditSection('accountingVerification')" class="form-control" placeholder="Enter amount" />
           </div>
 
           <div class="form-group">
             <label for="paymentAmountWords">Payment Amount (Words)</label>
-            <input 
-              type="text" 
-              id="paymentAmountWords"
+            <input type="text" id="paymentAmountWords"
               [(ngModel)]="form.accountingVerificationSection.paymentAmountWords"
-              [readonly]="!canEditSection('accountingVerification')"
-              class="form-control"
-              placeholder="Enter amount in words"
-            />
+              [readonly]="!canEditSection('accountingVerification')" class="form-control"
+              placeholder="Enter amount in words" />
           </div>
 
           <div class="form-group">
             <label for="accountantName">Accountant Name</label>
-            <input 
-              type="text" 
-              id="accountantName"
-              [(ngModel)]="form.accountingVerificationSection.accountantName"
-              [readonly]="!canEditSection('accountingVerification')"
-              class="form-control"
-              placeholder="Enter accountant name"
-            />
+            <input type="text" id="accountantName" [(ngModel)]="form.accountingVerificationSection.accountantName"
+              [readonly]="!canEditSection('accountingVerification')" class="form-control"
+              placeholder="Enter accountant name" />
           </div>
 
           <div class="form-group">
             <label for="accountantSignature">Accountant Signature</label>
-            <input 
-              type="text" 
-              id="accountantSignature"
+            <input type="text" id="accountantSignature"
               [(ngModel)]="form.accountingVerificationSection.accountantSignature"
-              [readonly]="!canEditSection('accountingVerification')"
-              class="form-control"
-              placeholder="Enter signature"
-            />
+              [readonly]="!canEditSection('accountingVerification')" class="form-control"
+              placeholder="Enter signature" />
           </div>
 
           <div class="form-group">
             <label for="accountantDate">Date</label>
-            <input 
-              type="date" 
-              id="accountantDate"
-              [(ngModel)]="form.accountingVerificationSection.accountantDate"
-              [readonly]="!canEditSection('accountingVerification')"
-              class="form-control"
-            />
+            <input type="date" min="1900-01-01" max="2099-12-31" id="accountantDate" [(ngModel)]="form.accountingVerificationSection.accountantDate"
+              [readonly]="!canEditSection('accountingVerification')" class="form-control" />
           </div>
 
           <div class="form-group">
             <label for="chiefAccountant">Chief Accountant</label>
-            <input 
-              type="text" 
-              id="chiefAccountant"
-              [(ngModel)]="form.accountingVerificationSection.chiefAccountant"
-              [readonly]="!canEditSection('accountingVerification')"
-              class="form-control"
-              placeholder="Enter chief accountant name"
-            />
+            <input type="text" id="chiefAccountant" [(ngModel)]="form.accountingVerificationSection.chiefAccountant"
+              [readonly]="!canEditSection('accountingVerification')" class="form-control"
+              placeholder="Enter chief accountant name" />
           </div>
 
           <div class="form-group">
             <label for="chiefSignature">Chief Signature</label>
-            <input 
-              type="text" 
-              id="chiefSignature"
-              [(ngModel)]="form.accountingVerificationSection.chiefSignature"
-              [readonly]="!canEditSection('accountingVerification')"
-              class="form-control"
-              placeholder="Enter signature"
-            />
+            <input type="text" id="chiefSignature" [(ngModel)]="form.accountingVerificationSection.chiefSignature"
+              [readonly]="!canEditSection('accountingVerification')" class="form-control"
+              placeholder="Enter signature" />
           </div>
 
           <div class="form-group">
             <label for="chiefDate">Chief Date</label>
-            <input 
-              type="date" 
-              id="chiefDate"
-              [(ngModel)]="form.accountingVerificationSection.chiefDate"
-              [readonly]="!canEditSection('accountingVerification')"
-              class="form-control"
-            />
+            <input type="date" min="1900-01-01" max="2099-12-31" id="chiefDate" [(ngModel)]="form.accountingVerificationSection.chiefDate"
+              [readonly]="!canEditSection('accountingVerification')" class="form-control" />
           </div>
         </div>
 
         <div class="section-footer" *ngIf="canEditSection('accountingVerification')">
           <button class="btn btn-primary" (click)="saveSection('accountingVerification')">
-            Save 
+            Save
           </button>
         </div>
       </div>
 
       <!-- SECTION 4: AUTHORIZED PERSON -->
-      <div class="form-section" [class.section-completed]="form.authorizedSection.completed" *ngIf="canViewSection('authorized')">
+      <div class="form-section" [class.section-completed]="form.authorizedSection.completed"
+        *ngIf="canViewSection('authorized')">
         <div class="section-header">
           <h2>
             <span class="section-number">4</span>
@@ -547,23 +387,13 @@
             <label>Decision <span class="required">*</span></label>
             <div class="radio-group">
               <label class="radio-label radio-success">
-                <input 
-                  type="radio" 
-                  name="decision" 
-                  [value]="true"
-                  [(ngModel)]="form.authorizedSection.decision"
-                  [disabled]="!canEditSection('authorized')"
-                />
+                <input type="radio" name="decision" [value]="true" [(ngModel)]="form.authorizedSection.decision"
+                  [disabled]="!canEditSection('authorized')" />
                 ✓ Approved
               </label>
               <label class="radio-label radio-danger">
-                <input 
-                  type="radio" 
-                  name="decision" 
-                  [value]="false"
-                  [(ngModel)]="form.authorizedSection.decision"
-                  [disabled]="!canEditSection('authorized')"
-                />
+                <input type="radio" name="decision" [value]="false" [(ngModel)]="form.authorizedSection.decision"
+                  [disabled]="!canEditSection('authorized')" />
                 ✗ Denied
               </label>
             </div>
@@ -571,61 +401,39 @@
 
           <div class="form-group">
             <label for="approvedAmountNumeric">Approved Amount (Numeric)</label>
-            <input 
-              type="number" 
-              id="approvedAmountNumeric"
-              [(ngModel)]="form.authorizedSection.approvedAmountNumeric"
-              [readonly]="!canEditSection('authorized')"
-              class="form-control"
-              placeholder="Enter approved amount"
-            />
+            <input type="number" id="approvedAmountNumeric" [(ngModel)]="form.authorizedSection.approvedAmountNumeric"
+              [readonly]="!canEditSection('authorized')" class="form-control" placeholder="Enter approved amount" />
           </div>
 
           <div class="form-group">
             <label for="approvedAmountWords">Approved Amount (Words)</label>
-            <input 
-              type="text" 
-              id="approvedAmountWords"
-              [(ngModel)]="form.authorizedSection.approvedAmountWords"
-              [readonly]="!canEditSection('authorized')"
-              class="form-control"
-              placeholder="Enter amount in words"
-            />
+            <input type="text" id="approvedAmountWords" [(ngModel)]="form.authorizedSection.approvedAmountWords"
+              [readonly]="!canEditSection('authorized')" class="form-control" placeholder="Enter amount in words" />
           </div>
 
           <div class="form-group">
             <label for="authSignature">Signature</label>
-            <input 
-              type="text" 
-              id="authSignature"
-              [(ngModel)]="form.authorizedSection.signature"
-              [readonly]="!canEditSection('authorized')"
-              class="form-control"
-              placeholder="Enter signature"
-            />
+            <input type="text" id="authSignature" [(ngModel)]="form.authorizedSection.signature"
+              [readonly]="!canEditSection('authorized')" class="form-control" placeholder="Enter signature" />
           </div>
 
           <div class="form-group">
             <label for="authDate">Date</label>
-            <input 
-              type="date" 
-              id="authDate"
-              [(ngModel)]="form.authorizedSection.date"
-              [readonly]="!canEditSection('authorized')"
-              class="form-control"
-            />
+            <input type="date" min="1900-01-01" max="2099-12-31" id="authDate" [(ngModel)]="form.authorizedSection.date"
+              [readonly]="!canEditSection('authorized')" class="form-control" />
           </div>
         </div>
 
         <div class="section-footer" *ngIf="canEditSection('authorized')">
           <button class="btn btn-primary" (click)="saveSection('authorized')">
-            Save 
+            Save
           </button>
         </div>
       </div>
 
       <!-- SECTION 5: ACCOUNTING DISBURSEMENT -->
-      <div class="form-section" [class.section-completed]="form.accountingDisbursementSection.completed" *ngIf="canViewSection('accountingDisbursement')">
+      <div class="form-section" [class.section-completed]="form.accountingDisbursementSection.completed"
+        *ngIf="canViewSection('accountingDisbursement')">
         <div class="section-header">
           <h2>
             <span class="section-number">5</span>
@@ -638,66 +446,42 @@
         <div class="form-grid">
           <div class="form-group">
             <label for="chequeNumber">Cheque Number</label>
-            <input 
-              type="text" 
-              id="chequeNumber"
-              [(ngModel)]="form.accountingDisbursementSection.chequeNumber"
-              [readonly]="!canEditSection('accountingDisbursement')"
-              class="form-control"
-              placeholder="Enter cheque number"
-            />
+            <input type="text" id="chequeNumber" [(ngModel)]="form.accountingDisbursementSection.chequeNumber"
+              [readonly]="!canEditSection('accountingDisbursement')" class="form-control"
+              placeholder="Enter cheque number" />
           </div>
 
           <div class="form-group">
             <label for="issueDate">Issue Date</label>
-            <input 
-              type="date" 
-              id="issueDate"
-              [(ngModel)]="form.accountingDisbursementSection.issueDate"
-              [readonly]="!canEditSection('accountingDisbursement')"
-              class="form-control"
-            />
+            <input type="date" min="1900-01-01" max="2099-12-31" id="issueDate" [(ngModel)]="form.accountingDisbursementSection.issueDate"
+              [readonly]="!canEditSection('accountingDisbursement')" class="form-control" />
           </div>
 
           <div class="form-group">
             <label for="finalAmount">Final Amount</label>
-            <input 
-              type="number" 
-              id="finalAmount"
-              [(ngModel)]="form.accountingDisbursementSection.finalAmount"
-              [readonly]="!canEditSection('accountingDisbursement')"
-              class="form-control"
-              placeholder="Enter final amount"
-            />
+            <input type="number" id="finalAmount" [(ngModel)]="form.accountingDisbursementSection.finalAmount"
+              [readonly]="!canEditSection('accountingDisbursement')" class="form-control"
+              placeholder="Enter final amount" />
           </div>
 
           <div class="form-group">
             <label for="disbursementSignature">Accountant Signature</label>
-            <input 
-              type="text" 
-              id="disbursementSignature"
+            <input type="text" id="disbursementSignature"
               [(ngModel)]="form.accountingDisbursementSection.accountantSignature"
-              [readonly]="!canEditSection('accountingDisbursement')"
-              class="form-control"
-              placeholder="Enter signature"
-            />
+              [readonly]="!canEditSection('accountingDisbursement')" class="form-control"
+              placeholder="Enter signature" />
           </div>
 
           <div class="form-group">
             <label for="disbursementDate">Date</label>
-            <input 
-              type="date" 
-              id="disbursementDate"
-              [(ngModel)]="form.accountingDisbursementSection.date"
-              [readonly]="!canEditSection('accountingDisbursement')"
-              class="form-control"
-            />
+            <input type="date" min="1900-01-01" max="2099-12-31" id="disbursementDate" [(ngModel)]="form.accountingDisbursementSection.date"
+              [readonly]="!canEditSection('accountingDisbursement')" class="form-control" />
           </div>
         </div>
 
         <div class="section-footer" *ngIf="canEditSection('accountingDisbursement')">
           <button class="btn btn-primary" (click)="saveSection('accountingDisbursement')">
-            Save 
+            Save
           </button>
         </div>
       </div>

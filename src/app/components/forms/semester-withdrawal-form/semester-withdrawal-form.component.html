@@ -56,14 +56,14 @@
     <!-- Form Header -->
     <div class="form-header">
       <div class="form-logos">
-        <img src="assets/ncaaa-logo.png" alt="NCAAA" class="logo">
+        <!-- <img src="assets/ncaaa-logo.png" alt="NCAAA" class="logo"> -->
       </div>
       <div class="form-title">
         <h1>نموذج اعتذار عن فصل دراسي</h1>
         <h2>Semester Withdrawal Form</h2>
       </div>
       <div class="form-logos">
-        <img src="assets/riyadh-logo.png" alt="Riyadh University" class="logo">
+        <!-- <img src="assets/riyadh-logo.png" alt="Riyadh University" class="logo"> -->
       </div>
     </div>
 
@@ -178,7 +178,7 @@
               <span>Date of Application</span>
               <span class="arabic">تاريخ تقديم الطلب:</span>
             </label>
-            <input type="datetime-local" class="form-control" [(ngModel)]="formData.dateOfApplication"
+            <input type="date" min="1900-01-01" max="2099-12-31" class="form-control" [(ngModel)]="formData.dateOfApplication"
               [disabled]="!canEditSection('student')">
           </div>
           <div class="mobile-field">
@@ -248,7 +248,7 @@
             <span>Date:</span>
             <span class="arabic">التاريخ:</span>
           </label>
-          <input type="datetime-local" class="form-control" [(ngModel)]="formData.accountingDate"
+          <input type="date" min="1900-01-01" max="2099-12-31" class="form-control" [(ngModel)]="formData.accountingDate"
             [disabled]="!canEditSection('accounting')">
         </div>
       </div>
@@ -284,7 +284,7 @@
             <span>Date:</span>
             <span class="arabic">التاريخ</span>
           </label>
-          <input type="datetime-local" class="form-control" [(ngModel)]="formData.registrationDate"
+          <input type="date" min="1900-01-01" max="2099-12-31" class="form-control" [(ngModel)]="formData.registrationDate"
             [disabled]="!canEditSection('registration')">
         </div>
       </div>

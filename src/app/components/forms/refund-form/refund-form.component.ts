@@ -9,11 +9,12 @@ import { PdfService } from "../../../services/pdf.service";
 import { ApiService } from "../../../services/api.service";
 import { RefundForm, User } from "../../../models/form.model";
 import { SidebarComponent } from "../../sidebar/sidebar.component";
+import { NgxMaskDirective } from "ngx-mask";
 
 @Component({
   selector: "app-refund-form",
   standalone: true,
-  imports: [CommonModule, FormsModule, SidebarComponent],
+  imports: [CommonModule, FormsModule, SidebarComponent, NgxMaskDirective],
   templateUrl: "./refund-form.component.html",
   styleUrls: ["./refund-form.component.scss"],
 })
@@ -95,11 +96,10 @@ export class RefundFormComponent implements OnInit {
                  bankName: data.bankName || this.form.studentSection.bankName,
                  accountHolderName: data.accountHolderName || this.form.studentSection.accountHolderName,
                  relationship: data.relationship || this.form.studentSection.relationship,
-                 ibanArabic: data.iban_Arabic || this.form.studentSection.ibanArabic,
-                 ibanEnglish: data.iban_English || this.form.studentSection.ibanEnglish,
+                 ibanEnglish: data.ibaN_English || this.form.studentSection.ibanEnglish,
                  holderIdIqama: data.holderIdIqama || this.form.studentSection.holderIdIqama,
                  studentSignature: data.studentSignature || this.form.studentSection.studentSignature,
-                 studentDate: data.studentDate || this.form.studentSection.studentDate,
+                 studentDate: data.studentDate ? data.studentDate.split('T')[0] : this.form.studentSection.studentDate,
                  completed: true
                };
              }
@@ -110,10 +110,10 @@ export class RefundFormComponent implements OnInit {
                  ...this.form.registrationSection,
                  withdrawalType: data.registration.withdrawalType === "Voluntary" ? "complete" : "partial",
                  semesterTiming: data.registration.semesterTiming,
-                 otherReason: data.registration.OtherReason,
+                 otherReason: data.registration.otherReason,
                  departmentHead: data.registration.departmentHead,
                  signature: data.registration.registrationSignature,
-                 date: data.registration.registrationDate,
+                 date: data.registration.registrationDate ? data.registration.registrationDate.split('T')[0] : this.form.registrationSection.date,
                  completed: true
                };
              }
@@ -126,10 +126,10 @@ export class RefundFormComponent implements OnInit {
                  paymentAmountWords: data.accounting.paymentAmount_Words,
                  accountantName: data.accounting.accountantName,
                  accountantSignature: data.accounting.accountantSignature,
-                 accountantDate: data.accounting.accountantDate,
+                 accountantDate: data.accounting.accountantDate ? data.accounting.accountantDate.split('T')[0] : this.form.accountingVerificationSection.accountantDate,
                  chiefAccountant: data.accounting.chiefAccountant,
                  chiefSignature: data.accounting.chiefSignature,
-                 chiefDate: data.accounting.chiefDate,
+                 chiefDate: data.accounting.chiefDate ? data.accounting.chiefDate.split('T')[0] : this.form.accountingVerificationSection.chiefDate,
                  completed: true
                };
              }
@@ -142,7 +142,7 @@ export class RefundFormComponent implements OnInit {
                  approvedAmountNumeric: data.authorized.approvedAmount_Numeric,
                  approvedAmountWords: data.authorized.approvedAmount_Words,
                  signature: data.authorized.authorizedSignature,
-                 date: data.authorized.authorizedDate,
+                 date: data.authorized.authorizedDate ? data.authorized.authorizedDate.split('T')[0] : this.form.authorizedSection.date,
                  completed: true
                };
              }
@@ -152,10 +152,10 @@ export class RefundFormComponent implements OnInit {
                this.form.accountingDisbursementSection = {
                  ...this.form.accountingDisbursementSection,
                  chequeNumber: data.finalDisbursement.chequeNumber,
-                 issueDate: data.finalDisbursement.issueDate,
+                 issueDate: data.finalDisbursement.issueDate ? data.finalDisbursement.issueDate.split('T')[0] : this.form.accountingDisbursementSection.issueDate,
                  finalAmount: data.finalDisbursement.finalAmount,
                  accountantSignature: data.finalDisbursement.finalAccountantSignature,
-                 date: data.finalDisbursement.finalAccountantDate,
+                 date: data.finalDisbursement.finalAccountantDate ? data.finalDisbursement.finalAccountantDate.split('T')[0] : this.form.accountingDisbursementSection.date,
                  completed: true
                };
              }
@@ -205,6 +205,23 @@ export class RefundFormComponent implements OnInit {
     return true;
   }
 
+  studentSectionSubmitted: boolean = false;
+
+  getMissingStudentFields(): string[] {
+    const missing: string[] = [];
+    if (!this.form?.studentSection?.name) missing.push('Student Name');
+    if (!this.form?.studentSection?.studentId) missing.push('Student ID');
+    if (this.form?.studentSection?.refundAmount === null || this.form?.studentSection?.refundAmount === undefined) missing.push('Refund Amount');
+    if (!this.form?.studentSection?.refundReason) missing.push('Refund Reason');
+    if (!this.form?.studentSection?.bankName) missing.push('Bank Name');
+    if (!this.form?.studentSection?.ibanEnglish) {
+      missing.push('IBAN (English)');
+    } else if (!/^SA\d{22}$/.test(this.form.studentSection.ibanEnglish)) {
+      missing.push('Valid IBAN (SA + 22 digits)');
+    }
+    return missing;
+  }
+
   saveSection(section: string): void {
     if (!this.form) return;
 
@@ -230,6 +247,40 @@ export class RefundFormComponent implements OnInit {
   private submitStudentSection(): void {
     if (!this.form) return;
 
+    this.studentSectionSubmitted = true;
+
+    if (!this.form.studentSection.name) {
+      this.toastr.error('Student Name is required');
+      return;
+    }
+    if (!this.form.studentSection.studentId) {
+      this.toastr.error('Student ID is required');
+      return;
+    }
+    if (this.form.studentSection.refundAmount === null || this.form.studentSection.refundAmount === undefined) {
+      this.toastr.error('Refund Amount is required');
+      return;
+    }
+    if (!this.form.studentSection.refundReason) {
+      this.toastr.error('Refund Reason is required');
+      return;
+    }
+    if (!this.form.studentSection.bankName) {
+      this.toastr.error('Bank Name is required');
+      return;
+    }
+
+    const ibanEnglish = this.form.studentSection.ibanEnglish;
+    const ibanRegex = /^SA\d{22}$/;
+    
+    if (!ibanEnglish) {
+      this.toastr.error("IBAN (English) is required.");
+      return;
+    } else if (!ibanRegex.test(ibanEnglish)) {
+      this.toastr.error("IBAN must start with SA followed by 22 digits.");
+      return;
+    }
+
     const studentId = this.form.studentSection.studentId || "3";
 
     const payload = {
@@ -246,7 +297,6 @@ export class RefundFormComponent implements OnInit {
       bankName: this.form.studentSection.bankName,
       accountHolderName: this.form.studentSection.accountHolderName,
       relationship: this.form.studentSection.relationship,
-      iban_Arabic: this.form.studentSection.ibanArabic,
       iban_English: this.form.studentSection.ibanEnglish,
       holderIdIqama: this.form.studentSection.holderIdIqama,
       studentSignature: this.form.studentSection.studentSignature,
@@ -259,15 +309,15 @@ export class RefundFormComponent implements OnInit {
         // Save studentId to localStorage
         localStorage.setItem("currentStudentId", studentId.toString());
         this.form!.studentSection.completed = true;
-        this.toastr.success(response.message || "Student section submitted successfully!");
+        this.toastr.success(response.message || "Student Information submitted successfully!");
         setTimeout(() => {
           this.router.navigate(["/request-list"]);
         }, 2000); // Navigate after 2 seconds to allow user to see the success message
       },
       error: (error) => {
-        console.error("Error submitting student section:", error);
+        console.error("Error submitting Student Information:", error);
         this.toastr.error(
-          "Failed to submit student section. Please try again.",
+          "Failed to submit Student Information. Please try again.",
         );
       },
     });

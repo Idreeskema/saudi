@@ -5,6 +5,22 @@ import { AuthService } from "../../services/auth.service";
 import { ApiService } from "../../services/api.service";
 import { filter } from "rxjs/operators";
 
+const FORM_CREATION_ROUTE_PREFIXES = [
+  "/new-request",
+  "/MedicalExamination/",
+  "/FeeRefund/",
+  "/StudentAppeal/",
+  "/CourseAddingDropping/",
+  "/SemesterWithdrawal/",
+  "/UniversityWithdrawal/",
+  "/SemesterPostponement/",
+  "/MidTermExamReplacement/",
+  "/FinalExamReplacement/",
+  "/MajorTransfer/",
+  "/ReEntry/",
+  "/ReplacementExamDeclaration/",
+];
+
 @Component({
   selector: "app-sidebar",
   standalone: true,
@@ -24,6 +40,7 @@ export class SidebarComponent implements OnInit {
   isRegistration: boolean = false;
   isPD: boolean = false;
   forms: any[] = [];
+  selectedServiceId: string | null = null;
 
   constructor(
     private router: Router,
@@ -54,15 +71,20 @@ export class SidebarComponent implements OnInit {
   }
 
   updateActiveRoute(url: string): void {
+    this.selectedServiceId = this.router.parseUrl(url).queryParams["service"] ?? null;
+
     if (url.includes("/dashboard")) {
       this.activeRoute = "dashboard";
     } else if (url.includes("/request-list")) {
       this.activeRoute = "request-list";
+    } else if (FORM_CREATION_ROUTE_PREFIXES.some((prefix) => url.includes(prefix))) {
+      this.activeRoute = "new-request";
+      this.showNewRequestsMenu = true;
     } else if (url.includes("/form/")) {
-      this.activeRoute = "form";
+      this.activeRoute = "new-request";
       this.showNewRequestsMenu = true;
     } else if (url.includes("/print-form/")) {
-      this.activeRoute = "form";
+      this.activeRoute = "new-request";
     } else if (url.includes("/list-sequence")) {
       this.activeRoute = "list-sequence";
       this.showSystemAdminMenu = true;
@@ -83,66 +105,24 @@ export class SidebarComponent implements OnInit {
     }
   }
 
+  navigateTo(route: string): void {
+    this.router.navigate([route]);
+  }
+
   toggleNewRequestsMenu(event: Event): void {
     event.preventDefault();
     this.showNewRequestsMenu = !this.showNewRequestsMenu;
-  }
-
-  createForm(id: string): void {
-    const form = this.forms.find((f) => f.id.toString() === id);
-    if (form) {
-      switch (form.sequenceModelName.trim()) {
-        case "MedicalExamination":
-          this.router.navigate(["/MedicalExamination/" + id]);
-          break;
-        case "FeeRefund":
-          this.router.navigate(["/FeeRefund/" + id]);
-          break;
-        case "StudentAppeal":
-          this.router.navigate(["/StudentAppeal/" + id]);
-          break;
-        case "CourseAddingDropping":
-          this.router.navigate(["/CourseAddingDropping/" + id]);
-          break;
-        case "SemesterWithdrawal":
-          this.router.navigate(["/SemesterWithdrawal/" + id]);
-          break;
-        case "UniversityWithdrawal":
-          this.router.navigate(["/UniversityWithdrawal/" + id]);
-          break;
-        case "SemesterPostponement":
-          this.router.navigate(["/SemesterPostponement/" + id]);
-          break;
-        case "MidTermExamReplacement":
-          this.router.navigate(["/MidTermExamReplacement/" + id]);
-          break;
-        case "FinalExamReplacement":
-          this.router.navigate(["/FinalExamReplacement/" + id]);
-          break;
-        case "MajorTransfer":
-          this.router.navigate(["/MajorTransfer/" + id]);
-          break;
-        case "ReEntry":
-          this.router.navigate(["/ReEntry/" + id]);
-          break;
-        case "ReplacementExamDeclaration":
-          this.router.navigate(["/ReplacementExamDeclaration/" + id]);
-          break;
-        default:
-          this.router.navigate(["/form/" + id]);
-          break;
-      }
-    } else {
-      this.router.navigate(["/form/" + id]);
+    if (this.showNewRequestsMenu) {
+      this.router.navigate(["/new-request"]);
     }
   }
 
-  createOtherForm(): void {
-    alert("Other form types coming soon!");
+  selectFormFromSidebar(id: string): void {
+    this.router.navigate(["/new-request"], { queryParams: { service: id } });
   }
 
-  navigateTo(route: string): void {
-    this.router.navigate([route]);
+  selectOtherFromSidebar(): void {
+    this.router.navigate(["/new-request"], { queryParams: { service: "other" } });
   }
 
   navigateToAllRequests(): void {

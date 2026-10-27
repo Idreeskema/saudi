@@ -18,15 +18,13 @@ export class RequestListComponent implements OnInit {
   currentUser: User | null = null;
   forms: any[] = [];
 
-  requestSummary = [
-    { title: "All Requests", count: 0, type: "all" }
-  ];
+  requestSummary = [{ title: "All Requests", count: 0, type: "all" }];
   studentIdNumber: any = 0;
   constructor(
     private authService: AuthService,
     private apiService: ApiService,
     private formStorageService: FormStorageService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -40,10 +38,17 @@ export class RequestListComponent implements OnInit {
   }
 
   loadForms(): void {
-    // Get studentId from localStorage (saved from refund-form component)
-    const studentId = localStorage.getItem("currentStudentId");
-    console.log(studentId);
-    this.studentIdNumber = studentId; // Default to 3 if not found
+    // First try to get studentId from current user's profile
+    let studentId = this.currentUser?.studentId;
+
+    // Fallback to localStorage if not in user profile
+    if (!studentId) {
+      const storedId = localStorage.getItem("currentStudentId");
+      studentId = storedId ? parseInt(storedId, 10) : 3;
+    }
+
+    console.log("Student ID:", studentId);
+    this.studentIdNumber = studentId;
 
     // First try to load from API
     this.apiService.getStudentRequests(this.studentIdNumber).subscribe({
@@ -52,24 +57,24 @@ export class RequestListComponent implements OnInit {
         console.log(this.forms);
         // Calculate counts dynamically
         const typeCounts = new Map<string, number>();
-        this.forms.forEach(form => {
-          const type = form.requestType || 'Unknown';
+        this.forms.forEach((form) => {
+          const type = form.requestType || "Unknown";
           typeCounts.set(type, (typeCounts.get(type) || 0) + 1);
         });
 
         // Rebuild summary array
         this.requestSummary = [
-          { title: "All Requests", count: this.forms.length, type: "all" }
+          { title: "All Requests", count: this.forms.length, type: "all" },
         ];
 
         // Add cards for each unique type found
         typeCounts.forEach((count, type) => {
           // Format basic camelCase or PascalCase to spaced words if needed
-          const title = type.replace(/([A-Z])/g, ' $1').trim();
+          const title = type.replace(/([A-Z])/g, " $1").trim();
           this.requestSummary.push({
             title: title,
             count: count,
-            type: type
+            type: type,
           });
         });
       },
@@ -84,9 +89,9 @@ export class RequestListComponent implements OnInit {
 
   viewForm(formId: string | number, requestType?: string): void {
     if (!formId) return;
-    
-    this.router.navigate(["/view-request", formId], { 
-      queryParams: { type: requestType || 'FeeRefund' } 
+
+    this.router.navigate(["/view-request", formId], {
+      queryParams: { type: requestType || "FeeRefund" },
     });
   }
 

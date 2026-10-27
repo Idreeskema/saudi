@@ -56,14 +56,14 @@
     <!-- Form Header -->
     <div class="form-header">
       <div class="form-logos">
-        <img src="assets/ncaaa-logo.png" alt="NCAAA" class="logo">
+        <!-- <img src="assets/ncaaa-logo.png" alt="NCAAA" class="logo"> -->
       </div>
       <div class="form-title">
         <h1>نموذج انسحاب</h1>
         <h2>Withdrawal Form</h2>
       </div>
       <div class="form-logos">
-        <img src="assets/riyadh-logo.png" alt="Riyadh University" class="logo">
+        <!-- <img src="assets/riyadh-logo.png" alt="Riyadh University" class="logo"> -->
       </div>
     </div>
 
@@ -127,13 +127,17 @@
       <!-- Withdrawal Reason Section -->
       <div class="reason-section" *ngIf="canViewSection('student')">
         <div class="reason-header">
-          <h3 class="arabic">أرغب بالإنسحاب من جامعة رياض العلم للأسباب التالية</h3>
-          <h3>I would like to withdraw from REU for the following reasons</h3>
+          <h3 class="arabic">أرغب بالإنسحاب من جامعة رياض العلم للأسباب التالية <span class="required">*</span></h3>
+          <h3>I would like to withdraw from REU for the following reasons <span class="required">*</span></h3>
         </div>
 
         <div class="form-group">
           <textarea class="form-control" rows="4" [(ngModel)]="formData.withdrawalReason"
-            [disabled]="!canEditSection('student')" placeholder="Enter your withdrawal reason..."></textarea>
+            [disabled]="!canEditSection('student')" placeholder="Enter your withdrawal reason..."
+            [class.is-invalid]="withdrawalSubmitted && !formData.withdrawalReason.trim()"></textarea>
+          <span class="error-message" *ngIf="withdrawalSubmitted && !formData.withdrawalReason.trim()">
+            Withdrawal reason is required.
+          </span>
         </div>
       </div>
 
@@ -164,7 +168,7 @@
               <span>Date of Application</span>
               <span class="arabic">تاريخ تقديم الطلب:</span>
             </label>
-            <input type="datetime-local" class="form-control" [(ngModel)]="formData.dateOfApplication"
+            <input type="date" min="1900-01-01" max="2099-12-31" class="form-control" [(ngModel)]="formData.dateOfApplication"
               [disabled]="!canEditSection('student')">
           </div>
           <div class="mobile-field">
@@ -218,7 +222,7 @@
             <span>Date:</span>
             <span class="arabic">التاريخ</span>
           </label>
-          <input type="datetime-local" class="form-control" [(ngModel)]="formData.accountingDate"
+          <input type="date" min="1900-01-01" max="2099-12-31" class="form-control" [(ngModel)]="formData.accountingDate"
             [disabled]="!canEditSection('accounting')">
         </div>
       </div>
@@ -254,7 +258,7 @@
             <span>Date:</span>
             <span class="arabic">التاريخ</span>
           </label>
-          <input type="datetime-local" class="form-control" [(ngModel)]="formData.registrationDate"
+          <input type="date" min="1900-01-01" max="2099-12-31" class="form-control" [(ngModel)]="formData.registrationDate"
             [disabled]="!canEditSection('registration')">
         </div>
       </div>
@@ -263,20 +267,26 @@
       <div class="receipt-section" *ngIf="canViewSection('student')">
         <div class="receipt-field">
           <label>
-            <span>Student signature on receiving his/her file</span>
-            <span class="arabic">توقيع الطالب / الطالبة بإستلام الملف:</span>
+            <span>Student signature on receiving his/her file <span class="required">*</span></span>
+            <span class="arabic">توقيع الطالب / الطالبة بإستلام الملف: <span class="required">*</span></span>
           </label>
           <input type="text" class="form-control underline" [(ngModel)]="formData.studentFileSignature"
-           >
+            [class.is-invalid]="withdrawalSubmitted && !formData.studentFileSignature.trim()">
+          <span class="error-message" *ngIf="withdrawalSubmitted && !formData.studentFileSignature.trim()">
+            Student signature on receiving file is required.
+          </span>
         </div>
 
         <div class="date-field">
           <label>
-            <span>Date:</span>
-            <span class="arabic">التاريخ</span>
+            <span>Date: <span class="required">*</span></span>
+            <span class="arabic">التاريخ <span class="required">*</span></span>
           </label>
-          <input type="datetime-local" class="form-control" [(ngModel)]="formData.studentFileReceivedDate"
-            >
+          <input type="date" min="1900-01-01" max="2099-12-31" class="form-control" [(ngModel)]="formData.studentFileReceivedDate"
+            [class.is-invalid]="withdrawalSubmitted && !formData.studentFileReceivedDate">
+          <span class="error-message" *ngIf="withdrawalSubmitted && !formData.studentFileReceivedDate">
+            Date of file receipt is required.
+          </span>
         </div>
       </div>
 
@@ -284,7 +294,7 @@
       <div class="form-actions">
         <button class="btn btn-cancel" (click)="cancel()">Cancel</button>
         <button class="btn btn-save" (click)="saveForm()" *ngIf="canEditAnySection()">Save Form</button>
-        <button class="btn btn-submit" (click)="submitForm()" >Submit Withdrawal</button>
+        <button class="btn btn-submit" (click)="submitForm()">Submit Withdrawal</button>
       </div>
     </div>
 

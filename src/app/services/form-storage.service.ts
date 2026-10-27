@@ -46,7 +46,6 @@ export class FormStorageService {
         bankName: '',
         accountHolderName: '',
         relationship: '',
-        ibanArabic: '',
         ibanEnglish: '',
         holderIdIqama: '',
         studentSignature: '',

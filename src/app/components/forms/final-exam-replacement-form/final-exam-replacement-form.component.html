@@ -39,14 +39,14 @@
     <!-- Form Header -->
     <div class="form-header">
       <div class="form-logos">
-        <img src="assets/ncaaa-logo.png" alt="NCAAA" class="logo">
+        <!-- <img src="assets/ncaaa-logo.png" alt="NCAAA" class="logo"> -->
       </div>
       <div class="form-title">
         <h1>نموذج طلب اختبار بديل (نهائي)</h1>
         <h2>Final Exam Replacement Request Form</h2>
       </div>
       <div class="form-logos">
-        <img src="assets/riyadh-logo.png" alt="Riyadh University" class="logo">
+        <!-- <img src="assets/riyadh-logo.png" alt="Riyadh University" class="logo"> -->
       </div>
     </div>
 
@@ -119,9 +119,13 @@
         </div>
 
         <div class="form-group">
-          <label>Reason for Absence <span class="arabic">سبب الغياب:</span></label>
+          <label>Reason for Absence <span class="required">*</span> <span class="arabic">سبب الغياب: <span class="required">*</span></span></label>
           <textarea class="form-control" rows="3" [(ngModel)]="formData.absenceReason"
-            [disabled]="!canEditSection('student')"></textarea>
+            [disabled]="!canEditSection('student')"
+            [class.is-invalid]="declarationSubmitted && !formData.absenceReason.trim()"></textarea>
+          <span class="error-message" *ngIf="declarationSubmitted && !formData.absenceReason.trim()">
+            Reason for Absence is required.
+          </span>
         </div>
 
         <div class="form-group checkbox-group">
@@ -141,7 +145,7 @@
           <!-- Date Field removed as per typical requirement, or kept if needed. The request mentioned explicit date field for some reason, but usually signature implies date. Waiting for confirmation, adding dateSigned as hidden or handled by backend? The request said 'for date use Datepicker'. Logic added. -->
           <div class="form-group">
             <label>Date <span class="arabic">التاريخ:</span></label>
-            <input type="date" class="form-control" [(ngModel)]="formData.dateSigned"
+            <input type="date" min="1900-01-01" max="2099-12-31" class="form-control" [(ngModel)]="formData.dateSigned"
               [disabled]="!canEditSection('student')">
           </div>
         </div>
@@ -221,26 +225,45 @@
           <h3 class="arabic">● قرار عميد الكلية:</h3>
         </div>
 
-        <div class="form-group checkbox-group">
-          <label>
+        <div class="decision-cards">
+          <label class="decision-card" [class.active]="formData.deanDecision === true">
             <input type="radio" [value]="true" [(ngModel)]="formData.deanDecision" [disabled]="!canEditSection('dean')">
-            Approve <span class="arabic">موافق</span>
+            <div class="card-content">
+              <span class="decision-text">Approve replacement request</span>
+              <span class="decision-text arabic">موافق على طلب الاختبار البديل</span>
+            </div>
+            <div class="check-icon" *ngIf="formData.deanDecision === true">✓</div>
           </label>
-          <label style="margin-left: 20px;">
+
+          <label class="decision-card reject" [class.active]="formData.deanDecision === false">
             <input type="radio" [value]="false" [(ngModel)]="formData.deanDecision"
               [disabled]="!canEditSection('dean')">
-            Deny <span class="arabic">غير موافق</span>
+            <div class="card-content">
+              <span class="decision-text">Deny replacement request</span>
+              <span class="decision-text arabic">غير موافق على طلب الاختبار البديل</span>
+            </div>
+            <div class="check-icon" *ngIf="formData.deanDecision === false">✕</div>
           </label>
         </div>
 
-        <div class="form-group">
-          <label>Dean Signature <span class="arabic">توقيع العميد:</span></label>
-          <input type="text" class="form-control" [(ngModel)]="formData.deanSignature"
-            [disabled]="!canEditSection('dean')">
+        <div class="form-group signature-field-premium">
+          <label>College Dean Signature <span class="arabic">توقيع عميد الكلية:</span></label>
+          <input type="text" class="form-control underline-premium" [(ngModel)]="formData.deanSignature"
+            [disabled]="!canEditSection('dean')" placeholder="Enter signature name...">
         </div>
 
-        <div class="form-actions" *ngIf="canEditSection('dean')">
-          <button class="btn btn-submit" (click)="submitDeanSection()">Submit Dean Decision</button>
+        <div class="authorized-actions" *ngIf="canEditSection('dean')">
+          <button class="btn-action approve" (click)="submitDeanSection()" [disabled]="formData.deanDecision === null">
+            <div class="btn-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+              </svg>
+            </div>
+            <div class="btn-text">
+              <span>Submit Decision</span>
+              <small class="arabic">اعتماد قرار العميد</small>
+            </div>
+          </button>
         </div>
       </div>
 

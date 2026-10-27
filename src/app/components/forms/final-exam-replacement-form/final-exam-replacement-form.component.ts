@@ -16,6 +16,7 @@ import { SidebarComponent } from "../../sidebar/sidebar.component";
 })
 export class FinalExamReplacementFormComponent implements OnInit {
   currentUser: User | null = null;
+  declarationSubmitted: boolean = false;
 
   formData = {
     formId: 0,
@@ -81,8 +82,10 @@ export class FinalExamReplacementFormComponent implements OnInit {
           this.formData = {
             ...this.formData,
             ...data,
+            // Format date for HTML input
+            dateSigned: data.dateSigned ? data.dateSigned.split('T')[0] : "",
+            
             // Ensure section objects are flattened or mapped if needed
-            // The API might return lecturerSection: { ... }
             lecturerContinuousAssessmentMark: data.lecturerSection?.continuousAssessmentMark || data.lecturerContinuousAssessmentMark || 0,
             lecturerMissedMidtermBefore: data.lecturerSection?.missedMidtermBefore || data.lecturerMissedMidtermBefore || false,
             lecturerOpinion: data.lecturerSection?.opinion || data.lecturerOpinion || "",
@@ -104,21 +107,13 @@ export class FinalExamReplacementFormComponent implements OnInit {
 
   canViewSection(section: string): boolean {
     if (!this.currentUser) return false;
-
     const role = this.currentUser.role;
 
-    switch (section) {
-      case "student":
-        return true;
-      case "lecturer":
-        return ["lecturer", "faculty", "admin"].includes(role);
-      case "courseDirector":
-        return ["courseDirector", "authorized", "admin"].includes(role);
-      case "dean":
-        return ["dean", "admin"].includes(role);
-      default:
-        return false;
-    }
+    // Students only see their own section
+    if (role === "student") return section === "student";
+
+    // Staff roles (lecturer, faculty, courseDirector, dean, authorized, admin) can see all sections
+    return true;
   }
 
   canEditSection(section: string): boolean {
@@ -165,6 +160,13 @@ export class FinalExamReplacementFormComponent implements OnInit {
   }
 
   submitForm(): void {
+    this.declarationSubmitted = true;
+
+    if (!this.formData.absenceReason.trim()) {
+      alert("Reason for Absence is required.");
+      return;
+    }
+
     if (confirm("Are you sure you want to submit this final exam replacement request?")) {
       const payload = {
         formId: this.formData.formId || 26, // Default or dynamic Ids

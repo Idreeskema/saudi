@@ -56,14 +56,14 @@
     <!-- Form Header -->
     <div class="form-header">
       <div class="form-logos">
-        <img src="assets/ncaaa-logo.png" alt="NCAAA" class="logo">
+        <!-- <img src="assets/ncaaa-logo.png" alt="NCAAA" class="logo"> -->
       </div>
       <div class="form-title">
         <h1>نموذج إعادة اختبار شهري</h1>
         <h2>Mid-term exam Replacement Form</h2>
       </div>
       <div class="form-logos">
-        <img src="assets/riyadh-logo.png" alt="Riyadh University" class="logo">
+        <!-- <img src="assets/riyadh-logo.png" alt="Riyadh University" class="logo"> -->
       </div>
     </div>
 
@@ -171,11 +171,15 @@
         <!-- Absence Reason -->
         <div class="form-group">
           <label>
-            <span>Reason for Absence</span>
-            <span class="arabic">سبب الغياب</span>
+            <span>Reason for Absence <span class="required">*</span></span>
+            <span class="arabic">سبب الغياب <span class="required">*</span></span>
           </label>
           <textarea class="form-control underline" rows="4" [(ngModel)]="formData.absenceReason"
-            [disabled]="!canEditSection('student')"></textarea>
+            [disabled]="!canEditSection('student')"
+            [class.is-invalid]="declarationSubmitted && !formData.absenceReason.trim()"></textarea>
+          <span class="error-message" *ngIf="declarationSubmitted && !formData.absenceReason.trim()">
+            Reason for Absence is required.
+          </span>
         </div>
 
         <!-- Has Missed Other Exams -->
@@ -202,7 +206,7 @@
               <span>Date</span>
               <span class="arabic">التاريخ</span>
             </label>
-            <input type="date" class="form-control underline" [(ngModel)]="formData.dateSigned"
+            <input type="date" min="1900-01-01" max="2099-12-31" class="form-control underline" [(ngModel)]="formData.dateSigned"
               [disabled]="!canEditSection('student')">
           </div>
         </div>
@@ -215,25 +219,25 @@
           <h3 class="arabic">● القرار:</h3>
         </div>
 
-        <div class="decision-options">
-          <label class="decision-label">
-            <input type="checkbox" [(ngModel)]="formData.approvalDecision" [disabled]="!canEditSection('authorized')">
-            <span>الموافقة على إعطاء اختبار بديل واستكمال الإقرار الخاص بذلك</span>
+        <div class="decision-cards">
+          <label class="decision-card" [class.active]="formData.approvalDecision">
+            <input type="checkbox" [(ngModel)]="formData.approvalDecision" (change)="onApprovalChange('approve')"
+              [disabled]="!canEditSection('authorized')">
+            <div class="card-content">
+              <span class="decision-text">Approval of giving a replacement exam</span>
+              <span class="decision-text arabic">الموافقة على إعطاء اختبار بديل واستكمال الإقرار الخاص بذلك</span>
+            </div>
+            <div class="check-icon" *ngIf="formData.approvalDecision">✓</div>
           </label>
-          <label class="decision-label">
-            <input type="checkbox" [(ngModel)]="formData.approvalDecision" [disabled]="!canEditSection('authorized')">
-            <span>Approval of giving a replacement exam</span>
-          </label>
-        </div>
 
-        <div class="decision-options">
-          <label class="decision-label">
-            <input type="checkbox" [(ngModel)]="formData.denialDecision" [disabled]="!canEditSection('authorized')">
-            <span>عدم الموافقة على إعطاء اختبار بديل</span>
-          </label>
-          <label class="decision-label">
-            <input type="checkbox" [(ngModel)]="formData.denialDecision" [disabled]="!canEditSection('authorized')">
-            <span>Denial of giving a replacement exam</span>
+          <label class="decision-card reject" [class.active]="formData.denialDecision">
+            <input type="checkbox" [(ngModel)]="formData.denialDecision" (change)="onApprovalChange('deny')"
+              [disabled]="!canEditSection('authorized')">
+            <div class="card-content">
+              <span class="decision-text">Denial of giving a replacement exam</span>
+              <span class="decision-text arabic">عدم الموافقة على إعطاء اختبار بديل</span>
+            </div>
+            <div class="check-icon" *ngIf="formData.denialDecision">✕</div>
           </label>
         </div>
       </div>
@@ -249,19 +253,30 @@
       </div>
 
       <!-- Authorized Person Actions -->
-      <div class="authorized-actions" *ngIf="canViewSection('authorized') && !isFormProcessed()">
-        <button class="btn btn-approve" (click)="authorizeForm(true)">
-          <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+      <div class="authorized-actions" *ngIf="canViewSection('authorized')">
+        <button class="btn-action approve" (click)="authorizeForm(true)" [disabled]="!formData.approvalDecision">
+          <div class="btn-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
               <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-            </svg></i>
-          Approve
+            </svg>
+          </div>
+          <div class="btn-text">
+            <span>Approve Request</span>
+            <small class="arabic">اعتماد الموافقة</small>
+          </div>
         </button>
-        <button class="btn btn-reject" (click)="authorizeForm(false)">
-          <i class="icon"><svg viewBox="0 0 24 24" fill="currentColor">
+
+        <button class="btn-action reject" (click)="authorizeForm(false)" [disabled]="!formData.denialDecision">
+          <div class="btn-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
               <path
                 d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-            </svg></i>
-          Reject
+            </svg>
+          </div>
+          <div class="btn-text">
+            <span>Reject Request</span>
+            <small class="arabic">اعتماد الرفض</small>
+          </div>
         </button>
       </div>
 

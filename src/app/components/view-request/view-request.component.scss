@@ -6,7 +6,7 @@
   margin-left: 260px;
   flex: 1;
   padding: 20px 30px;
-  background: #f8f9fa;
+  background: var(--color-background-main);
   min-height: 100vh;
 }
 
@@ -21,7 +21,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #67748e;
+  color: var(--color-text-secondary);
   font-size: 14px;
 
   .icon svg {
@@ -51,8 +51,8 @@
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  background: #344767;
-  color: white;
+  background: var(--color-primary-navy);
+  color: var(--color-text-white);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -67,8 +67,8 @@
 .icon-btn {
   width: 38px;
   height: 38px;
-  background: white;
-  border: 1px solid #e9ecef;
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border-default);
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -82,7 +82,7 @@
   }
 
   &:hover {
-    background: #f8f9fa;
+    background: var(--color-background-main);
   }
 }
 
@@ -99,10 +99,11 @@
 }
 
 .order-info-card {
-  background: white;
-  padding: 20px 25px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border-default);
+  padding: 20px 24px;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -116,13 +117,13 @@
 .order-no,
 .order-type {
   font-size: 13px;
-  color: #67748e;
+  color: var(--color-text-secondary);
 
   span {
     display: block;
     font-size: 16px;
     font-weight: 600;
-    color: #344767;
+    color: var(--color-text-primary);
     margin-top: 5px;
   }
 }
@@ -131,7 +132,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #67748e;
+  color: var(--color-text-secondary);
   font-size: 14px;
 
   i svg {
@@ -141,10 +142,11 @@
 }
 
 .student-card {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border-default);
+  padding: 24px;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 30px;
@@ -158,8 +160,8 @@
 .student-avatar {
   width: 100px;
   height: 100px;
-  background: white;
-  border: 2px solid #e9ecef;
+  background: var(--color-background-card);
+  border: 2px solid var(--color-border-default);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -169,7 +171,7 @@
   svg {
     width: 60px;
     height: 60px;
-    color: #d2d6da;
+    color: var(--color-text-muted);
   }
 }
 
@@ -177,17 +179,17 @@
   h3 {
     font-size: 20px;
     font-weight: 700;
-    color: #344767;
+    color: var(--color-text-primary);
     margin-bottom: 10px;
   }
 
   p {
     font-size: 14px;
-    color: #344767;
+    color: var(--color-text-primary);
     margin-bottom: 6px;
 
     span {
-      color: #67748e;
+      color: var(--color-text-secondary);
     }
   }
 }
@@ -206,32 +208,32 @@
 
   .label {
     font-size: 14px;
-    color: #67748e;
+    color: var(--color-text-secondary);
     font-weight: 500;
   }
 
   .value {
     font-size: 14px;
-    color: #344767;
+    color: var(--color-text-primary);
     font-weight: 500;
   }
 }
 
 .badge {
-  padding: 6px 14px;
-  border-radius: 16px;
-  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.3px;
 
   &.badge-green {
-    background: #67b108;
-    color: white;
+    background: var(--color-status-success);
+    color: var(--color-text-white);
   }
 
   &.badge-blue {
-    background: #6c85bd;
-    color: white;
+    background: var(--color-primary-blue);
+    color: var(--color-text-white);
   }
 }
 
@@ -243,58 +245,61 @@
 .btn-print {
   width: 40px;
   height: 50px;
-  background: #82d616;
+  background: var(--color-primary-navy);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-control);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 4px 12px rgba(130, 214, 22, 0.3);
+  box-shadow: var(--shadow-card);
 
   svg {
     width: 28px;
     height: 28px;
-    color: white;
+    color: var(--color-text-white);
   }
 
   &:hover {
+    background: var(--color-primary-navy-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(130, 214, 22, 0.4);
+    box-shadow: var(--shadow-hover);
   }
 }
 
 .faculty-card {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border-default);
+  padding: 24px;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
 
   h4 {
     font-size: 16px;
     font-weight: 600;
-    color: #344767;
+    color: var(--color-text-primary);
     margin-bottom: 12px;
   }
 
   p {
     font-size: 14px;
-    color: #67748e;
+    color: var(--color-text-secondary);
     margin: 0;
   }
 }
 
 .tracking-card {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border-default);
+  padding: 24px;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
 
   h4 {
     font-size: 16px;
     font-weight: 600;
-    color: #344767;
+    color: var(--color-text-primary);
     margin-bottom: 20px;
   }
 }
@@ -308,7 +313,7 @@
 .tracking-avatar {
   width: 50px;
   height: 50px;
-  background: #f0f2f5;
+  background: var(--color-background-main);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -318,7 +323,7 @@
   svg {
     width: 28px;
     height: 28px;
-    color: #67748e;
+    color: var(--color-text-secondary);
   }
 }
 
@@ -328,47 +333,48 @@
   .tracking-name {
     font-size: 14px;
     font-weight: 600;
-    color: #344767;
+    color: var(--color-text-primary);
     margin-bottom: 4px;
   }
 
   .tracking-comment {
     font-size: 13px;
-    color: #67748e;
+    color: var(--color-text-secondary);
   }
 }
 
 .tracking-status {
   .badge-status {
-    padding: 6px 14px;
-    background: #82d616;
-    color: white;
-    border-radius: 16px;
-    font-size: 11px;
+    padding: 4px 10px;
+    background: var(--color-status-success);
+    color: var(--color-text-white);
+    border-radius: var(--radius-pill);
+    font-size: 12px;
     font-weight: 700;
   }
 }
 
 .status-sidebar {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border-default);
+  padding: 24px;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
   position: sticky;
   top: 20px;
   height: fit-content;
 
   h3 {
-    font-size: 18px;
+    font-size: var(--font-size-h3);
     font-weight: 700;
-    color: #344767;
+    color: var(--color-text-primary);
     margin-bottom: 25px;
   }
 
   h4 {
     font-size: 14px;
     font-weight: 600;
-    color: #67748e;
+    color: var(--color-text-secondary);
     margin-bottom: 15px;
   }
 }
@@ -386,7 +392,7 @@
     top: 50px; // Bottom of current icon
     width: 2px;
     height: 25px; // Distance to next icon
-    background: #82d616;
+    background: var(--color-status-success);
     z-index: 1;
   }
 }
@@ -394,8 +400,8 @@
 .status-icon {
   width: 50px;
   height: 50px;
-  background: #e8f5e9;
-  border-radius: 12px;
+  background: rgba(34, 197, 94, 0.12);
+  border-radius: var(--radius-control);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -404,7 +410,7 @@
   svg {
     width: 28px;
     height: 28px;
-    color: #82d616;
+    color: var(--color-status-success);
   }
 }
 
@@ -414,19 +420,19 @@
   .status-label {
     font-size: 16px;
     font-weight: 600;
-    color: #344767;
+    color: var(--color-text-primary);
     margin-bottom: 4px;
   }
 
   .status-date {
     font-size: 13px;
-    color: #67748e;
+    color: var(--color-text-secondary);
   }
 }
 
 .divider {
   height: 1px;
-  background: #e9ecef;
+  background: var(--color-border-default);
   margin: 25px 0;
 }
 
@@ -439,7 +445,7 @@
 .approval-icon {
   width: 36px;
   height: 36px;
-  background: #e8f5e9;
+  background: rgba(34, 197, 94, 0.12);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -449,13 +455,13 @@
   svg {
     width: 20px;
     height: 20px;
-    color: #82d616;
+    color: var(--color-status-success);
   }
 }
 
 .approval-item span {
   font-size: 14px;
-  color: #344767;
+  color: var(--color-text-primary);
   font-weight: 500;
 }
 

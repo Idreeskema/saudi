@@ -1,148 +1,216 @@
 <div class="dashboard-wrapper">
   <!-- Sidebar -->
   <app-sidebar></app-sidebar>
-  
+
   <!-- Main Content -->
   <main class="main-content">
-    <!-- Top Navigation -->
-    <header class="top-nav">
-      <div class="breadcrumb">
-        <i class="icon">🏠</i>
-        <span>/ DASHBOARD</span>
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="page-heading">
+        <h1>Dashboard</h1>
+        <p>Welcome back, {{ firstName }}</p>
       </div>
-      
-      <button class="menu-toggle">
-        <i class="icon">☰</i>
-      </button>
-      
-      <div class="top-nav-right">
-        <button class="year-selector">
-          <i class="icon">📅</i>
-          {{ selectedYear }}
-          <i class="arrow">▼</i>
+
+      <div class="top-bar-actions">
+        <button class="icon-btn" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
         </button>
-        
-        <div class="user-menu">
-          <i class="icon">👤</i>
-          <span>{{ currentUser?.name }}</span>
-          <!-- <i class="arrow">▶</i> -->
+
+        <button class="icon-btn" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </button>
+
+        <div class="user-chip" (click)="toggleUserMenu()">
+          <div class="avatar">{{ initials }}</div>
+          <div class="user-info">
+            <span class="user-name">{{ currentUser?.name }}</span>
+            <span class="user-role">{{ currentUser?.role | titlecase }}</span>
+          </div>
+
+          <div class="user-dropdown" *ngIf="showUserMenu">
+            <button type="button" (click)="logout()">Logout</button>
+          </div>
         </div>
-        
-        <button class="icon-btn" (click)="logout()">
-          <i class="icon">🚪</i>
-        </button>
-        
-        <button class="icon-btn">
-          <i class="icon">🌐</i>
-        </button>
       </div>
     </header>
-    
-    <!-- Info Alert -->
-    <div class="alert alert-warning">
-      <i class="icon">ℹ️</i>
-      <span>To protect your personal data, please update your password <a href="javascript:void(0)">(Click Here)</a></span>
+
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+      <div class="hero-label">Postgraduate Services Portal</div>
+      <h2 class="hero-title">Good Morning, {{ firstName }}</h2>
+      <p class="hero-subtitle">
+        You have {{ profile.activeCount }} active requests and {{ profile.pendingCount }} pending approval this week.
+      </p>
+      <div class="hero-badges">
+        <span class="hero-badge">PhD {{ profile.major }}</span>
+        <span class="hero-badge">Academic Year {{ profile.academicYear }}</span>
+        <span class="hero-badge">{{ profile.status }} Student</span>
+      </div>
     </div>
-    
-    <!-- Stats Cards -->
+
+    <!-- Stats Grid -->
     <div class="stats-grid">
       <div class="stat-card" (click)="navigateToAllRequests()">
-        <div class="stat-label">All Requests</div>
+        <div class="stat-icon stat-icon-navy">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
         <div class="stat-value">{{ stats.total }}</div>
+        <div class="stat-label">Total Requests</div>
+        <div class="stat-note stat-note-positive">{{ stats.totalNote }}</div>
       </div>
-      
-      <div class="stat-card stat-info">
-        <div class="stat-label">InProgress Requests</div>
-        <div class="stat-value">{{ stats.inProgress }}</div>
+
+      <div class="stat-card">
+        <div class="stat-icon stat-icon-warning">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <div class="stat-value">{{ stats.pending }}</div>
+        <div class="stat-label">Pending Requests</div>
+        <div class="stat-note">{{ stats.pendingNote }}</div>
       </div>
-      
-      <div class="stat-card stat-danger">
-        <div class="stat-label">Rejected Requests</div>
-        <div class="stat-value">{{ stats.rejected }}</div>
-      </div>
-      
-      <div class="stat-card stat-success">
-        <div class="stat-label">Approved Requests</div>
+
+      <div class="stat-card">
+        <div class="stat-icon stat-icon-success">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
         <div class="stat-value">{{ stats.approved }}</div>
+        <div class="stat-label">Approved Requests</div>
+        <div class="stat-note">{{ stats.approvedNote }}</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon stat-icon-error">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </div>
+        <div class="stat-value">{{ stats.rejected }}</div>
+        <div class="stat-label">Rejected Requests</div>
+        <div class="stat-note">{{ stats.rejectedNote }}</div>
       </div>
     </div>
-    
-    <!-- Main Grid -->
+
+    <!-- Requests + Profile Grid -->
     <div class="dashboard-grid">
-      <!-- Requests Section -->
       <div class="card requests-card">
         <div class="card-header">
-          <h3>Requests</h3>
-          <button class="info-btn">ℹ️</button>
+          <h3>Recent Requests</h3>
+          <a href="javascript:void(0)" class="view-all-link" (click)="navigateToAllRequests()">View All →</a>
         </div>
-        
-        <div class="requests-summary">
-          <div class="requests-count">{{ stats.total }}</div>
-          <div class="requests-label">Request</div>
-        </div>
-        
-        <div class="requests-list">
-          <div class="request-item" *ngFor="let type of requestTypes" (click)="navigateToAllRequests()">
-            <div class="request-icon" [style.background]="type.color">
-              {{ type.icon }}
-            </div>
-            <span class="request-name">{{ type.name }}</span>
-            <span class="request-count">{{ type.count }}</span>
-          </div>
+
+        <div class="table-wrapper">
+          <table class="requests-table">
+            <thead>
+              <tr>
+                <th>Request ID</th>
+                <th>Request Type</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let request of recentRequests">
+                <td>{{ request.id }}</td>
+                <td>{{ request.type }}</td>
+                <td>{{ request.date }}</td>
+                <td>
+                  <span class="status-badge" [ngClass]="'status-' + request.status">
+                    <svg *ngIf="request.status === 'approved'" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="3">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <svg *ngIf="request.status === 'rejected'" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="3">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                    <svg *ngIf="request.status === 'pending'" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="3">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                  </span>
+                </td>
+                <td><a href="javascript:void(0)" class="view-all-link" (click)="navigateToAllRequests()">View →</a></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      
-      <!-- Calendar Section -->
-      <div class="card calendar-card">
-        <!-- <div class="calendar-tabs">
-          <button class="tab-btn active">Seminar</button>
-          <button class="tab-btn">Defense</button>
-          <button class="tab-btn">Clinic / Lecture</button>
-          <button class="info-btn">ℹ️</button>
-        </div> -->
 
-        <div class="calendar-tabs">
-  <button class="tab-btn tab-seminar active" style="width: 200px;">Seminar</button>
-  <button class="tab-btn tab-defense" style="width: 200px;">Defense</button>
-  <button class="tab-btn tab-clinic" style="width: 200px;">Clinic / Lecture</button>
-  <button class="info-btn">
-    <svg viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-    </svg>
-  </button>
-</div>
-        <div class="calendar-header">
-          <button class="calendar-btn" (click)="goToToday()">today</button>
-          <button class="calendar-btn" (click)="previousMonth()">‹</button>
-          <button class="calendar-btn" (click)="nextMonth()">›</button>
-          <h3 class="calendar-title">{{ getMonthName() }}</h3>
-          <div class="calendar-view-btns">
-            <button class="view-btn active">month</button>
-            <button class="view-btn">week</button>
-            <button class="view-btn">day</button>
-            <button class="view-btn">list</button>
-          </div>
+      <div class="card profile-card">
+        <div class="profile-avatar">{{ initials }}</div>
+        <h3 class="profile-name">{{ currentUser?.name }}</h3>
+        <div class="profile-detail">Student ID: {{ profile.studentId }}</div>
+        <div class="profile-detail">{{ profile.degree }}</div>
+        <div class="profile-detail">{{ profile.major }}</div>
+        <div class="profile-detail">Academic Year {{ profile.academicYear }}</div>
+        <div class="profile-detail">
+          Status: <span class="status-pill status-pill-success">{{ profile.status }}</span>
         </div>
-        
-        <div class="calendar">
-          <div class="calendar-weekdays">
-            <div class="weekday" *ngFor="let day of getWeekdays()">{{ day }}</div>
+
+        <div class="profile-stats">
+          <span class="profile-stat profile-stat-success">{{ profile.activeCount }} Active</span>
+          <span class="profile-stat profile-stat-neutral">{{ profile.completedCount }} Completed</span>
+          <span class="profile-stat profile-stat-warning">{{ profile.pendingCount }} Pending</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card activity-card">
+      <div class="card-header">
+        <h3>Recent Activity</h3>
+        <a href="javascript:void(0)" class="view-all-link">View All →</a>
+      </div>
+
+      <div class="activity-list">
+        <div class="activity-item" *ngFor="let activity of recentActivity">
+          <div class="activity-icon" [ngClass]="'activity-icon-' + activity.type">
+            <svg *ngIf="activity.type === 'approved'" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="3">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <svg *ngIf="activity.type === 'pending'" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <svg *ngIf="activity.type === 'submitted'" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+            </svg>
+            <svg *ngIf="activity.type === 'rejected'" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="3">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
           </div>
-          
-          <div class="calendar-days">
-            <!-- Empty cells for days before month starts -->
-            <div class="calendar-day empty" *ngFor="let i of [].constructor(getFirstDayOfMonth())"></div>
-            
-            <!-- Days of the month -->
-            <div class="calendar-day" 
-                 *ngFor="let day of getDaysInMonth()"
-                 [class.has-event]="hasEvent(day)">
-              <div class="day-number">{{ day }}</div>
-              <div class="day-event" *ngIf="hasEvent(day)">
-                <div class="event-badge">{{ getEventForDay(day)?.title }}</div>
-              </div>
-            </div>
+
+          <div class="activity-content">
+            <div class="activity-title">{{ activity.title }}</div>
+            <div class="activity-description">{{ activity.description }}</div>
           </div>
+
+          <div class="activity-time">{{ activity.time }}</div>
         </div>
       </div>
     </div>

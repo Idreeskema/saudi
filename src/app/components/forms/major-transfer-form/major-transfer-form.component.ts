@@ -106,18 +106,69 @@ export class MajorTransferFormComponent implements OnInit {
   }
 
   populateFormData(data: any): void {
-    this.formData.studentName = data.studentName || "";
-    this.formData.studentId = data.studentId || "";
-    this.formData.level = data.level || "";
-    this.formData.major = data.major || "";
-    this.formData.gpa = String(data.gpa || "");
-    this.formData.currentMajor = data.currentMajor || "";
-    this.formData.proposedMajor = data.proposedMajor || "";
-    this.formData.studentSignature = data.studentSignature || "";
-    this.formData.guardianSignature = data.guardianSignature || "";
-    this.formData.mobile = data.mobileNumber || "";
-    this.formData.email = data.email || "";
-    this.formData.dateOfApplication = data.dateOfApplication ? new Date(data.dateOfApplication).toISOString().split('T')[0] : "";
+    const mainData = data.data || data;
+
+    this.formData.studentName = mainData.studentName || "";
+    this.formData.studentId = mainData.studentId || "";
+    this.formData.level = mainData.level || "";
+    this.formData.major = mainData.major || "";
+    this.formData.gpa = String(mainData.gpa || "");
+    this.formData.currentMajor = mainData.currentMajor || "";
+    this.formData.proposedMajor = mainData.proposedMajor || "";
+    this.formData.studentSignature = mainData.studentSignature || "";
+    this.formData.guardianSignature = mainData.guardianSignature || "";
+    this.formData.mobile = mainData.mobileNumber || "";
+    this.formData.email = mainData.email || "";
+    this.formData.dateOfApplication = mainData.dateOfApplication ? mainData.dateOfApplication.split('T')[0] : "";
+
+    // Authorized Person Section
+    if (mainData.authorizedPersonSection) {
+      const auth = mainData.authorizedPersonSection;
+      this.formData.authorizedName = auth.name || "";
+      this.formData.authorizedSignature = auth.signature || "";
+      if (auth.date) {
+        const d = new Date(auth.date);
+        this.formData.authorizedDateDay = String(d.getDate()).padStart(2, '0');
+        this.formData.authorizedDateMonth = String(d.getMonth() + 1).padStart(2, '0');
+        // If the code uses +622 logic for Hijri, we might need to handle it, 
+        // but for standard binding we use the year from the date string.
+        this.formData.authorizedDateYear = String(d.getFullYear()); 
+        this.formData.authorizedDateYear2 = String(d.getFullYear()).substring(2);
+      }
+    }
+
+    // Accounting Section
+    if (mainData.accountingSection) {
+      const acc = mainData.accountingSection;
+      this.formData.hasPreviousFee = acc.hasPreviousTuition || false;
+      this.formData.noPreviousFee = acc.hasPreviousTuition === false;
+      this.formData.feeDifferencePaid = acc.tuitionDifferencePaid ? "yes" : "no";
+      this.formData.accountingName = acc.name || "";
+      this.formData.accountingSignature = acc.signature || "";
+      if (acc.date) {
+        const d = new Date(acc.date);
+        this.formData.accountingDateDay = String(d.getDate()).padStart(2, '0');
+        this.formData.accountingDateMonth = String(d.getMonth() + 1).padStart(2, '0');
+        this.formData.accountingDateYear = String(d.getFullYear());
+        this.formData.accountingDateYear2 = String(d.getFullYear()).substring(2);
+      }
+    }
+
+    // Registration Section
+    if (mainData.registrationSection) {
+      const reg = mainData.registrationSection;
+      this.formData.transferApproved = reg.decision === true;
+      this.formData.transferDenied = reg.decision === false;
+      this.formData.denialReason = reg.reason || "";
+      this.formData.registrationName = reg.name || "";
+      this.formData.registrationSignature = reg.signature || "";
+      if (reg.date) {
+        const d = new Date(reg.date);
+        this.formData.registrationDateDay = String(d.getDate()).padStart(2, '0');
+        this.formData.registrationDateMonth = String(d.getMonth() + 1).padStart(2, '0');
+        this.formData.registrationDateYear = String(d.getFullYear());
+      }
+    }
   }
 
   getApplicationDateISO(): string {
@@ -162,21 +213,14 @@ export class MajorTransferFormComponent implements OnInit {
 
   canViewSection(section: string): boolean {
     if (!this.currentUser) return false;
-
+    
     const role = this.currentUser.role;
 
-    switch (section) {
-      case "student":
-        return true;
-      case "authorized":
-        return ["authorized", "admin"].includes(role);
-      case "accounting":
-        return ["accounting", "admin"].includes(role);
-      case "registration":
-        return ["registration", "admin"].includes(role);
-      default:
-        return false;
-    }
+    // Students only see their own section
+    if (role === "student") return section === "student";
+
+    // Staff roles (authorized, accounting, registration, admin) can see all sections
+    return true;
   }
 
   canEditSection(section: string): boolean {

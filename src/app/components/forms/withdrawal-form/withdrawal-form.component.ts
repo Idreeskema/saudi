@@ -19,6 +19,7 @@ export class WithdrawalFormComponent implements OnInit {
   currentUser: User | null = null;
   formId: number = 23; // Default, can be from route
   id: number = 0; // Request/sequence ID for accounting and registration
+  withdrawalSubmitted: boolean = false;
 
   formData = {
     // Personal Information
@@ -78,12 +79,14 @@ export class WithdrawalFormComponent implements OnInit {
             this.formData = {
               ...this.formData,
               ...data,
+              dateOfApplication: data.dateOfApplication ? data.dateOfApplication.split('T')[0] : "",
               accountingName: data.accounting?.accountingName || data.accountingName || "",
               accountingSignature: data.accounting?.accountingSignature || data.accountingSignature || "",
-              accountingDate: data.accounting?.accountingDate || data.accountingDate || "",
+              accountingDate: (data.accounting?.accountingDate || data.accountingDate || "").split('T')[0],
               registrationName: data.registration?.registrationName || data.registrationName || "",
               registrationSignature: data.registration?.registrationSignature || data.registrationSignature || "",
-              registrationDate: data.registration?.registrationDate || data.registrationDate || "",
+              registrationDate: (data.registration?.registrationDate || data.registrationDate || "").split('T')[0],
+              studentFileReceivedDate: data.studentFileReceivedDate ? data.studentFileReceivedDate.split('T')[0] : "",
             };
           }
         },
@@ -96,19 +99,13 @@ export class WithdrawalFormComponent implements OnInit {
 
   canViewSection(section: string): boolean {
     if (!this.currentUser) return false;
-
     const role = this.currentUser.role;
 
-    switch (section) {
-      case "student":
-        return true; // Everyone can see student info
-      case "accounting":
-        return ["accounting", "admin"].includes(role);
-      case "registration":
-        return ["registration", "admin"].includes(role);
-      default:
-        return false;
-    }
+    // Students only see their own section
+    if (role === "student") return section === "student";
+
+    // Staff roles (accounting, registration, admin) can see all sections
+    return true;
   }
 
   canEditSection(section: string): boolean {
@@ -157,7 +154,30 @@ export class WithdrawalFormComponent implements OnInit {
     const role = this.currentUser.role;
     const endpoint = "university-withdrawals";
 
+    this.withdrawalSubmitted = true;
+
+    if ((role === "student" || role === "admin") && !this.formData.withdrawalReason.trim()) {
+      this.toastr.error("Withdrawal reason is required", "Error");
+      return;
+    }
+
+    if (
+      (role === "registration" || role === "admin") &&
+      (!this.formData.studentFileSignature.trim() || !this.formData.studentFileReceivedDate)
+    ) {
+      this.toastr.error("Student signature on receiving file and its date are required", "Error");
+      return;
+    }
+
     if (role === "student") {
+      if (
+        !confirm(
+          "Are you sure you want to withdraw from the University? This action cannot be undone.",
+        )
+      ) {
+        return;
+      }
+
       // Student submits new withdrawal request
       const payload = {
         formId: this.formId,

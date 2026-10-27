@@ -101,9 +101,8 @@ export class ReEntryFormComponent implements OnInit {
   }
 
   loadFormData(): void {
-    const getId = 0;
     if (this.formData.formId > 0) {
-      this.apiService.get(`re-entry-forms/${getId}`).subscribe({
+      this.apiService.get(`re-entry-forms/${this.formData.formId}`).subscribe({
         next: (response: any) => {
           console.log("Form data loaded successfully", response);
           this.populateFormData(response);
@@ -116,42 +115,46 @@ export class ReEntryFormComponent implements OnInit {
   }
 
   populateFormData(data: any): void {
-    this.formData.studentId = data.data.studentId || "";
-    this.formData.studentName = data.data.studentName || "";
-    this.formData.mobileNumber = data.data.mobileNumber || "";
-    this.formData.email = data.data.email || "";
-    this.formData.gpa = data.data.gpa || 0;
-    this.formData.major = data.data.major || "";
+    const mainData = data.data || data;
+    
+    this.formData.studentId = mainData.studentId || "";
+    this.formData.studentName = mainData.studentName || "";
+    this.formData.mobileNumber = mainData.mobileNumber || "";
+    this.formData.email = mainData.email || "";
+    this.formData.gpa = mainData.gpa || 0;
+    this.formData.major = mainData.major || "";
     
     // Convert semester strings to checkboxes for enrollment
-    this.formData.dateOfEnrollmentSemester = data.data.dateOfEnrollmentSemester || "";
-    this.formData.enrollmentFirstSemester = data.data.dateOfEnrollmentSemester === "Fall";
-    this.formData.enrollmentSecondSemester = data.data.dateOfEnrollmentSemester === "Spring";
-    this.formData.enrollmentAcademicYear = data.data.dateOfEnrollmentAcademicYear || "";
-    this.formData.dateOfEnrollmentAcademicYear = data.data.dateOfEnrollmentAcademicYear || "";
+    this.formData.dateOfEnrollmentSemester = mainData.dateOfEnrollmentSemester || "";
+    this.formData.enrollmentFirstSemester = mainData.dateOfEnrollmentSemester === "Fall";
+    this.formData.enrollmentSecondSemester = mainData.dateOfEnrollmentSemester === "Spring";
+    this.formData.enrollmentAcademicYear = mainData.dateOfEnrollmentAcademicYear || "";
+    this.formData.dateOfEnrollmentAcademicYear = mainData.dateOfEnrollmentAcademicYear || "";
     
     // Convert semester strings to checkboxes for last semester
-    this.formData.lastSemesterEnrolled = data.data.lastSemesterEnrolled || "";
-    this.formData.lastSemesterFirst = data.data.lastSemesterEnrolled === "Fall";
-    this.formData.lastSemesterSecond = data.data.lastSemesterEnrolled === "Spring";
-    this.formData.lastSemesterAcademicYear = data.data.lastSemesterAcademicYear || "";
+    this.formData.lastSemesterEnrolled = mainData.lastSemesterEnrolled || "";
+    this.formData.lastSemesterFirst = mainData.lastSemesterEnrolled === "Fall";
+    this.formData.lastSemesterSecond = mainData.lastSemesterEnrolled === "Spring";
+    this.formData.lastSemesterAcademicYear = mainData.lastSemesterAcademicYear || "";
     
-    this.formData.studentSignature = data.data.studentSignature || "";
-    this.formData.dateSigned = data.data.dateSigned || "";
+    this.formData.studentSignature = mainData.studentSignature || "";
+    this.formData.dateSigned = mainData.dateSigned || "";
     
     // Faculty Council Data
-    if (data.facultyCouncilSection) {
-      this.formData.facultySessionNo = data.data.facultyCouncilSection.sessionNo || "";
-      this.formData.facultyDecision = data.data.facultyCouncilSection.decision || false;
-      this.formData.facultyDate = data.data.facultyCouncilSection.date || "";
+    if (mainData.facultyCouncilSection) {
+      this.formData.facultySessionNo = mainData.facultyCouncilSection.sessionNo || "";
+      this.formData.facultyDecision = mainData.facultyCouncilSection.decision || false;
+      const fDate = mainData.facultyCouncilSection.date;
+      this.formData.facultyDate = fDate ? fDate.split('T')[0] : "";
     }
     
     // Dean Data
-    if (data.collegeDeanSection) {
-      this.formData.deanName = data.collegeDeanSection.name || "";
-      this.formData.deanSignature = data.collegeDeanSection.signature || "";
-      this.formData.deanDate = data.collegeDeanSection.date || "";
-      this.formData.deanDecision = data.collegeDeanSection.decision || false;
+    if (mainData.collegeDeanSection) {
+      this.formData.deanName = mainData.collegeDeanSection.name || "";
+      this.formData.deanSignature = mainData.collegeDeanSection.signature || "";
+      const dDate = mainData.collegeDeanSection.date;
+      this.formData.deanDate = dDate ? dDate.split('T')[0] : "";
+      this.formData.deanDecision = mainData.collegeDeanSection.decision || false;
     }
   }
 
@@ -229,6 +232,13 @@ export class ReEntryFormComponent implements OnInit {
   }
 
   submitForm(): void {
+    // Validate mandatory fields
+    if (!this.formData.studentId || !this.formData.studentName || !this.formData.mobileNumber || 
+        !this.formData.email || !this.formData.major || this.formData.gpa === null || this.formData.gpa === undefined) {
+      alert("Please fill in all mandatory fields: Student ID, Student's Name, Mobile, E-mail, GPA, and Major.");
+      return;
+    }
+
     if (
       confirm(
         "Are you sure you want to submit this form? This action cannot be undone.",

@@ -16,6 +16,7 @@ import { SidebarComponent } from "../../sidebar/sidebar.component";
 })
 export class MidtermReplacementFormComponent implements OnInit {
   currentUser: User | null = null;
+  declarationSubmitted: boolean = false;
 
   formData = {
     id:0,
@@ -70,35 +71,37 @@ export class MidtermReplacementFormComponent implements OnInit {
   }
 
   loadFormData(): void {
-    this.apiService.get(`MidTermExamReplacementForm/${this.formData.formId}`).subscribe({
-      next: (response: any) => {
-        const data = response.data || response;
-        if (data) {
-          this.formData = {
-            ...this.formData,
-            ...data
-          };
+    if (this.formData.formId > 0) {
+      this.apiService.get(`MidTermExamReplacementForm/${this.formData.formId}`).subscribe({
+        next: (response: any) => {
+          const data = response.data || response;
+          if (data) {
+            this.formData = {
+              ...this.formData,
+              ...data,
+              // Map nested approval results to flat checkboxes
+              approvalDecision: data.authorizedPersonApproval?.approvalDecision === true,
+              denialDecision: data.authorizedPersonApproval?.approvalDecision === false,
+              // Format date for HTML input with fallbacks
+              dateSigned: (data.dateSigned || data.studentDate || data.createdAt || "").split('T')[0]
+            };
+            
+            // Track if form was already processed to keep buttons visible during current interaction
+            this.isInitiallyProcessed = data.authorizedPersonApproval?.approvalDecision !== undefined && data.authorizedPersonApproval?.approvalDecision !== null;
+          }
+        },
+        error: (error) => {
+          console.error("Error loading mid-term replacement data:", error);
         }
-      },
-      error: (error) => {
-        console.error("Error loading mid-term replacement data:", error);
-      }
-    });
+      });
+    }
   }
 
   canViewSection(section: string): boolean {
     if (!this.currentUser) return false;
-
     const role = this.currentUser.role;
-
-    switch (section) {
-      case "student":
-        return true;
-      case "authorized":
-        return ["authorized", "admin"].includes(role);
-      default:
-        return false;
-    }
+    if (role === "student") return section === "student";
+    return true; // Staff/Admin can see everything
   }
 
   canEditSection(section: string): boolean {
@@ -110,6 +113,7 @@ export class MidtermReplacementFormComponent implements OnInit {
       case "student":
         return role === "student";
       case "authorized":
+        // Authorized Person and Admin can edit this section
         return role === "authorized" || role === "admin";
       default:
         return false;
@@ -139,6 +143,13 @@ export class MidtermReplacementFormComponent implements OnInit {
   }
 
   submitForm(): void {
+    this.declarationSubmitted = true;
+
+    if (!this.formData.absenceReason.trim()) {
+      alert("Reason for Absence is required.");
+      return;
+    }
+
     if (
       confirm(
         "Are you sure you want to submit this mid-term exam replacement request?"
@@ -219,8 +230,20 @@ export class MidtermReplacementFormComponent implements OnInit {
     }
   }
 
+  isInitiallyProcessed: boolean = false;
+
   isFormProcessed(): boolean {
-    return this.formData.approvalDecision === true || this.formData.denialDecision === true;
+    // Buttons should be visible if we haven't submitted a decision in THIS session
+    // and if the server didn't already have a finalized decision.
+    return this.isInitiallyProcessed;
+  }
+
+  onApprovalChange(type: 'approve' | 'deny'): void {
+    if (type === 'approve' && this.formData.approvalDecision) {
+      this.formData.denialDecision = false;
+    } else if (type === 'deny' && this.formData.denialDecision) {
+      this.formData.approvalDecision = false;
+    }
   }
 
   logout(): void {

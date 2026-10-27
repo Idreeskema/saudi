@@ -79,12 +79,13 @@ export class SemesterWithdrawalFormComponent implements OnInit {
           this.formData = {
             ...this.formData,
             ...data,
+            dateOfApplication: data.dateOfApplication ? data.dateOfApplication.split('T')[0] : "",
             accountingName: data.accounting?.accountingName || data.accountingName || "",
             accountingSignature: data.accounting?.accountingSignature || data.accountingSignature || "",
-            accountingDate: data.accounting?.accountingDate || data.accountingDate || "",
+            accountingDate: (data.accounting?.accountingDate || data.accountingDate || "").split('T')[0],
             registrationName: data.registration?.registrationName || data.registrationName || "",
             registrationSignature: data.registration?.registrationSignature || data.registrationSignature || "",
-            registrationDate: data.registration?.registrationDate || data.registrationDate || "",
+            registrationDate: (data.registration?.registrationDate || data.registrationDate || "").split('T')[0],
           };
         }
       },
@@ -96,19 +97,13 @@ export class SemesterWithdrawalFormComponent implements OnInit {
 
   canViewSection(section: string): boolean {
     if (!this.currentUser) return false;
-
     const role = this.currentUser.role;
 
-    switch (section) {
-      case "student":
-        return true; // Everyone can see student info
-      case "accounting":
-        return ["accounting", "admin"].includes(role);
-      case "registration":
-        return ["registration", "admin"].includes(role);
-      default:
-        return false;
-    }
+    // Students only see their own section
+    if (role === "student") return section === "student";
+
+    // Staff roles (accounting, registration, admin) can see all sections
+    return true;
   }
 
   canEditSection(section: string): boolean {

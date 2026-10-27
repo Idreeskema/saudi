@@ -1,5 +1,5 @@
 .print-wrapper {
-  background: white;
+  background: var(--color-background-main);
   min-height: 100vh;
   padding: 40px;
 }
@@ -10,47 +10,51 @@
 }
 
 .btn-download {
-  background: #28a745;
-  color: white;
+  background: var(--color-primary-navy);
+  color: var(--color-text-white);
   padding: 12px 30px;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-control);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  
+
   &:hover {
-    background: #218838;
+    background: var(--color-primary-navy-hover);
   }
 }
 
 .print-content {
   max-width: 1000px;
   margin: 0 auto;
-  background: white;
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 40px;
 }
 
 .form-header-print {
   text-align: center;
   margin-bottom: 40px;
   padding-bottom: 20px;
-  border-bottom: 3px solid #344767;
-  
+  border-bottom: 3px solid var(--color-primary-navy);
+
   h1 {
     font-size: 32px;
-    color: #344767;
+    color: var(--color-text-primary);
     margin-bottom: 15px;
   }
-  
+
   .form-meta-print {
     display: flex;
     justify-content: center;
     gap: 30px;
     font-size: 14px;
-    color: #67748e;
-    
+    color: var(--color-text-secondary);
+
     strong {
-      color: #344767;
+      color: var(--color-text-primary);
     }
   }
 }
@@ -58,14 +62,14 @@
 .section-print {
   margin-bottom: 40px;
   page-break-inside: avoid;
-  
+
   h2 {
     font-size: 20px;
-    color: #344767;
+    color: var(--color-text-primary);
     margin-bottom: 20px;
     padding: 10px 15px;
-    background: linear-gradient(90deg, #f8f9fa 0%, white 100%);
-    border-left: 4px solid #17c1e8;
+    background: var(--color-background-main);
+    border-left: 4px solid var(--color-primary-blue);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -75,8 +79,8 @@
 .section-num {
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, #17c1e8 0%, #0d6efd 100%);
-  color: white;
+  background: var(--color-primary-navy);
+  color: var(--color-text-white);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -90,7 +94,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 15px 30px;
   padding: 20px;
-  background: #fafbfc;
+  background: var(--color-background-main);
   border-radius: 8px;
 }
 
@@ -98,26 +102,26 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  
+
   &.full-width {
     grid-column: 1 / -1;
   }
-  
+
   label {
     font-size: 13px;
     font-weight: 600;
-    color: #67748e;
+    color: var(--color-text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.3px;
   }
-  
+
   span {
     font-size: 15px;
-    color: #344767;
+    color: var(--color-text-primary);
     padding: 8px 12px;
-    background: white;
+    background: var(--color-background-card);
     border-radius: 4px;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--color-border-default);
     min-height: 38px;
     display: flex;
     align-items: center;
@@ -125,12 +129,12 @@
 }
 
 .approved {
-  color: #28a745 !important;
+  color: var(--color-status-success) !important;
   font-weight: 600;
 }
 
 .denied {
-  color: #dc3545 !important;
+  color: var(--color-status-error) !important;
   font-weight: 600;
 }
 
@@ -139,15 +143,23 @@
   .no-print {
     display: none !important;
   }
-  
+
   .print-wrapper {
     padding: 20px;
+    background: white !important;
   }
-  
+
+  .print-content {
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+  }
+
   .section-print {
     page-break-inside: avoid;
   }
-  
+
   body {
     background: white !important;
   }

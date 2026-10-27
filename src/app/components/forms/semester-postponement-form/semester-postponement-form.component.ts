@@ -90,7 +90,8 @@ export class SemesterPostponementFormComponent implements OnInit {
         .subscribe({
           next: (response: any) => {
             console.log("Form data loaded successfully", response);
-            this.populateFormData(response);
+            const data = response.data || response;
+            this.populateFormData(data);
           },
           error: (error) => {
             console.error("Error loading form data", error);
@@ -100,6 +101,8 @@ export class SemesterPostponementFormComponent implements OnInit {
   }
 
   populateFormData(data: any): void {
+    if (!data) return;
+
     this.formData.studentName = data.studentName || "";
     this.formData.studentId = data.studentId || "";
     this.formData.level = data.level || "";
@@ -110,33 +113,37 @@ export class SemesterPostponementFormComponent implements OnInit {
     this.formData.studentSignature = data.studentSignature || "";
     this.formData.guardianSignature = data.guardianSignature || "";
     this.formData.mobileNumber = data.mobileNumber || "";
-    this.formData.dateOfApplication = data.dateOfApplication || "";
-    this.formData.hasTuitionFee = data.hasTuitionFee || false;
-    this.formData.accountingName = data.accountingName || "";
-    this.formData.accountingSignature = data.accountingSignature || "";
-    this.formData.accountingDate = data.accountingDate || "";
-    this.formData.registrationDecision = data.registrationDecision || false;
-    this.formData.registrationReason = data.registrationReason || "";
-    this.formData.registrationName = data.registrationName || "";
-    this.formData.registrationSignature = data.registrationSignature || "";
-    this.formData.registrationDate = data.registrationDate || "";
+    this.formData.dateOfApplication = data.dateOfApplication ? data.dateOfApplication.split('T')[0] : "";
+
+    // Map nested Accounting Section
+    const accounting = data.accountingSection;
+    if (accounting) {
+      this.formData.hasTuitionFee = accounting.hasTuitionFee === true;
+      this.formData.accountingName = accounting.name || "";
+      this.formData.accountingSignature = accounting.signature || "";
+      this.formData.accountingDate = accounting.date ? accounting.date.split('T')[0] : "";
+    }
+
+    // Map nested Registration Section
+    const registration = data.registrationSection;
+    if (registration) {
+      this.formData.registrationDecision = registration.decision === true;
+      this.formData.registrationReason = registration.reason || "";
+      this.formData.registrationName = registration.name || "";
+      this.formData.registrationSignature = registration.signature || "";
+      this.formData.registrationDate = registration.date ? registration.date.split('T')[0] : "";
+    }
   }
 
   canViewSection(section: string): boolean {
     if (!this.currentUser) return false;
-
     const role = this.currentUser.role;
 
-    switch (section) {
-      case "student":
-        return true;
-      case "accounting":
-        return ["accounting", "admin"].includes(role);
-      case "registration":
-        return ["registration", "admin"].includes(role);
-      default:
-        return false;
-    }
+    // Students only see their own section
+    if (role === "student") return section === "student";
+
+    // Staff roles (accounting, registration, admin) can see all sections
+    return true;
   }
 
   canEditSection(section: string): boolean {

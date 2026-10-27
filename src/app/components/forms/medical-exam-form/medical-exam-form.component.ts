@@ -191,45 +191,41 @@ export class MedicalExamFormComponent implements OnInit {
         console.log("Loaded Form Data:", data);
 
         this.medicalExamId = data.id;
-        this.isFormSubmitted = data.isCompleted || false; // Note: Payload says isCompleted, checked against isFormSubmitted
+        this.formId = data.formId || this.formId || 0;
+        this.isFormSubmitted = data.isCompleted || false; 
         
         const pe = data.physicalExam || {};
         const lab = data.laboratory || {};
         
         this.formData = {
-          formId: data.formId || this.formId || 0,
-          studentId: data.studentId || data.id || "",
-          studentName: data.studentName || "",
-          idNumber: data.idNumber || "",
-          gender: data.gender || "",
-          medicineTaken: data.medicineTaken || "",
-          allergy: data.allergy || "",
-          diseases: data.diseases || "",
+          ...this.formData,
+          ...data,
+          formId: this.formId,
+          studentId: data.studentId || "",
           
           // Section II - Physical Examination
-          // Handle flattened structure from API response
-          generalCondition: data.generalCondition || pe.generalCondition || "",
-          bloodPressure: data.bloodPressure || pe.bloodPressure || "",
-          pulse: data.pulse || pe.pulse || "",
-          diseaseSign: data.diseaseSign || pe.diseaseSign || "",
-          diseaseSignDetails: data.diseaseSignDetails || pe.diseaseSignDetails || "",
-          previousTreatment: data.previousTreatment || pe.previousTreatment || "",
-          previousTreatmentDetails: data.previousTreatmentDetails || pe.previousTreatmentDetails || "",
+          generalCondition: pe.generalCondition || data.generalCondition || "",
+          bloodPressure: pe.bloodPressure || data.bloodPressure || "",
+          pulse: pe.pulse || data.pulse || "",
+          diseaseSign: pe.diseaseSign || data.diseaseSign || "",
+          diseaseSignDetails: pe.diseaseSignDetails || data.diseaseSignDetails || "",
+          previousTreatment: pe.previousTreatment || data.previousTreatment || "",
+          previousTreatmentDetails: pe.previousTreatmentDetails || data.previousTreatmentDetails || "",
 
           // Section IV - X-ray
-          xrayResult: data.xrayResult || data.xray?.xrayResult || "",
-          xrayDetails: data.xrayDetails || data.xray?.xrayDetails || "",
+          xrayResult: data.xray?.xrayResult || data.xrayResult || "",
+          xrayDetails: data.xray?.xrayDetails || data.xrayDetails || "",
 
           // Result Section
-          applicantName: data.applicantName || data.result?.applicantName || "",
-          fitStatus: data.fitStatus || data.result?.fitStatus || "",
-          physicianName: data.physicianName || data.result?.physicianName || "",
-          signatureDate: data.signatureDate || data.result?.signatureDate || "",
-          hospitalName: data.hospitalName || data.result?.hospitalName || "",
-          medicalDirector: data.medicalDirector || data.result?.medicalDirector || "",
-          physicianSignature: data.physicianSignature || data.result?.physicianSignature || "",
-          medicalDirectorSignature: data.medicalDirectorSignature || data.result?.medicalDirectorSignature || "",
-          officialStamp: data.officialStamp || data.result?.officialStamp || "",
+          applicantName: data.result?.applicantName || data.applicantName || "",
+          fitStatus: data.result?.fitStatus || data.fitStatus || "",
+          physicianName: data.result?.physicianName || data.physicianName || "",
+          signatureDate: (data.result?.signatureDate || data.signatureDate || "").split('T')[0],
+          hospitalName: data.result?.hospitalName || data.hospitalName || "",
+          medicalDirector: data.result?.medicalDirector || data.medicalDirector || "",
+          physicianSignature: data.result?.physicianSignature || data.physicianSignature || "",
+          medicalDirectorSignature: data.result?.medicalDirectorSignature || data.medicalDirectorSignature || "",
+          officialStamp: data.result?.officialStamp || data.officialStamp || "",
         };
 
         // Handle regional examinations mapping from flat object if available
@@ -299,20 +295,39 @@ export class MedicalExamFormComponent implements OnInit {
     };
 
     this.isLoading = true;
-    this.apiService.post<{ id: number; data?: { id: number } }>("medical-exams", payload).subscribe({
-      next: (response: any) => {
-        this.medicalExamId = response.data?.id || response.id;
-        this.toastr.success("Student information saved successfully!");
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error("Error saving student section:", error);
-        this.toastr.error(
-          "Failed to save student information. Please try again.",
-        );
-        this.isLoading = false;
-      },
-    });
+    
+    if (this.medicalExamId) {
+      // Update existing record
+      const updatePayload = {
+        id: this.medicalExamId,
+        ...payload
+      };
+      this.apiService.patch("medical-exams", updatePayload).subscribe({
+        next: (response: any) => {
+          this.toastr.success("Student information updated successfully!");
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error("Error updating student section:", error);
+          this.toastr.error("Failed to update student information.");
+          this.isLoading = false;
+        }
+      });
+    } else {
+      // Create new record
+      this.apiService.post<{ id: number; data?: { id: number } }>("medical-exams", payload).subscribe({
+        next: (response: any) => {
+          this.medicalExamId = response.data?.id || response.id;
+          this.toastr.success("Student information saved successfully!");
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error("Error saving student section:", error);
+          this.toastr.error("Failed to save student information.");
+          this.isLoading = false;
+        },
+      });
+    }
   }
 
   // PATCH API - Update physical exam data
@@ -516,35 +531,13 @@ export class MedicalExamFormComponent implements OnInit {
 
   canViewSection(section: string): boolean {
     if (!this.currentUser) return false;
-
     const role = this.currentUser.role;
 
-    switch (section) {
-      case "student":
-        return true; // Everyone can see student info
-      case "physician":
-        return ["physician", "admin", "medical-director", "medicalExamination"].includes(role);
-      case "lab":
-        return [
-          "lab-technician",
-          "physician",
-          "admin",
-          "medical-director",
-          "medicalExamination",
-        ].includes(role);
-      case "xray":
-        return [
-          "xray",
-          "physician",
-          "admin",
-          "medical-director",
-          "medicalExamination",
-        ].includes(role);
-      case "result":
-        return ["physician", "medical-director", "admin", "medicalExamination"].includes(role);
-      default:
-        return false;
-    }
+    // Students only see their own section
+    if (role === "student") return section === "student";
+
+    // Staff roles (physician, lab, xray, medical-director, admin, etc.) can see all sections
+    return true;
   }
 
   canEditSection(section: string): boolean {
@@ -603,8 +596,13 @@ export class MedicalExamFormComponent implements OnInit {
         "Are you sure you want to submit this form? This action cannot be undone.",
       )
     ) {
+      if (!this.medicalExamId) {
+        this.toastr.error("Cannot submit: Record not found.");
+        return;
+      }
+
       const payload = {
-        id: this.formData.studentId,
+        id: this.medicalExamId,
         physicalExam: {
           generalCondition: this.formData.generalCondition,
           bloodPressure: this.formData.bloodPressure,

@@ -3,11 +3,12 @@
 .app-container {
   display: flex;
   min-height: 100vh;
-  background-color: #f8fafc;
+  background-color: var(--color-background-main);
   font-family: 'Inter', sans-serif;
 }
 
 .main-content {
+  padding-left: 170px !important;
   flex: 1;
   padding: 2.5rem;
   max-width: 1200px;
@@ -22,29 +23,29 @@
 }
 
 .page-title {
-  font-size: 2rem;
+  font-size: var(--font-size-h2);
   font-weight: 700;
-  color: #1e293b;
+  color: var(--color-text-primary);
   margin-bottom: 0.5rem;
 }
 
 .subtitle {
-  color: #64748b;
+  color: var(--color-text-secondary);
   font-size: 1.1rem;
 }
 
 .decision-card {
-  background: white;
-  border-radius: 1.25rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e2e8f0;
+  background: var(--color-background-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border-default);
   overflow: hidden;
 }
 
 .card-header {
   padding: 1.5rem 2rem;
-  background-color: #f1f5f9;
-  border-bottom: 1px solid #e2e8f0;
+  background-color: var(--color-background-main);
+  border-bottom: 1px solid var(--color-border-default);
   display: flex;
   gap: 3rem;
 }
@@ -55,9 +56,9 @@
 }
 
 .info-item .label {
-  font-size: 0.875rem;
+  font-size: var(--font-size-label);
   font-weight: 500;
-  color: #64748b;
+  color: var(--color-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.025em;
   margin-bottom: 0.25rem;
@@ -66,7 +67,7 @@
 .info-item .value {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--color-text-primary);
 }
 
 .card-body {
@@ -77,7 +78,7 @@
   display: block;
   font-size: 1rem;
   font-weight: 600;
-  color: #334155;
+  color: var(--color-text-primary);
   margin-bottom: 1.25rem;
 }
 
@@ -99,8 +100,8 @@
 
 .toggle-content {
   padding: 1.5rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 1rem;
+  border: 2px solid var(--color-border-default);
+  border-radius: var(--radius-card);
   display: flex;
   align-items: center;
   gap: 1.25rem;
@@ -112,40 +113,31 @@
   transition: transform 0.2s ease;
 }
 
-.fa-check-circle { color: #cbd5e1; }
-.fa-times-circle { color: #cbd5e1; }
+.fa-check-circle { color: var(--color-disabled-bg); }
+.fa-times-circle { color: var(--color-disabled-bg); }
 
 .toggle-option.active .toggle-content {
-  background-color: #f8fafc;
-}
-
-.toggle-option.active[name="decision"][value="true"] .toggle-content {
-  border-color: #10b981;
-  background-color: #f0fdf4;
-}
-
-.toggle-option.active[name="decision"][value="true"] .fa-check-circle {
-  color: #10b981;
+  background-color: var(--color-background-main);
 }
 
 .toggle-option:nth-child(1).active .toggle-content {
-  border-color: #10b981;
-  background: #f0fdf4;
+  border-color: var(--color-status-success);
+  background: rgba(34, 197, 94, 0.08);
 }
 .toggle-option:nth-child(1).active .fa-check-circle {
-  color: #10b981;
+  color: var(--color-status-success);
 }
 
 .toggle-option:nth-child(2).active .toggle-content {
-  border-color: #ef4444;
-  background: #fef2f2;
+  border-color: var(--color-status-error);
+  background: rgba(239, 68, 68, 0.08);
 }
 .toggle-option:nth-child(2).active .fa-times-circle {
-  color: #ef4444;
+  color: var(--color-status-error);
 }
 
 .toggle-option:hover .toggle-content {
-  border-color: #cbd5e1;
+  border-color: var(--color-disabled-bg);
 }
 
 .toggle-option.active .toggle-content {
@@ -160,35 +152,37 @@
 .text .main {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--color-text-primary);
 }
 
 .text .sub {
-  font-size: 0.875rem;
-  color: #64748b;
+  font-size: var(--font-size-label);
+  color: var(--color-text-secondary);
 }
 
 .form-control {
   width: 100%;
   padding: 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.75rem;
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-control);
   font-family: inherit;
   font-size: 1rem;
+  color: var(--color-text-primary);
   transition: border-color 0.2s;
   box-sizing: border-box;
 }
 
 .form-control:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border: 2px solid var(--color-primary-blue);
+  box-shadow: var(--shadow-focus);
 }
 
 .card-footer {
   padding: 1.5rem 2rem;
-  background-color: #f8fafc;
-  border-top: 1px solid #e2e8f0;
+  background-color: var(--color-background-main);
+  border-top: 1px solid var(--color-border-default);
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
@@ -196,7 +190,7 @@
 
 .btn {
   padding: 0.75rem 1.75rem;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-control);
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
@@ -206,27 +200,29 @@
 
 .btn-secondary {
   background-color: transparent;
-  color: #64748b;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-default);
 }
 
 .btn-secondary:hover {
-  background-color: #e2e8f0;
-  color: #1e293b;
+  background-color: var(--color-background-main);
+  color: var(--color-text-primary);
 }
 
 .btn-primary {
-  background-color: #2563eb;
-  color: white;
-  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+  background-color: var(--color-primary-navy);
+  color: var(--color-text-white);
+  box-shadow: 0 4px 6px -1px rgba(18, 26, 109, 0.2);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: #1d4ed8;
+  background-color: var(--color-primary-navy-hover);
   transform: translateY(-1px);
 }
 
 .btn-primary:disabled {
-  background-color: #94a3b8;
+  background-color: var(--color-disabled-bg);
+  color: var(--color-disabled-text);
   cursor: not-allowed;
   box-shadow: none;
 }
@@ -237,7 +233,7 @@
   height: 1rem;
   border: 2px solid rgba(255,255,255,0.3);
   border-radius: 50%;
-  border-top-color: #fff;
+  border-top-color: var(--color-text-white);
   animation: spin 0.8s linear infinite;
   margin-right: 0.5rem;
 }

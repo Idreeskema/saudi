@@ -18,6 +18,7 @@ export class LoginComponent {
   rememberMe: boolean = false;
   errorMessage: string = "";
   selectedAccount: string = "";
+  submitted: boolean = false;
 
   // Demo credentials
   demoAccounts = [
@@ -103,6 +104,7 @@ export class LoginComponent {
 
   onSubmit(): void {
     this.errorMessage = "";
+    this.submitted = true;
 
     if (!this.username || !this.password) {
       this.errorMessage = "Please enter username and password";

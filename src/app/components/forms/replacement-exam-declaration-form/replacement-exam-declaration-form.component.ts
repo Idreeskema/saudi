@@ -18,6 +18,7 @@ import { SidebarComponent } from "../../sidebar/sidebar.component";
 export class ReplacementExamDeclarationFormComponent implements OnInit {
   currentUser: User | null = null;
   formId: number = 0;
+  declarationSubmitted: boolean = false;
 
   formData = {
     // Student Information
@@ -112,6 +113,13 @@ export class ReplacementExamDeclarationFormComponent implements OnInit {
   submitForm(): void {
     if (!this.currentUser) {
       this.toastr.error("Please login first", "Error");
+      return;
+    }
+
+    this.declarationSubmitted = true;
+
+    if (!this.formData.absenceReason.trim()) {
+      this.toastr.error("Reason for Absence is required", "Error");
       return;
     }
 

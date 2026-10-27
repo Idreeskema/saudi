@@ -103,8 +103,8 @@
               </td>
               <td>
                 <div class="action-buttons">
-                  <button class="action-btn" (click)="viewForm(form.orderId, form.requestType)" title="View">
-                    <i class="icon">👁️</i>
+                  <button class="view-link" (click)="viewForm(form.orderId, form.requestType)" title="View">
+                    View <span class="arrow">→</span>
                   </button>
                   <button class="action-btn" (click)="printForm(form.orderId, $event)" title="Print"
                     *ngIf="currentUser?.role === 'student'">

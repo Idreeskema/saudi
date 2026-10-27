@@ -1,33 +1,55 @@
 <aside class="sidebar">
   <div class="sidebar-header">
     <div class="university-logo">
-      <div class="logo-img">REU</div>
+      <div class="logo-img">
+        <span class="logo-letter logo-letter-r">R</span><span class="logo-letter logo-letter-e">E</span><span
+          class="logo-letter logo-letter-u">U</span>
+      </div>
       <div class="logo-text">
-        <div class="logo-en">RIYADH ELM UNIVERSITY</div>
-        <div class="logo-ar">جامعة رياض العلم</div>
+        <div class="logo-en">REU Portal</div>
+        <div class="logo-ar">postgraduate</div>
       </div>
     </div>
   </div>
 
   <nav class="sidebar-nav">
+    <div class="nav-section-title">MAIN</div>
+
     <a href="javascript:void(0)" class="nav-item" [class.active]="activeRoute === 'dashboard'"
       (click)="navigateToDashboard()">
-      <i class="icon">🏠</i>
+      <i class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+      </i>
       <span>Dashboard</span>
     </a>
 
     <a href="javascript:void(0)" class="nav-item">
-      <i class="icon">📅</i>
+      <i class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+      </i>
       <span>Schedule</span>
       <i class="arrow">›</i>
     </a>
 
-    <div class="nav-section-title">STUDENT MANAGEMENT</div>
-
     <!-- New Requests - Only visible to students -->
-    <a href="javascript:void(0)" class="nav-item" *ngIf="isStudent" [class.active]="activeRoute === 'form'"
+    <a href="javascript:void(0)" class="nav-item" *ngIf="isStudent" [class.active]="activeRoute === 'new-request'"
       (click)="toggleNewRequestsMenu($event)">
-      <i class="icon">✏️</i>
+      <i class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+        </svg>
+      </i>
       <span>New Requests</span>
       <i class="arrow" [class.arrow-down]="showNewRequestsMenu">›</i>
     </a>
@@ -35,12 +57,24 @@
     <!-- Submenu -->
     <div class="submenu" *ngIf="showNewRequestsMenu && isStudent">
       <a *ngFor="let form of forms" href="javascript:void(0)" class="submenu-item"
-        [class.active]="activeRoute === 'form'" (click)="createForm(form.id)">
-        <i class="submenu-icon">📄</i>
+        [class.active]="selectedServiceId === form.id.toString()" (click)="selectFormFromSidebar(form.id)"
+        [title]="form.englishName">
+        <i class="submenu-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+          </svg>
+        </i>
         <span>{{form.englishName}}</span>
       </a>
-      <a href="javascript:void(0)" class="submenu-item" (click)="createOtherForm()">
-        <i class="submenu-icon">📋</i>
+      <a href="javascript:void(0)" class="submenu-item" [class.active]="selectedServiceId === 'other'"
+        (click)="selectOtherFromSidebar()" title="Other Request">
+        <i class="submenu-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </i>
         <span>Other Request</span>
       </a>
     </div>
@@ -48,20 +82,39 @@
     <!-- Pending Requests - Visible to all except students -->
     <a href="javascript:void(0)" class="nav-item" *ngIf="!isStudent" [class.active]="activeRoute === 'pending-requests'"
       (click)="navigateToPendingRequests()">
-      <i class="icon">⏳</i>
+      <i class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      </i>
       <span>Pending Requests</span>
     </a>
 
     <!-- Previous Requests - Visible to all authenticated users -->
     <a href="javascript:void(0)" class="nav-item" [class.active]="activeRoute === 'request-list'"
       (click)="navigateToAllRequests()">
-      <i class="icon">📋</i>
+      <i class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="8" y1="13" x2="16" y2="13"></line>
+          <line x1="8" y1="17" x2="16" y2="17"></line>
+        </svg>
+      </i>
       <span>Previous Requests</span>
     </a>
     <div class="nav-section-title" *ngIf="isAdmin">SYSTEM ADMIN</div>
 
     <a href="javascript:void(0)" class="nav-item" *ngIf="isAdmin" (click)="toggleSystemAdminMenu($event)">
-      <i class="icon">⚙️</i>
+      <i class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82A1.65 1.65 0 0 0 3 13.09H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c0 .68.39 1.3 1 1.51H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+          </path>
+        </svg>
+      </i>
       <span>Sequence</span>
       <i class="arrow" [class.arrow-down]="showSystemAdminMenu">›</i>
     </a>
@@ -69,40 +122,61 @@
     <!-- System Admin Submenu -->
     <div class="submenu" *ngIf="showSystemAdminMenu && isAdmin">
       <a href="javascript:void(0)" class="submenu-item" [class.active]="activeRoute === 'list-sequence'"
-        (click)="navigateToListSequence()">
-        <i class="submenu-icon">📋</i>
+        (click)="navigateToListSequence()" title="List Sequence Model">
+        <i class="submenu-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+          </svg>
+        </i>
         <span>List Sequence Model</span>
       </a>
       <a href="javascript:void(0)" class="submenu-item" (click)="navigateTocreateSequence()"
-        [class.active]="activeRoute === 'create-sequence'">
-        <i class="submenu-icon">➕</i>
+        [class.active]="activeRoute === 'create-sequence'" title="Create Sequence">
+        <i class="submenu-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </i>
         <span>Create Sequence</span>
       </a>
       <a href="javascript:void(0)" class="submenu-item" [class.active]="activeRoute === 'view-sequence'"
-        (click)="navigateToViewSequence()">
-        <i class="submenu-icon">👁️</i>
+        (click)="navigateToViewSequence()" title="View Sequence">
+        <i class="submenu-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </i>
         <span>View Sequence</span>
       </a>
       <a href="javascript:void(0)" class="submenu-item" [class.active]="activeRoute === 'sequence-form'"
-        (click)="navigateToSequenceForm()">
-        <i class="submenu-icon">📝</i>
+        (click)="navigateToSequenceForm()" title="Sequence Form">
+        <i class="submenu-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+          </svg>
+        </i>
         <span>Sequence Form</span>
       </a>
       <a href="javascript:void(0)" class="submenu-item" [class.active]="activeRoute === 'listsequence-status'"
-        (click)="navigateToListSequenceStatus()">
-        <i class="submenu-icon">📊</i>
+        (click)="navigateToListSequenceStatus()" title="List Sequence Status">
+        <i class="submenu-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+        </i>
         <span>List Sequence Status</span>
       </a>
     </div>
 
   </nav>
-
-  <div class="sidebar-footer">
-    <div class="help-card">
-      <div class="help-icon">💎</div>
-      <h4>Need help?</h4>
-      <p>Please Send Email</p>
-      <div class="help-email">POSTGRADUATERIYADH.EDU.SA</div>
-    </div>
-  </div>
 </aside>

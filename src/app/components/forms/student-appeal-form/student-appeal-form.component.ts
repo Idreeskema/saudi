@@ -4,6 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../../../services/auth.service";
 import { ApiService } from "../../../services/api.service";
+import { ToastrService } from "ngx-toastr";
 import { User } from "../../../models/form.model";
 import { SidebarComponent } from "../../sidebar/sidebar.component";
 
@@ -17,6 +18,7 @@ import { SidebarComponent } from "../../sidebar/sidebar.component";
 export class StudentAppealFormComponent implements OnInit {
   currentUser: User | null = null;
   formId: string = "";
+  reasonSubmitted: boolean = false;
 
   formData = {
     // Student Information
@@ -41,6 +43,7 @@ export class StudentAppealFormComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private apiService: ApiService,
+    private toastr: ToastrService,
     private route: ActivatedRoute,
   ) {}
 
@@ -118,6 +121,13 @@ export class StudentAppealFormComponent implements OnInit {
   }
 
   submitForm(): void {
+    this.reasonSubmitted = true;
+
+    if (!this.formData.reason.trim()) {
+      this.toastr.error("Reason is required", "Error");
+      return;
+    }
+
     if (
       confirm(
         "Are you sure you want to submit this appeal? This will be sent to the department head and course director via email.",
@@ -144,14 +154,15 @@ export class StudentAppealFormComponent implements OnInit {
       this.apiService.createStudentAppeal(payload).subscribe({
         next: (response) => {
           console.log("Appeal submitted successfully:", response);
-          alert(
+          this.toastr.success(
             "Appeal submitted successfully! The form will be sent to the department head and course director via email.",
+            "Success",
           );
           this.router.navigate(["/dashboard"]);
         },
         error: (error) => {
           console.error("Error submitting appeal:", error);
-          alert("Error submitting appeal. Please try again.");
+          this.toastr.error("Error submitting appeal. Please try again.", "Error");
         },
       });
     }

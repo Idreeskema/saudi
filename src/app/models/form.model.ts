@@ -17,7 +17,6 @@ export interface RefundForm {
     bankName: string;
     accountHolderName: string;
     relationship: string;
-    ibanArabic: string;
     ibanEnglish: string;
     holderIdIqama: string;
     studentSignature: string;
@@ -102,4 +101,5 @@ export interface User {
   username: string;
   role: UserRole;
   name: string;
+  studentId?: number;
 }

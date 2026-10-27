@@ -56,14 +56,14 @@
     <!-- Form Header -->
     <div class="form-header">
       <div class="form-logos">
-        <img src="assets/ncaaa-logo.png" alt="NCAAA" class="logo">
+        <!-- <img src="assets/ncaaa-logo.png" alt="NCAAA" class="logo"> -->
       </div>
       <div class="form-title">
         <h1>إقرار بشأن اختبار بديل</h1>
         <h2>Declaration for replacement Examination</h2>
       </div>
       <div class="form-logos">
-        <img src="assets/riyadh-logo.png" alt="Riyadh University" class="logo">
+        <!-- <img src="assets/riyadh-logo.png" alt="Riyadh University" class="logo"> -->
       </div>
     </div>
 
@@ -180,11 +180,15 @@
 
         <div class="form-group">
           <label>
-            <span>Reason for Absence</span>
-            <span class="arabic">سبب الغياب:</span>
+            <span>Reason for Absence <span class="required">*</span></span>
+            <span class="arabic">سبب الغياب: <span class="required">*</span></span>
           </label>
           <textarea class="form-control" rows="3" [(ngModel)]="formData.absenceReason"
-            [disabled]="!canEditSection('student')"></textarea>
+            [disabled]="!canEditSection('student')"
+            [class.is-invalid]="declarationSubmitted && !formData.absenceReason.trim()"></textarea>
+          <span class="error-message" *ngIf="declarationSubmitted && !formData.absenceReason.trim()">
+            Reason for Absence is required.
+          </span>
         </div>
 
         <div class="form-group">

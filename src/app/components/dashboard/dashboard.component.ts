@@ -2,48 +2,85 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { FormStorageService } from '../../services/form-storage.service';
-import { RefundForm, User } from '../../models/form.model';
+import { User } from '../../models/form.model';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule,SidebarComponent],
+  imports: [CommonModule, SidebarComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   currentUser: User | null = null;
-  forms: RefundForm[] = [];
+  showUserMenu: boolean = false;
+
   stats = {
-    total: 12,
-    inProgress: 7,
-    rejected: 3,
-    approved: 4
+    total: 128,
+    totalNote: '+12 this month',
+    pending: 23,
+    pendingNote: 'Awaiting review',
+    approved: 94,
+    approvedNote: 'Completed successfully',
+    rejected: 7,
+    rejectedNote: 'Requires attention'
   };
-  
-  selectedYear: string = 'All Years';
-  currentDate: Date = new Date();
-  showNewRequestsMenu: boolean = false; 
-  
-  requestTypes = [
-    { name: 'Leave Requests', count: 9, color: '#17c1e8', icon: '📋' },
-    { name: 'Recommendation Letter', count: 0, color: '#cb0c9f', icon: '📝' },
-    { name: 'Reference Letter', count: 2, color: '#a8b8d8', icon: '📄' },
-    { name: 'Thesis Defense', count: 0, color: '#82d616', icon: '🎓' },
-    { name: 'Degree Granting', count: 2, color: '#fb8c00', icon: '🎖️' },
-    { name: 'Thesis Proposal', count: 1, color: '#344767', icon: '📚' }
+
+  profile = {
+    studentId: '20240125',
+    degree: 'Doctor of Philosophy',
+    major: 'Medical Sciences',
+    academicYear: '2025/2026',
+    status: 'Active',
+    activeCount: 2,
+    completedCount: 12,
+    pendingCount: 1
+  };
+
+  recentRequests = [
+    { id: 'REQ-1001', type: 'Transcript Request', date: '01 Jun 2026', status: 'approved' },
+    { id: 'REQ-1001', type: 'Transcript Request', date: '01 Jun 2026', status: 'approved' },
+    { id: 'REQ-1001', type: 'Transcript Request', date: '01 Jun 2026', status: 'approved' },
+    { id: 'REQ-1001', type: 'Transcript Request', date: '01 Jun 2026', status: 'approved' },
+    { id: 'REQ-1001', type: 'Transcript Request', date: '01 Jun 2026', status: 'approved' }
   ];
-  
-  calendarEvents = [
-    { date: 16, title: '9a Analysis of A...', type: 'defense' },
-    { date: 17, title: '9a Evaluation o...', type: 'defense' }
+
+  recentActivity = [
+    {
+      type: 'approved',
+      title: 'Transcript Request Approved',
+      description: 'Your transcript request has been successfully approved.',
+      time: 'Today at 10:32 AM'
+    },
+    {
+      type: 'pending',
+      title: 'Medical Request Under Review',
+      description: 'Medical Examination Scheduled',
+      time: 'Yesterday at 12:07 PM'
+    },
+    {
+      type: 'submitted',
+      title: 'Recommendation Request Submitted',
+      description: 'Recommendation Letter Submitted',
+      time: 'May 25, 2026'
+    },
+    {
+      type: 'approved',
+      title: 'Fee Refund Approved',
+      description: 'Fee Refund Request Approved',
+      time: 'May 25, 2026'
+    },
+    {
+      type: 'rejected',
+      title: 'Missing Attachment Detected',
+      description: 'Leave of Absence Request Received',
+      time: 'May 23, 2026'
+    }
   ];
 
   constructor(
     private authService: AuthService,
-    private formStorageService: FormStorageService,
     private router: Router
   ) {}
 
@@ -53,84 +90,31 @@ export class DashboardComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
-    
-    this.loadDashboardData();
   }
 
-  loadDashboardData(): void {
-    this.forms = this.formStorageService.getAllForms();
-    this.stats = this.formStorageService.getFormStats();
+  get firstName(): string {
+    return (this.currentUser?.name || '').split(' ')[0];
+  }
+
+  get initials(): string {
+    return (this.currentUser?.name || '')
+      .split(' ')
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0].toUpperCase())
+      .join('');
   }
 
   navigateToAllRequests(): void {
     this.router.navigate(['/request-list']);
   }
 
-  createNewRequest(): void {
-    const newForm = this.formStorageService.createEmptyForm();
-    this.formStorageService.saveForm(newForm);
-    this.router.navigate(['/form', newForm.id]);
+  toggleUserMenu(): void {
+    this.showUserMenu = !this.showUserMenu;
   }
 
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
-
-  getMonthName(): string {
-    return this.currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
-  }
-
-  getDaysInMonth(): number[] {
-    const year = this.currentDate.getFullYear();
-    const month = this.currentDate.getMonth();
-    const days = new Date(year, month + 1, 0).getDate();
-    return Array.from({ length: days }, (_, i) => i + 1);
-  }
-
-  getWeekdays(): string[] {
-    return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  }
-
-  getFirstDayOfMonth(): number {
-    const year = this.currentDate.getFullYear();
-    const month = this.currentDate.getMonth();
-    return new Date(year, month, 1).getDay();
-  }
-
-  hasEvent(day: number): boolean {
-    return this.calendarEvents.some(e => e.date === day);
-  }
-
-  getEventForDay(day: number) {
-    return this.calendarEvents.find(e => e.date === day);
-  }
-
-  previousMonth(): void {
-    this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1);
-  }
-
-  nextMonth(): void {
-    this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1);
-  }
-
-  goToToday(): void {
-    this.currentDate = new Date();
-  }
-  // Toggle submenu
-toggleNewRequestsMenu(event: Event): void {
-  event.preventDefault();
-  this.showNewRequestsMenu = !this.showNewRequestsMenu;
-}
-
-// Create refund form
-createRefundForm(): void {
-  const newForm = this.formStorageService.createEmptyForm();
-  this.router.navigate(['/form/1002-0001']);
-}
-
-// Placeholder for other forms
-createOtherForm(): void {
-  alert('Other form types coming soon!');
-}
 }

@@ -1,0 +1,281 @@
+<ng-template #serviceIconTpl let-icon>
+  <ng-container [ngSwitch]="icon">
+    <svg *ngSwitchCase="'medical'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="8" x2="12" y2="16"></line>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+    </svg>
+
+    <svg *ngSwitchCase="'refund'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="12" y1="1" x2="12" y2="23"></line>
+      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+    </svg>
+
+    <svg *ngSwitchCase="'exit'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+      <polyline points="16 17 21 12 16 7"></polyline>
+      <line x1="21" y1="12" x2="9" y2="12"></line>
+    </svg>
+
+    <svg *ngSwitchCase="'login'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+      <polyline points="10 17 15 12 10 7"></polyline>
+      <line x1="15" y1="12" x2="3" y2="12"></line>
+    </svg>
+
+    <svg *ngSwitchCase="'calendar'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+    </svg>
+
+    <svg *ngSwitchCase="'flag'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+      <line x1="4" y1="22" x2="4" y2="15"></line>
+    </svg>
+
+    <svg *ngSwitchCase="'shuffle'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="16 3 21 3 21 8"></polyline>
+      <line x1="4" y1="20" x2="21" y2="3"></line>
+      <polyline points="21 16 21 21 16 21"></polyline>
+      <line x1="15" y1="15" x2="21" y2="21"></line>
+      <line x1="4" y1="4" x2="9" y2="9"></line>
+    </svg>
+
+    <svg *ngSwitchCase="'list'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <line x1="3" y1="6" x2="3.01" y2="6"></line>
+      <line x1="3" y1="12" x2="3.01" y2="12"></line>
+      <line x1="3" y1="18" x2="3.01" y2="18"></line>
+    </svg>
+
+    <svg *ngSwitchCase="'plus'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+
+    <svg *ngSwitchDefault viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+    </svg>
+  </ng-container>
+</ng-template>
+
+<div class="create-request-wrapper">
+  <app-sidebar></app-sidebar>
+
+  <main class="main-content">
+    <header class="top-bar">
+      <div class="page-heading">
+        <h1>{{ currentStep === 0 ? 'Create New Request' : 'Provide Request Details' }}</h1>
+        <p *ngIf="currentStep === 0">Choose the service you would like to request</p>
+        <p *ngIf="currentStep === 1">Complete the required information before submission.</p>
+      </div>
+
+      <div class="top-bar-actions">
+        <button class="icon-btn" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
+        <button class="icon-btn" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </button>
+
+        <div class="user-chip" (click)="toggleUserMenu()">
+          <div class="avatar">{{ initials }}</div>
+          <div class="user-info">
+            <span class="user-name">{{ currentUser?.name }}</span>
+            <span class="user-role">{{ currentUser?.role | titlecase }}</span>
+          </div>
+
+          <div class="user-dropdown" *ngIf="showUserMenu">
+            <button type="button" (click)="logout()">Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="wizard-content">
+      <div class="stepper">
+        <ng-container *ngFor="let step of steps; let i = index; let last = last">
+          <div class="step" [class.active]="i === currentStep" [class.done]="i < currentStep"
+            [class.clickable]="i < currentStep" (click)="goToStep(i)">
+            <div class="step-circle">
+              <svg *ngIf="i < currentStep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <ng-container *ngIf="i >= currentStep">{{ i + 1 }}</ng-container>
+            </div>
+            <div class="step-label">{{ step }}</div>
+          </div>
+          <div class="step-line" *ngIf="!last" [class.done]="i < currentStep"></div>
+        </ng-container>
+      </div>
+
+      <!-- Step 1: Select Service -->
+      <ng-container *ngIf="currentStep === 0">
+        <div class="search-bar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" [(ngModel)]="searchTerm" placeholder="Search services..." />
+        </div>
+
+        <div class="category-tabs">
+          <button *ngFor="let category of categories" class="category-tab"
+            [class.active]="selectedCategory === category" (click)="selectCategory(category)">
+            {{ category }}
+          </button>
+        </div>
+
+        <div class="services-grid">
+          <div class="service-card" *ngFor="let service of filteredServices"
+            [class.selected]="selectedServiceId === service.id" (click)="selectService(service)">
+            <div class="service-check" *ngIf="selectedServiceId === service.id">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+
+            <div class="service-card-header">
+              <div class="service-icon">
+                <ng-container *ngTemplateOutlet="serviceIconTpl; context: { $implicit: service.icon }">
+                </ng-container>
+              </div>
+
+              <div class="service-name-row">
+                <span class="service-name">{{ service.name }}</span>
+                <span class="chevron">›</span>
+              </div>
+            </div>
+
+            <p class="service-desc">{{ service.description }}</p>
+            <p class="service-time">Processing time: {{ service.processingTime }}</p>
+          </div>
+        </div>
+
+        <div class="wizard-actions">
+          <button type="button" class="btn btn-cancel" (click)="cancel()">Cancel</button>
+          <button type="button" class="btn btn-continue" [disabled]="!selectedServiceId" (click)="continue()">
+            Continue
+          </button>
+        </div>
+      </ng-container>
+
+      <!-- Step 2: Provide Details -->
+      <ng-container *ngIf="currentStep === 1">
+        <div class="selected-service-bar" *ngIf="selectedService as svc">
+          <div class="selected-service-info">
+            <div class="service-icon small">
+              <ng-container *ngTemplateOutlet="serviceIconTpl; context: { $implicit: svc.icon }"></ng-container>
+            </div>
+            <span class="selected-service-name">{{ svc.name }}</span>
+          </div>
+          <span class="selected-service-time">Processing Time: {{ svc.processingTime }}</span>
+        </div>
+
+        <div class="details-card">
+          <h2 class="details-heading">Request Information</h2>
+
+          <div class="details-grid">
+            <div class="details-col">
+              <div class="field-group">
+                <label>Student ID</label>
+                <input type="text" [value]="currentUser?.studentId" disabled class="form-control is-disabled" />
+              </div>
+
+              <div class="field-group">
+                <label>Full Name</label>
+                <input type="text" [value]="currentUser?.name" disabled class="form-control is-disabled" />
+              </div>
+
+              <div class="field-group">
+                <label>Program</label>
+                <select [(ngModel)]="details.program" name="program" class="form-control">
+                  <option *ngFor="let program of programOptions" [value]="program">{{ program }}</option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label>Additional Notes</label>
+                <textarea [(ngModel)]="details.notes" name="notes" rows="3"
+                  placeholder="Provide any additional information..." class="form-control"></textarea>
+              </div>
+            </div>
+
+            <div class="details-col">
+              <div class="field-group">
+                <label>Academic Year</label>
+                <select [(ngModel)]="details.academicYear" name="academicYear" class="form-control">
+                  <option *ngFor="let year of academicYearOptions" [value]="year">{{ year }}</option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label>Priority</label>
+                <select [(ngModel)]="details.priority" name="priority" class="form-control">
+                  <option *ngFor="let priority of priorityOptions" [value]="priority">{{ priority }}</option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label>Institution</label>
+                <select [(ngModel)]="details.institution" name="institution" class="form-control">
+                  <option *ngFor="let institution of institutionOptions" [value]="institution">{{ institution }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label>Attachments</label>
+                <div class="dropzone" (click)="fileInput.click()" (dragover)="onDragOver($event)"
+                  (drop)="onDrop($event)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                  </svg>
+                  <span>Drag & drop files here</span>
+                  <input #fileInput type="file" multiple hidden (change)="onFileInputChange($event)" />
+                </div>
+                <ul class="file-list" *ngIf="attachedFiles.length">
+                  <li *ngFor="let file of attachedFiles; let i = index">
+                    <span>{{ file }}</span>
+                    <button type="button" (click)="removeFile(i)" aria-label="Remove file">&times;</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="required-documents">
+            <h3>Required Documents</h3>
+            <ul>
+              <li *ngFor="let doc of requiredDocuments">{{ doc }}</li>
+            </ul>
+          </div>
+
+          <p class="fields-progress">
+            {{ completedRequiredFieldsCount }} of {{ totalRequiredFields }} required fields completed
+          </p>
+        </div>
+
+        <div class="wizard-actions">
+          <button type="button" class="btn btn-cancel" (click)="cancel()">Cancel</button>
+          <button type="button" class="btn btn-save-draft" (click)="saveDraft()">Save Draft</button>
+          <button type="button" class="btn btn-continue" (click)="continueToReview()">Continue</button>
+        </div>
+      </ng-container>
+    </div>
+  </main>
+</div>

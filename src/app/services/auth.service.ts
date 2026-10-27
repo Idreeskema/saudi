@@ -12,7 +12,7 @@ export class AuthService {
   constructor() {
     const storedUser = localStorage.getItem("currentUser");
     this.currentUserSubject = new BehaviorSubject<User | null>(
-      storedUser ? JSON.parse(storedUser) : null
+      storedUser ? JSON.parse(storedUser) : null,
     );
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -28,6 +28,7 @@ export class AuthService {
         username: "student@riyadh.edu.sa",
         role: "student",
         name: "Idrees Kema - Test",
+        studentId: 3,
       },
       "faculty@riyadh.edu.sa": {
         username: "faculty@riyadh.edu.sa",

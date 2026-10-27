@@ -56,7 +56,7 @@
     <!-- Form Header -->
     <div class="form-header">
       <div class="form-logos">
-        <img src="assets/riyadh-logo.png" alt="Riyadh University" class="logo">
+        <!-- <img src="assets/riyadh-logo.png" alt="Riyadh University" class="logo"> -->
       </div>
       <div class="form-title">
         <h1>نموذج فحص طبي</h1>
@@ -379,7 +379,7 @@
             </div>
             <div class="signature-field">
               <label>Date: <span class="arabic">التاريخ:</span></label>
-              <input type="date" class="form-control" [(ngModel)]="formData.signatureDate"
+              <input type="date" min="1900-01-01" max="2099-12-31" class="form-control" [(ngModel)]="formData.signatureDate"
                 [disabled]="!canEditSection('result')">
             </div>
             <div class="signature-field">
